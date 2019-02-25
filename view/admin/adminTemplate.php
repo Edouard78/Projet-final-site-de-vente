@@ -34,8 +34,18 @@
 
 
 	<div class="container">
+
+    <nav class="nav flex-column nav-tabs align-content-center col-md-3">
+    <h3>Panel</h3>
+ 
+                <li class="nav-item "> <a class="nav-link " href="index.php?action=adminCatalog">Catalogue</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="index.php?action=adminCustomer">Clients</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="index.php?action=adminCustomerService">Service client</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="index.php?action=adminStatistics">Statistiques</a> </li>
+
+</nav>
 		<div class="content">
-		
+		<?php echo $content ?>
 		</div>
 	</div>
 </div>
