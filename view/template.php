@@ -23,7 +23,7 @@
 	</nav>
 
 	<header>
-		<h1>STYLE SHOP</h1>
+		<h1 class="site-title">STYLE SHOP</h1>
 </header>
 
     <nav>
@@ -35,7 +35,7 @@
 
 	<div class="container">
 		<div class="content">
-		
+		<?php echo $content ?>
 		</div>
 	</div>
 </div>

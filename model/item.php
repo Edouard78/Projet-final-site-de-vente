@@ -3,16 +3,16 @@
 class Item
 {
 	protected $_id,
-			  $_name,
+			  $_title,
 			  $_brand,
-			  $_description,
+			  $_content,
 			  $_addingDate,
 			  $_updatingDate,
 			  $_errors=[];
 
-	const INVALID_NAME = 1;
+	const INVALID_TITLE = 1;
 	const INVALID_BRAND = 2;
-	const INVALID_DESCRIPTION = 3;
+	const INVALID_CONTENT = 3;
 
   public function __construct($data)
 	{
@@ -42,9 +42,9 @@ class Item
 		return $this->_id;
 	}
 
-	public function name()
+	public function title()
 	{
-		return $this->_name;
+		return $this->_title;
 	}
 
 	public function brand()
@@ -52,9 +52,9 @@ class Item
 		return $this->_brand;
 	}
 
-	public function description()
+	public function content()
 	{
-		return $this->_description;
+		return $this->_content;
 	}
 
 	public function addingDate()
@@ -82,15 +82,15 @@ class Item
 		$this->_id = $id;
 	}
 
-	public function setName($name)
+	public function setTitle($title)
 	{
-		if (!is_string($name) || empty($name))
+		if (!is_string($title) || empty($title))
 		{
-			$this->_errors[]=self::INVALID_NAME;
+			$this->_errors[]=self::INVALID_TITLE;
 		}
 		else
 		{
-			$this->_name = $name;
+			$this->_title = $title;
 		}
 	}
 
@@ -106,11 +106,11 @@ class Item
 		}
 	}
 
-	public function setDescription($description)
+	public function setContent($content)
 	{
-		if (!is_string($description) || empty($description))
+		if (!is_string($content) || empty($content))
 		{
-			$this->_errors[]=self::INVALID_DESCRIPTION;
+			$this->_errors[]=self::INVALID_CONTENT;
 		}
 		else
 		{

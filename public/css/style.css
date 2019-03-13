@@ -4,3 +4,32 @@ body
 	padding-top : 6em !important;
 
 }
+
+.site-title
+{
+	text-align: center;
+	font-size: 3rem;
+}
+
+.jumbotronItem .itemImgHome
+{
+	width: 150px;
+}
+
+.jumbotronItem
+{
+	background-color: white !important;
+	margin-left : 10px;
+	transition: transform .07s;
+}
+
+.jumbotronItem:hover
+{
+	cursor: pointer;
+	transform: scale(1.2);
+}
+
+.cardItem
+{
+	background-color: #f9f9f9;
+}

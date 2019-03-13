@@ -11,6 +11,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'.tinymce' });</script>
 	<link rel="stylesheet" type="text/css" href="public/css/style.css">
 </head>
 
@@ -18,7 +20,7 @@
  
 	<nav>
 		<div class="nav">
-			<?php require_once( 'nav.php'); ?>
+			<?php require_once( '/../nav.php'); ?>
 		</div>
 	</nav>
 
