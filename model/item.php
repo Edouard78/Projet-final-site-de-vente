@@ -6,6 +6,7 @@ class Item
 			  $_title,
 			  $_brand,
 			  $_content,
+			  $_price,
 			  $_addingDate,
 			  $_updatingDate,
 			  $_errors=[];
@@ -55,6 +56,12 @@ class Item
 	public function content()
 	{
 		return $this->_content;
+	}
+
+	
+	public function price()
+	{
+		return $this->_price;
 	}
 
 	public function addingDate()
@@ -116,6 +123,11 @@ class Item
 		{
 			$this->_content = $content;
 		}
+	}
+
+	public function setPrice($price)
+	{
+			$this->_price = $price;
 	}
 
 	public function setAddingDate($addingDate)

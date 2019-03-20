@@ -5,15 +5,60 @@ body
 
 }
 
+.navbar
+{
+	height : 5rem;
+}
+
+@media screen and (max-width: 600px) {
+	.navbar {
+	  height : auto;
+	}
+  }
 .site-title
 {
-	text-align: center;
-	font-size: 3rem;
+	font-family: 'Permanent Marker';
+	font-size: 2em;
+}
+
+
+.navbar {
+	border-radius: 0px 0px 3px 3px;
+}
+
+
+@media screen and (min-width: 600px) {
+
+	.nav-bar
+	{
+		position : relative;
+
+	}
+
+.navbar-brand
+{
+	position : absolute;
+	left : 50%;
+	transform: translateX(-50%);
+}
+
 }
 
 .jumbotronItem .itemImgHome
 {
 	width: 150px;
+}
+
+.itemImgUnique{
+	width: 150px;
+}
+
+.itemImgZoom
+{
+	width : 400px;
+	display: block;
+	margin : 0 auto;
+
 }
 
 .jumbotronItem
@@ -32,4 +77,29 @@ body
 .cardItem
 {
 	background-color: #f9f9f9;
+}
+
+.jumbotron-footer
+{
+	background-color : #3a3a3a;
+}
+
+.social-media .fa{
+	color : white;
+	font-size : 2em;
+}
+
+.carousel-control-next-icon
+{
+	height: 100px;
+    width: 100px;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-size: 100%, 100%;
+
+    border: 1px solid black;
+}
+
+.carousel-control-prev-icon
+{
+	color : black !important!;
 }

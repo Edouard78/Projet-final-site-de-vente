@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="public/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet"> 
 </head>
 
 <body>
@@ -22,9 +23,8 @@
 		</div>
 	</nav>
 
-	<header>
-		<h1 class="site-title">STYLE SHOP</h1>
-</header>
+
+
 
     <nav>
 		<div class="second-nav">
@@ -40,12 +40,12 @@
 	</div>
 </div>
 	<footer id="footer">
-		<div class="jumbotron">
+		<div class="jumbotron jumbotron-footer">
 			<div class="container-fluid">
 				<div class="footerBlock row">
                     
 
-					<div class="socialMedia col"> <em class="fa fa-facebook"></em>
+					<div class="social-media col"> <em class="fa fa-facebook"></em>
 						<em class="fa fa-twitter"></em>
 						<em class="fa fa-skype"></em>
 						<em class="fa fa-instagram"></em>

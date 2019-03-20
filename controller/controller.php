@@ -2,11 +2,135 @@
 require_once ('/../model/item.php');
 require_once ('/../model/itemManager.php');
 
+
+require_once ('/../model/checkout.php');
+require_once ('/../model/checkoutItem.php');
+
 require_once ('/../model/user.php');
 
 require_once ('/../model/userManager.php');
 
 require_once ('/../model/userShippingAdress.php');
+
+function checkoutPage()
+{
+	require ('/../view/checkoutView.php');
+}
+
+function checkoutAdd($data)
+	{
+		
+		$checkoutItem = new CheckoutItem($data);
+		$checkout = new Checkout();
+		$checkout->addItem($checkoutItem);
+
+		var_dump($checkoutItem);
+
+
+
+	}
+
+function authentication($login, $password)
+	{
+	include ('/../model/db.php');
+
+	$userManager = new UserManager($db);
+	$user = $userManager->authenticationGet($login);
+
+	$result = $user->fetch();
+	$isPasswordCorrect = password_verify($password, $result['password']);
+	if ($login != $result['login'] || !$isPasswordCorrect)
+		{
+		header('Location: index.php?action=authenticationPage&errors=1');
+		exit();
+		}
+	  else
+		{
+		session_start();
+		$_SESSION['userId'] = $result['id'];
+		$_SESSION['login'] = $result['login'];
+		$_SESSION['admin'] = $result['admin'];
+		header('Location: index.php');
+		}
+	}
+
+function authenticationPage()
+	{
+	require ('/../view/authenticationView.php');
+
+	}
+
+	function subscribe($data)
+	{
+		include ('/../model/db.php');
+
+	$errors = array();
+
+	$newUser = new User($data);
+	$errorsFromModel = $newUser->errors();
+	if (count($errorsFromModel) > 0)
+		{
+		if (in_array(User::INVALID_LOGIN, $errorsFromModel))
+			{
+			array_push($errors, 4);
+			}
+
+		if (in_array(User::INVALID_PASSWORD, $errorsFromModel))
+			{
+			array_push($errors, 5);
+			}
+
+		if (in_array(User::INVALID_EMAIL, $errorsFromModel))
+			{
+			array_push($errors, 6);
+			}
+		}
+
+
+	$userManager = new UserManager($db);
+	$login = $data['login'];
+	$countLogin = $userManager->countLogin($login);
+	$dataCountLogin = $countLogin->fetch();
+	$email = $data['email'];
+	$countEmail = $userManager->countEmail($email);
+	$dataCountEmail = $countEmail->fetch();
+
+		if ($dataCountLogin['nb'] != 0)
+			{
+			array_push($errors, 1);
+			}
+	
+		if ($_POST['password'] != $_POST['password2'])
+			{
+			array_push($errors, 2);
+			}
+	
+		if ($dataCountEmail['nb'] != 0)
+			{
+			array_push($errors, 3);
+			}
+
+	if (count($errors) > 0)
+		{
+		$serialize = serialize($errors);
+		$encode = urlencode($serialize);
+		header('Location: index.php?action=subscribePage&errors=' . $encode);
+		}
+	  else
+		{
+		$newUser->setAdmin(0);
+		$userManager = new UserManager($db);
+		$userManager->createUser($newUser);
+		
+		header('Location: index.php?action=subscribePage&success=1');
+		}
+	}
+
+function subscribePage()
+	{
+	require ('/../view/subscribeView.php');
+
+	}
 
 
 function home()
@@ -17,6 +141,17 @@ function home()
 	$item = $itemManager->getList();
 
 	require ('/../view/homeView.php');
+
+	}
+
+	function itemUnique($id)
+	{
+	include ('model/db.php');
+
+	$itemManager = new ItemManager($db);
+	$item = $itemManager->getUnique($id);
+
+	require ('/../view/itemUniqueView.php');
 
 	}
 

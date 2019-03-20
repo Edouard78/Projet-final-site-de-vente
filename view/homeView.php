@@ -9,10 +9,11 @@ while ($data = $item->fetch())
     $itemId = $data['id'];
     $itemImgSrc = './uploads/items/'.$itemId ; ?>
 
-<div class="jumbotron jumbotronItem">
+<a href="index.php?action=itemUnique&amp;id=<?php
+	echo $data['id'] ?>"><div class="jumbotron jumbotronItem">
 <?php echo '<img src="'.$itemImgSrc.'" class="itemImgHome" />' ?>
 <h5><?php echo $data['title'] ?></h5>
-</div>
+</div></a>
 <?php
 		}
 
