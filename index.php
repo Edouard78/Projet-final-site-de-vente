@@ -1,5 +1,7 @@
 <?php
 require_once ('model/checkoutItem.php');
+
+require_once ('model/checkoutTotal.php');
 session_start();
 require ('controller/controller.php');
 
@@ -30,10 +32,27 @@ try {
                     
                     $_SESSION['itemsCheckout'][$_GET['itemCheckoutId']]->updateQuantity($_POST['quantity']);
 
+                    $_SESSION['checkoutTotal']->updateTotal($_SESSION['itemsCheckout']);
+
 
                     checkoutPage();
             
                 }
+    
+            }
+
+            elseif ($_GET['action'] == 'deleteItemCheckout' && isset($_GET['id']) && isset($_GET['id']) )
+            {
+
+                
+                if (isset($_SESSION['itemsCheckout']))
+                {
+                 unset($_SESSION['itemsCheckout'][$_GET['id']]);
+                 
+                 $_SESSION['checkoutTotal']->updateTotal($_SESSION['itemsCheckout']);
+
+                 checkoutPage();
+                }    
     
             }
 
@@ -61,13 +80,21 @@ try {
 
             elseif ($_GET['action'] == 'subscribe' && isset($_POST['login']))
 		{
-		$data = array(
+		$data1 = array(
 			'login' => $_POST['login'],
 			'password' => $_POST['password'],
 			'password2' => $_POST['password2'],
 			'email' => $_POST['email']
-		);
-		subscribe($data);
+        );
+        
+        $data2 = array(
+			'name' => $_POST['name'],
+			'adress' => $_POST['adress'],
+			'postalCode' => $_POST['postalCode'],
+			'city' => $_POST['city']
+        );
+        
+		subscribe($data1, $data2);
 		}
 	elseif ($_GET['action'] == 'subscribePage')
 		{

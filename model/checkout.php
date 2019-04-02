@@ -14,7 +14,7 @@ class Checkout
         }
         else{
                 
-        session_start();
+    
         $_SESSION['itemsCheckout'] = [];
         array_push($_SESSION['itemsCheckout'], $item);
         }
@@ -25,13 +25,6 @@ class Checkout
 	}
 
 
-	public function removeItem($id){
-        if (in_array($id, $_SESSION['itemIdCheckout']) )
-        {
-        session_id($id);
-        session_destroy();
-        }
-	}
 
 
 }

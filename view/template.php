@@ -16,7 +16,7 @@
 </head>
 
 <body>
- 
+ <div class="wrap">
 	<nav>
 		<div class="nav">
 			<?php require_once( 'nav.php'); ?>

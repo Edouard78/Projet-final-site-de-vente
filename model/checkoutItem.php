@@ -66,7 +66,7 @@ class CheckoutItem
 	public function setPrice($price)
 	{
 
-			$this->_price = $price;
+			$this->_price = $this->_quantity *$price;
 
 	}
 
@@ -94,7 +94,8 @@ class CheckoutItem
 
                         
 
-                    }
+										}
+										
 
                     else{
 

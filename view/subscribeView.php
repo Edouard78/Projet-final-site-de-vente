@@ -102,6 +102,13 @@ if (isset($_GET['success']))
     Choisissez un mot de passe <input type="password" class="form-control" name="password"">
     Retaper votre mot de passe <input type="password" class="form-control" name="password2"">
     Votre email <input type="text" class="form-control" name="email">
+
+	<legend>Vos informations</legend>	
+
+	Nom et prénom <input type="text" class="form-control" name="name">
+    Adresse (rue, numéro, bâtiment) <input type="text" class="form-control" name="adress">
+    Code postal <input type="number" class="form-control" name="postalCode">
+    Ville <input type="text" class="form-control" name="city">
     <button type="submit">Soumettre</button>
 </form>
 

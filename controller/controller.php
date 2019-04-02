@@ -1,16 +1,22 @@
 <?php
+
 require_once ('/../model/item.php');
+
 require_once ('/../model/itemManager.php');
 
 
 require_once ('/../model/checkout.php');
-require_once ('/../model/checkoutItem.php');
+
+require_once ('/../model/checkoutTotalManager.php');
+
 
 require_once ('/../model/user.php');
 
 require_once ('/../model/userManager.php');
 
 require_once ('/../model/userShippingAdress.php');
+
+require_once ('/../model/userShippingAdressManager.php');
 
 function checkoutPage()
 {
@@ -24,11 +30,27 @@ function checkoutAdd($data)
 		$checkout = new Checkout();
 		$checkout->addItem($checkoutItem);
 
-		var_dump($checkoutItem);
 
+		checkoutTotal();
 
 
 	}
+
+	
+function checkoutTotal()
+{
+
+
+	$checkoutTotal = new CheckoutTotal($_SESSION['itemsCheckout']);
+
+		$checkoutTotalManager = new CheckoutTotalManager();
+		$checkoutTotalManager->saveTotal($checkoutTotal);
+
+		var_dump($checkoutTotal);
+		var_dump($checkoutTotalManager);
+	
+
+}
 
 function authentication($login, $password)
 	{
@@ -60,13 +82,13 @@ function authenticationPage()
 
 	}
 
-	function subscribe($data)
+	function subscribe($data1, $data2)
 	{
 		include ('/../model/db.php');
 
 	$errors = array();
 
-	$newUser = new User($data);
+	$newUser = new User($data1);
 	$errorsFromModel = $newUser->errors();
 	if (count($errorsFromModel) > 0)
 		{
@@ -88,10 +110,10 @@ function authenticationPage()
 
 
 	$userManager = new UserManager($db);
-	$login = $data['login'];
+	$login = $data1['login'];
 	$countLogin = $userManager->countLogin($login);
 	$dataCountLogin = $countLogin->fetch();
-	$email = $data['email'];
+	$email = $data1['email'];
 	$countEmail = $userManager->countEmail($email);
 	$dataCountEmail = $countEmail->fetch();
 
@@ -110,6 +132,33 @@ function authenticationPage()
 			array_push($errors, 3);
 			}
 
+
+			$newUserShippingAdress = new UserShippingAdress($data2);
+			$errorsFromModel = $newUserShippingAdress->errors();
+			if (count($errorsFromModel) > 0)
+				{
+				if (in_array(UserShippingAdress::INVALID_NAME, $errorsFromModel))
+					{
+					array_push($errors, 7);
+					}
+		
+				if (in_array(UserShippingAdress::INVALID_ADRESS, $errorsFromModel))
+					{
+					array_push($errors, 8);
+					}
+		
+				if (in_array(UserShippingAdress::INVALID_POSTAL_CODE, $errorsFromModel))
+					{
+					array_push($errors, 9);
+					}
+
+					if (in_array(UserShippingAdress::INVALID_CITY, $errorsFromModel))
+					{
+					array_push($errors, 10);
+					}	
+				}
+				
+
 	if (count($errors) > 0)
 		{
 		$serialize = serialize($errors);
@@ -121,6 +170,14 @@ function authenticationPage()
 		$newUser->setAdmin(0);
 		$userManager = new UserManager($db);
 		$userManager->createUser($newUser);
+
+		$userId = $db->lastInsertId();
+		$newUserShippingAdress->setUserId($userId);
+
+		
+		$userShippingAdressManager = new UserShippingAdressManager($db);
+		$userShippingAdressManager->create($newUserShippingAdress);
+		
 		
 		header('Location: index.php?action=subscribePage&success=1');
 		}

@@ -1,8 +1,32 @@
 
 body
 {
-	padding-top : 6em !important;
+	max-height: 100vh;
+	margin : 0 !important;
+	padding : 0 !important;
 
+
+
+
+}
+
+.wrap{
+	padding-top : 6em !important;
+	min-height: 80vh !important;
+	margin : 0;
+	padding : 0;
+}
+
+footer{
+	height: 20vh !important;
+	margin : 0;
+	padding : 0;
+}
+
+.imgCheckoutItem
+{
+	display: block;
+	width : 80px;
 }
 
 .navbar
@@ -82,10 +106,17 @@ body
 .jumbotron-footer
 {
 	background-color : #3a3a3a;
+	height : 100% !important;
+	width: 100%;
+
 }
 
 .social-media .fa{
 	color : white;
+	font-size : 2em;
+}
+
+.nav-icon {
 	font-size : 2em;
 }
 
@@ -101,5 +132,5 @@ body
 
 .carousel-control-prev-icon
 {
-	color : black !important!;
+	color : black !important;
 }

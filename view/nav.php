@@ -13,7 +13,7 @@
     <li class="nav-item"> <a class="nav-link" href="#">FEMME</a> </li>
   </ul>
   <ul class="navbar-nav ml-auto">
-  <li class="nav-item"><a class="nav-link" href="index.php?action=checkoutPage">Panier</a></li>
+  <li class="nav-item"><a class="nav-link" href="index.php?action=checkoutPage"><i class="fa fa-shopping-cart nav-icon"></i>Panier</a></li>
   <?php if (isset($_SESSION['login']) && isset($_SESSION['admin']))
   	{ 
   		if($_SESSION['admin'] == TRUE){ ?>
@@ -22,7 +22,7 @@
          }
       elseif($_SESSION['admin'] == FALSE)
       { ?>
-          <li class="nav-item"><a class="nav-link" href="index.php?action=userPage">Mon Compte</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=userPage"><i class="fa fa-users nav-icon"></i>Se connecter</a></li>
           <?php
     }
   }

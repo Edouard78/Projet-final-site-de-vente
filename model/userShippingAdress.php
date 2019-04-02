@@ -7,7 +7,9 @@ class UserShippingAdress
     protected $_name;
     protected $_adress;
     protected $_postalCode;
-    protected $_city;
+	protected $_city;
+	protected $_errors = [];
+
 
     
 	CONST INVALID_NAME = 1;
@@ -66,6 +68,13 @@ public function city()
     return $this->_city;
 }
 
+
+public function errors()
+{
+    return $this->_errors;
+}
+
+
     //SETTERS
 
     public function setId($id)
@@ -107,7 +116,7 @@ public function city()
 
     public function setPostalCode($postalCode)
 	{
-		if (!is_int($postalCode) || empty($postalCode))
+		if (!is_string($postalCode) || empty($postalCode))
 		{
 			$this->_errors[]=self::INVALID_POSTAL_CODE;
 		}
