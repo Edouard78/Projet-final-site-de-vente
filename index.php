@@ -6,6 +6,7 @@ session_start();
 require ('controller/controller.php');
 
 
+
 try {
     if (isset($_GET['action']))
         {
@@ -13,6 +14,14 @@ try {
             {
                 home();
             } 
+
+            elseif ($_GET['action'] == 'proceedCheckout')
+            {
+
+         
+                paymentPage();
+    
+            }
 
             elseif ($_GET['action'] == 'checkoutPage')
             {

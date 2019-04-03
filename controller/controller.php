@@ -18,6 +18,11 @@ require_once ('/../model/userShippingAdress.php');
 
 require_once ('/../model/userShippingAdressManager.php');
 
+function paymentPage()
+{
+	require ('/../view/paymentView.php');
+}
+
 function checkoutPage()
 {
 	require ('/../view/checkoutView.php');

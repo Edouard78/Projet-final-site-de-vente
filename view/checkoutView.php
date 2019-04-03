@@ -39,7 +39,7 @@
 						<button type="submit" class="btn btn-default">Mettre à jour</button>
                         </form></td>
 						<td>
-						<a type="button" href="index.php?action=deleteItemCheckout&amp;id=<?php echo $id ;?>" class="btn btn-dark">Supprimer</button>
+						<a type="button" href="index.php?action=deleteItemCheckout&amp;id=<?php echo $id ;?>" class="btn btn-dark">Supprimer</a>
                         </form></td>
                 </tr>
                 <?php
@@ -60,9 +60,11 @@
 
 <h3  class="float-right">Prix Total : <?php echo $_SESSION['checkoutTotal']->total() ?> <em class="fa fa-euro"></em> </h3>
 	<?php  } 
+var_dump($_SESSION['checkoutTotal']);
+var_dump($_SESSION['checkoutTotal']->total());
 
 ?>
-	
+	<a type="button" href="index.php?action=proceedCheckout" class="btn btn-primary">Passer au paiement</a>
 
 
 	<?php $content = ob_get_clean(); 
