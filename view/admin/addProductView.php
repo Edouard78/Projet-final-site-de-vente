@@ -2,11 +2,11 @@
 
 ?>
 
-<form action="index.php?action=addItem" method="post" enctype="multipart/form-data">
+<form action="index.php?action=addProduct" method="post" enctype="multipart/form-data">
 <legend>Ajouter un article</legend>
 <div class="form-group">
-    <label for="itemImg">Télécharger une image:</label>
-<input type="file" name="itemImg" />
+    <label for="productImg">Télécharger une image:</label>
+<input type="file" name="productImg" />
 </div>
 						<div class="form-group">
 							<label for="title">Titre</label>
@@ -15,6 +15,10 @@
 						<div class="form-group">
 							<label for="brand">Marque</label>
 							<input type="text" class="form-control" name ="brand" id="brand" placeholder="Marque">
+						</div>
+						<div class="form-group">
+							<label for="price">Marque</label>
+							<input type="number" class="form-control" name ="price" id="price" placeholder="prix">
 						</div>
 						<div class="form-group">
 							<label for="description">Description</label>

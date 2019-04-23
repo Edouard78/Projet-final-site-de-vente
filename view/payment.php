@@ -6,9 +6,16 @@ ob_start();
 <script src="https://js.stripe.com/v3/"></script>
 
 <script src="./public/js/charge.js"></script>
+
+
+
 <div class="container">
-<form action="controller/charge" method="post" id="payment-form">
+
+
+<form action="controller/charge?action=validOrder" method="post" id="payment-form">
   <div class="form-row">
+
+    </select>
     <input type="text" name="first-name" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="Prénom">
     <input type="text" name="last-name" class="form-control mb-3 StripeElement StripeElement--empty" placeholder="Nom">
 

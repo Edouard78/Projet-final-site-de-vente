@@ -1,6 +1,6 @@
 <?php
 
-class Item
+class Product
 {
 	protected $_id,
 			  $_title,

@@ -21,9 +21,9 @@ $customer = \Stripe\Customer::create(array(
 
 
                  
-if (isset($_SESSION['checkoutTotal']))
+if (isset($_SESSION['cartTotal']))
 {
-    $amount = (string) $_SESSION['checkoutTotal']->total();
+    $amount = (string) $_SESSION['cartTotal']->total();
 
 
 $charge = \Stripe\Charge::create(array(

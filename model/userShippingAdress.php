@@ -3,7 +3,8 @@
 class UserShippingAdress
 {
     protected $_id;
-    protected $_userId;
+	protected $_userId;
+	protected $_title;
     protected $_name;
     protected $_adress;
     protected $_postalCode;
@@ -11,11 +12,11 @@ class UserShippingAdress
 	protected $_errors = [];
 
 
-    
-	CONST INVALID_NAME = 1;
-	CONST INVALID_ADRESS = 2;
-    CONST INVALID_POSTAL_CODE = 3;
-    CONST INVALID_CITY = 4;
+    CONST INVALID_TITLE = 1;
+	CONST INVALID_NAME = 2;
+	CONST INVALID_ADRESS = 3;
+    CONST INVALID_POSTAL_CODE = 4;
+    CONST INVALID_CITY = 5;
 
 
     public function __construct($data)
@@ -40,6 +41,11 @@ class UserShippingAdress
     public function id()
     {
         return $this->_id;
+	}
+	
+	public function title()
+    {
+        return $this->_title;
     }
 
     public function userId()
@@ -81,6 +87,18 @@ public function errors()
     {
         $id = (int)$id;
         $this->_id = $id;
+	}
+	
+	public function setTitle($title)
+	{
+		if (!is_string($title) || empty($title))
+		{
+			$this->_errors[]=self::INVALID_TITLE;
+		}
+		else
+		{
+			$this->_title = $title;
+		}
     }
 
     public function setUserId($userId)

@@ -23,7 +23,7 @@ footer{
 	padding : 0;
 }
 
-.imgCheckoutItem
+.imgCartProduct
 {
 	display: block;
 	width : 80px;
@@ -68,16 +68,28 @@ footer{
 
 }
 
-.jumbotronItem .itemImgHome
+.jumbotronProduct .productImgHome
 {
+	display: block;
+	width: 200px;
+	margin : 0 auto;
+}
+
+.product-price-list
+{
+	text-align : center;
+}
+
+.product-title-list
+{
+	text-align: center;
+}
+
+.productImgUnique{
 	width: 150px;
 }
 
-.itemImgUnique{
-	width: 150px;
-}
-
-.itemImgZoom
+.productImgZoom
 {
 	width : 400px;
 	display: block;
@@ -85,20 +97,20 @@ footer{
 
 }
 
-.jumbotronItem
+.jumbotronProduct
 {
 	background-color: white !important;
 	margin-left : 10px;
 	transition: transform .07s;
 }
 
-.jumbotronItem:hover
+.jumbotronProduct:hover
 {
 	cursor: pointer;
 	transform: scale(1.2);
 }
 
-.cardItem
+.cardProduct
 {
 	background-color: #f9f9f9;
 }
@@ -136,3 +148,52 @@ footer{
 }
 
 
+
+.img-zoom-container {
+	position: relative;
+	height : 600px;
+	width: 400px;
+
+}
+
+
+#myimage
+{
+	position : absolute;
+	height : 600px;
+	width: 400px;
+
+}
+
+
+
+
+.img-zoom-lens {
+	position: absolute;
+
+  border: 1px solid #d4d4d4;
+  /*set the size of the lens:*/
+  width: 40px;
+	height: 40px;
+
+
+
+
+}
+
+.img-zoom-result {
+	display : none;
+	position : absolute;
+	
+  border: 1px solid #d4d4d4;
+  /*set the size of the result div:*/
+  width: 250px;
+	height: 250px;
+
+	left : 50%;
+	transform: translateX(-50%);
+
+	bottom : 0px;
+
+
+}

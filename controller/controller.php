@@ -1,13 +1,17 @@
 <?php
 
-require_once ('/../model/item.php');
+require_once ('/../model/product.php');
 
-require_once ('/../model/itemManager.php');
+require_once ('/../model/productManager.php');
 
 
-require_once ('/../model/checkout.php');
+require_once ('/../model/orderProduct.php');
 
-require_once ('/../model/checkoutTotalManager.php');
+require_once ('/../model/order.php');
+
+require_once ('/../model/cart.php');
+
+require_once ('/../model/cartProduct.php');
 
 
 require_once ('/../model/user.php');
@@ -18,41 +22,98 @@ require_once ('/../model/userShippingAdress.php');
 
 require_once ('/../model/userShippingAdressManager.php');
 
-function paymentPage()
+function prePaymentPage($userId)
 {
-	require ('/../view/paymentView.php');
+	include ('/../model/db.php');
+
+	$userShippingAdressManager = new UserShippingAdressManager($db);
+	$userShippingAdress = $userShippingAdressManager->getList($userId);
+
+	
+	require ('/../view/prePaymentView.php');
 }
 
-function checkoutPage()
+function validateOrder($userShippingAdressId, $userBillingAdress, $cart)
 {
-	require ('/../view/checkoutView.php');
-}
+	include ('/../model/db.php');
 
-function checkoutAdd($data)
+	$order = new Order();
+	$orderProducts = [];
+
+	$cartProducts = $cart->products();
+
+	foreach($cartProducts as $cartProduct)
 	{
+		$cartProductData = get_object_vars($cartProduct);
+	
+		$orderProduct = new OrderProduct($cartProductData);
+
+		var_dump($orderProduct);
+
 		
-		$checkoutItem = new CheckoutItem($data);
-		$checkout = new Checkout();
-		$checkout->addItem($checkoutItem);
 
+	}
+	
+}
 
-		checkoutTotal();
+function cartPage()
+{
+	require ('/../view/cartView.php');
+}
 
+function addProductToCart($data)
+	{
+		if (isset($_SESSION['cart']))
+		{
+			
+			$products = $_SESSION['cart']->products();
+			$newProductId = (int) $data['id'];
+	
+		
+			foreach($products as $key => $product )
+			{
+				$isAlreadyInCart = $product->id() == (int) $data['id']? TRUE : FALSE;
+				
+				if ($isAlreadyInCart == TRUE)
+				{
+					$idInArray = $key;
+				}
+			}
+			var_dump($idInArray);
+	
+			if(isset($idInArray))
+			{
+					$newQuantity = $products[$idInArray]->quantity() + (int)$data['quantity'];
+					$_SESSION['cart']->updateProduct($idInArray, $newQuantity);
+				}
+				else {
+					
+			$cartProduct = new CartProduct($data);
+			$_SESSION['cart']->addProduct($cartProduct);
+			$_SESSION['cart']->updateTotalPrice();
+				}
+			}
+
+		else{
+		$cartProduct = new CartProduct($data);
+		$cart = new Cart($cartProduct);
+		$cart->store($cart);
+		}
 
 	}
 
 	
-function checkoutTotal()
+function cartTotal()
 {
 
 
-	$checkoutTotal = new CheckoutTotal($_SESSION['itemsCheckout']);
+	$cartTotal = new CartTotal($_SESSION['productsCart']);
 
-		$checkoutTotalManager = new CheckoutTotalManager();
-		$checkoutTotalManager->saveTotal($checkoutTotal);
+		$cartTotalManager = new CartTotalManager();
+		$cartTotalManager->saveTotal($cartTotal);
 
-		var_dump($checkoutTotal);
-		var_dump($checkoutTotalManager);
+		var_dump($cartTotal);
+		var_dump($cartTotalManager);
 	
 
 }
@@ -139,27 +200,33 @@ function authenticationPage()
 
 
 			$newUserShippingAdress = new UserShippingAdress($data2);
+			$newUserShippingAdress->setTitle('Mon adresse par défault');
+			var_dump($newUserShippingAdress);
 			$errorsFromModel = $newUserShippingAdress->errors();
 			if (count($errorsFromModel) > 0)
 				{
-				if (in_array(UserShippingAdress::INVALID_NAME, $errorsFromModel))
+				if (in_array(UserShippingAdress::INVALID_TITLE, $errorsFromModel))
 					{
 					array_push($errors, 7);
 					}
-		
-				if (in_array(UserShippingAdress::INVALID_ADRESS, $errorsFromModel))
+				if (in_array(UserShippingAdress::INVALID_NAME, $errorsFromModel))
 					{
 					array_push($errors, 8);
 					}
 		
-				if (in_array(UserShippingAdress::INVALID_POSTAL_CODE, $errorsFromModel))
+				if (in_array(UserShippingAdress::INVALID_ADRESS, $errorsFromModel))
 					{
 					array_push($errors, 9);
+					}
+		
+				if (in_array(UserShippingAdress::INVALID_POSTAL_CODE, $errorsFromModel))
+					{
+					array_push($errors, 10);
 					}
 
 					if (in_array(UserShippingAdress::INVALID_CITY, $errorsFromModel))
 					{
-					array_push($errors, 10);
+					array_push($errors, 11);
 					}	
 				}
 				
@@ -199,42 +266,42 @@ function home()
 	{
 		include ('/../model/db.php');
 		
-		$itemManager = new ItemManager($db);
-	$item = $itemManager->getList();
+		$productManager = new ProductManager($db);
+	$product = $productManager->getList();
 
 	require ('/../view/homeView.php');
 
 	}
 
-	function itemUnique($id)
+	function productUnique($id)
 	{
 	include ('model/db.php');
 
-	$itemManager = new ItemManager($db);
-	$item = $itemManager->getUnique($id);
+	$productManager = new ProductManager($db);
+	$product = $productManager->getUnique($id);
 
-	require ('/../view/itemUniqueView.php');
+	require ('/../view/productUniqueView.php');
 
 	}
 
-	function addItemPage()
+	function addproductPage()
 	{
     include ('/../model/db.php');
     
-	require ('/../view/admin/addItemView.php');
+	require ('/../view/admin/addProductView.php');
 
 	}
 
 
-	function addItem($data, $itemImg, $itemImgTmpName, $itemImgName)
+	function addProduct($data, $productImg, $productImgTmpName, $productImgName)
 	{
 	include ('/../model/db.php');
 
-	$item = new Item($data);
-	$errorsFromModel = $item->errors();
+	$product = new Product($data);
+	$errorsFromModel = $product->errors();
 	if (count($errorsFromModel) > 0)
 		{
-		if (in_array(Item::INVALID_TITLE, $errorsFromModel) OR in_array(Item::INVALID_BRAND, $errorsFromModel) OR in_array(Item::INVALID_CONTENT, $errorsFromModel))
+		if (in_array(Product::INVALID_TITLE, $errorsFromModel) OR in_array(Product::INVALID_BRAND, $errorsFromModel) OR in_array(Product::INVALID_CONTENT, $errorsFromModel))
 			{
 			echo 'erreurrr';
 			}
@@ -242,17 +309,17 @@ function home()
 	  else
 		{
 
-		$itemManager = new ItemManager($db);
-		$itemManager->addItem($item);
-		$itemId = $db->lastInsertId();
+		$productManager = new ProductManager($db);
+		$productManager->addproduct($product);
+		$productId = $db->lastInsertId();
 
 
-		$imgExt = explode('.', $itemImg['name']);
+		$imgExt = explode('.', $productImg['name']);
 		$imgActualExt = strtolower(end($imgExt));
-		$itemImgDestination = './uploads/items/'.$itemId.'.'.$imgActualExt;
+		$productImgDestination = './uploads/products/'.$productId.'.'.$imgActualExt;
 
-		move_uploaded_file($itemImg['tmp_name'], $itemImgDestination);
+		move_uploaded_file($productImg['tmp_name'], $productImgDestination);
 
-		var_dump($item);
+		var_dump($product);
 		}
 	}

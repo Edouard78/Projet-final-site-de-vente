@@ -6,7 +6,7 @@ class User
 	          $_login,
 	          $_password,
 	          $_email,
-			  $_admin,
+			   $_admin,
 			  $_errors=[];
 
 	CONST INVALID_LOGIN = 1;

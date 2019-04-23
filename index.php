@@ -1,7 +1,7 @@
 <?php
-require_once ('model/checkoutItem.php');
+require_once ('model/cart.php');
+require_once ('model/cartProduct.php');
 
-require_once ('model/checkoutTotal.php');
 session_start();
 require ('controller/controller.php');
 
@@ -15,62 +15,102 @@ try {
                 home();
             } 
 
-            elseif ($_GET['action'] == 'proceedCheckout')
+            elseif ($_GET['action'] == 'proceedCart')
             {
 
-         
-                paymentPage();
+                if (isset($_SESSION['userId']) & isset($_SESSION['login']) )
+                {
+                    $userId = $_SESSION['userId'];
+
+                    prePaymentPage($userId);
+                }
+
+                else{
+                    echo 'Vous nete pas connecté';
+                }
+
     
             }
 
-            elseif ($_GET['action'] == 'checkoutPage')
+            elseif ($_GET['action'] == 'validateOrder')
             {
 
-         
-                checkoutPage();
+                if (isset($_POST['userShippingAdress']))
+                {
+                    $userShippingAdressId = $_POST['userShippingAdress'];
+
+                    $userBillingAdress =  array("fullName"=>$_POST['fullName'], "adress" => $_POST['adress'], "postalCode" =>$_POST['postalCode'], "city" => $_POST['city'], "country" => $_POST['country'] );
+
+                    if(isset($_SESSION['cart']))
+                    {
+                        $cart = $_SESSION['cart'];
+                    }
+
+                    validateOrder($userShippingAdressId, $userBillingAdress, $cart);
+
+                    
+            
+                }
+
+                else{
+                    echo 'Vous nete pas connecté';
+                }
+
     
             }
 
-            elseif ($_GET['action'] == 'updateItemCheckout' && isset($_GET['itemCheckoutId']) && isset($_POST['quantity']) )
+            elseif ($_GET['action'] == 'cartPage')
+            {
+
+         
+                cartPage();
+    
+            }
+
+            elseif ($_GET['action'] == 'updateProductCart' && isset($_GET['productCartId']) && isset($_POST['quantity']) )
             {
 
 
-                if (isset($_SESSION['itemsCheckout']))
+                if (isset($_SESSION['cart']))
                 {
                     
                     
-                    $_SESSION['itemsCheckout'][$_GET['itemCheckoutId']]->updateQuantity($_POST['quantity']);
+                    $_SESSION['cart']->products()[$_GET['productCartId']]->updateQuantity($_POST['quantity']);
 
-                    $_SESSION['checkoutTotal']->updateTotal($_SESSION['itemsCheckout']);
+                    $_SESSION['cart']->updateTotalPrice();
 
 
-                    checkoutPage();
+                    cartPage();
             
                 }
     
             }
 
-            elseif ($_GET['action'] == 'deleteItemCheckout' && isset($_GET['id']) && isset($_GET['id']) )
+            elseif ($_GET['action'] == 'deleteProductCart' && isset($_GET['id']) && isset($_GET['id']) )
             {
 
                 
-                if (isset($_SESSION['itemsCheckout']))
+                if (isset($_SESSION['cart']))
                 {
-                 unset($_SESSION['itemsCheckout'][$_GET['id']]);
+                 $_SESSION['cart']->deleteProduct($_GET['id']);
                  
-                 $_SESSION['checkoutTotal']->updateTotal($_SESSION['itemsCheckout']);
+                 $_SESSION['cart']->updateTotalPrice();
 
-                 checkoutPage();
+                 if (count($_SESSION['cart']->products()) == 0){
+                     unset($_SESSION['cart']);
+                 }
+
+                 cartPage();
                 }    
     
             }
 
 
-            elseif ($_GET['action'] == 'addItemCheckout' && isset($_POST['quantity']) && isset($_GET['id']) && isset($_GET['price']))
+            elseif ($_GET['action'] == 'addProductToCart' && isset($_POST['quantity']) && isset($_GET['id']) && isset($_GET['price']))
             {
 
                 $data = array("id"=>$_GET['id'], "quantity" => $_POST['quantity'], "price" =>$_GET['price'] );
-            checkoutAdd($data);
+            addProductToCart($data);
     
             }
 
@@ -112,33 +152,34 @@ try {
 
 
         
-            elseif ($_GET['action'] == 'addItem' && isset($_POST['title']))
+            elseif ($_GET['action'] == 'addProduct' && isset($_POST['title']))
 		{
-            $itemImg = $_FILES['itemImg'];
+            $productImg = $_FILES['productImg'];
             
-            $itemImgTmpName = $_FILES['itemImg']['tmp_name'];
-            $itemImgName = $_FILES['itemImg']['name'];
+            $productImgTmpName = $_FILES['productImg']['tmp_name'];
+            $productImgName = $_FILES['productImg']['name'];
 
 		$data = array(
 			'title' => $_POST['title'],
-			'brand' => $_POST['brand'],
+            'brand' => $_POST['brand'],
+            'price' => $_POST['price'],
 			'content' => $_POST['description']
 		);
-		addItem($data, $itemImg, $itemImgTmpName, $itemImgName);
+		addProduct($data, $productImg, $productImgTmpName, $productImgName);
 		
         }
         
-        elseif ($_GET['action'] == 'addItemPage')
+        elseif ($_GET['action'] == 'addProductPage')
 		{
-		addItemPage();
+		addProductPage();
 		
         }
         
-        elseif ($_GET['action'] == "itemUnique")
+        elseif ($_GET['action'] == "productUnique")
 	{
 	if (isset($_GET['id']) && $_GET['id'] > 0)
 		{
-		itemUnique($_GET['id']);
+		productUnique($_GET['id']);
 		}
 	else
 	{

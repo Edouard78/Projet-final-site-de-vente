@@ -1,18 +1,20 @@
 <?php
 ob_start();
 ?>
-<div class="card cardItem">
+<div class="card cardProduct">
 <div class="row">
 <?php
-while ($data = $item->fetch())
+while ($data = $product->fetch())
 	{ 
-    $itemId = $data['id'];
-    $itemImgSrc = './uploads/items/'.$itemId ; ?>
+    $productId = $data['id'];
+    $productImgSrc = './uploads/products/'.$productId ; ?>
 
-<a href="index.php?action=itemUnique&amp;id=<?php
-	echo $data['id'] ?>"><div class="jumbotron jumbotronItem">
-<?php echo '<img src="'.$itemImgSrc.'" class="itemImgHome" />' ?>
-<h5><?php echo $data['title'] ?></h5>
+<a href="index.php?action=productUnique&amp;id=<?php
+	echo $data['id'] ?>"><div class="jumbotron jumbotronProduct">
+<?php echo '<img src="'.$productImgSrc.'" class="productImgHome" />' ?>
+<br >
+<h5 class="product-title-list"><?php echo $data['title'] ?></h5>
+<h5 class="product-price-list"><?php echo $data['price'] ?></h5>
 </div></a>
 <?php
 		}
