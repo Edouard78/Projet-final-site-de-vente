@@ -1,6 +1,6 @@
 <div class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 
-<a class="navbar-brand" href="#"><h2 class='site-title'>STYLE SHOP</h2></a>
+<a class="navbar-brand" href="#"><h2 class='website-title'>STYLE SHOP</h2></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>

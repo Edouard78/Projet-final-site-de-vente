@@ -1,89 +1,14 @@
 
-body
-{
-	max-height: 100vh;
-	margin : 0 !important;
-	padding : 0 !important;
 
 
 
 
-}
-
-.wrap{
-	padding-top : 10em !important;
-	min-height: 80vh !important;
-	margin : 0;
-	padding : 0;
-}
-
-footer{
-	height: 20vh !important;
-	margin : 0;
-	padding : 0;
-}
-
-.imgCartProduct
-{
-	display: block;
-	width : 80px;
-}
-
-.navbar
-{
-	height : 5rem;
-}
-
-@media screen and (max-width: 600px) {
-	.navbar {
-	  height : auto;
-	}
-  }
-.site-title
-{
-	font-family: 'Permanent Marker';
-	font-size: 2em;
-}
 
 
-.navbar {
-	border-radius: 0px 0px 3px 3px;
-}
 
 
-@media screen and (min-width: 600px) {
 
-	.nav-bar
-	{
-		position : relative;
 
-	}
-
-.navbar-brand
-{
-	position : absolute;
-	left : 50%;
-	transform: translateX(-50%);
-}
-
-}
-
-.jumbotronProduct .productImgHome
-{
-	display: block;
-	width: 200px;
-	margin : 0 auto;
-}
-
-.product-price-list
-{
-	text-align : center;
-}
-
-.product-title-list
-{
-	text-align: center;
-}
 
 .productImgUnique{
 	width: 150px;
@@ -128,72 +53,5 @@ footer{
 	font-size : 2em;
 }
 
-.nav-icon {
-	font-size : 2em;
-}
-
-.carousel-control-next-icon
-{
-	height: 100px;
-    width: 100px;
-    background-color: rgba(0, 0, 0, 0.3);
-    background-size: 100%, 100%;
-
-    border: 1px solid black;
-}
-
-.carousel-control-prev-icon
-{
-	color : black !important;
-}
 
 
-
-.img-zoom-container {
-	position: relative;
-	height : 600px;
-	width: 400px;
-
-}
-
-
-#myimage
-{
-	position : absolute;
-	height : 600px;
-	width: 400px;
-
-}
-
-
-
-
-.img-zoom-lens {
-	position: absolute;
-
-  border: 1px solid #d4d4d4;
-  /*set the size of the lens:*/
-  width: 40px;
-	height: 40px;
-
-
-
-
-}
-
-.img-zoom-result {
-	display : none;
-	position : absolute;
-	
-  border: 1px solid #d4d4d4;
-  /*set the size of the result div:*/
-  width: 250px;
-	height: 250px;
-
-	left : 50%;
-	transform: translateX(-50%);
-
-	bottom : 0px;
-
-
-}

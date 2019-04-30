@@ -28,8 +28,6 @@ class orderProduct
 			
 	}
 
-
-
 	//GETTERS
 
 	public function id()

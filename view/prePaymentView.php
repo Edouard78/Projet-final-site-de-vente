@@ -7,8 +7,8 @@ ob_start();
 
 
 <form action="index.php?action=validateOrder" method="post" id="payment-form">
-  
-<h3>Adresse de Livraison </h3>
+ <fieldset>
+ <legend>Adresse de Livraison</legend>
   <div class="form-group">
     <label for="userShippingAdressSelection">Selectionnez votre Adresse de Livraison :</label>
     <select class="form-control"  name="userShippingAdress" id="userShippingAdressSelection">
@@ -22,7 +22,9 @@ ob_start();
   ?>
     </select>
 </div>
-  <h3>Adresse de facturation</h3>
+</fieldset>
+<fieldset>
+  <legend>Adresse de facturation</legend>
   <div class="form-group">
     <input type="text" name="fullName" class="form-control" placeholder="Nom complet">
   </div>
@@ -41,6 +43,7 @@ ob_start();
 <div class="form-group">
   <button>Valider la commande et passer au paiement (obligatoire)</button>
 </div>
+<fieldset>
 </form>
 </div>
 

@@ -56,7 +56,7 @@ class CartProduct
 
     public function setPrice($price)
     {
-
+        $price = (int) $price;
         $this->_price = $this->_quantity * $price;
 
     }
