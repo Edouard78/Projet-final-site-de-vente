@@ -1,5 +1,8 @@
 <?php 
 
+require_once ('/../model/orderProduct.php');
+require_once ('/../model/order.php');
+
 require_once('/../vendor/autoload.php');
 require ('/../index.php');
 
@@ -21,13 +24,13 @@ $customer = \Stripe\Customer::create(array(
 
 
                  
-if (isset($_SESSION['cartTotal']))
+if (isset($_SESSION['cart']))
 {
-    $amount = (string) $_SESSION['cartTotal']->total();
+    $amount = $_SESSION['cart']->totalPrice() * 100;
 
 
 $charge = \Stripe\Charge::create(array(
-    "amount" => $amount,
+    "amount" => (string) $amount,
     "currency" => "eur",
     "description"=> "STYLESHOP",
     "customer" => $customer->id
@@ -39,4 +42,20 @@ $charge = \Stripe\Charge::create(array(
 
 print_r($charge);
 
+if ($_GET['action'] == 'submitPayment' AND isset($_SESSION['cart']) AND isset($_SESSION['userShippingAndBillingInfos']) ) {
+	$orderProducts = [];
+	$cartProducts = $cart->products();
+
+	foreach($cartProducts as $cartProduct)
+	{
+		$cartProductData = get_object_vars($cartProduct);
+		$orderProduct = new OrderProduct($cartProductData);
+
+		array_push($orderProducts, $cartProduct)
+	}
+
+	$cartData = get_object_vars($_SESSION['cart']);
+	$order = new Order($cartData)
+	$order->hydrate($_SESSION['userShippingAndBillingInfos']);
+	$order->setProducts($orderProducts);
 ?>

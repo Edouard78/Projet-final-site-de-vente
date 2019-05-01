@@ -6,7 +6,7 @@ ob_start();
 <div class="container">
 
 
-<form action="index.php?action=validateOrder" method="post" id="payment-form">
+<form action="index.php?action=submitOrderInfos" method="post" id="payment-form">
  <fieldset>
  <legend>Adresse de Livraison</legend>
   <div class="form-group">
@@ -25,6 +25,15 @@ ob_start();
 </fieldset>
 <fieldset>
   <legend>Adresse de facturation</legend>
+  <div class='form-group'>
+
+  <label for="billing-adress-identical">Identique à l'adresse de Livraison</label>
+  <input type="checkbox" id="billing-adress-identical" name="billing-adress-identical" checked>
+
+  <button type='button' class='btn btn-light btn-sm' id='billing-adress-add-btn'>Ajouter une autre adresse</button>
+  </div>
+
+  <div class="add-billing-adress-form" style='display: none;'>
   <div class="form-group">
     <input type="text" name="fullName" class="form-control" placeholder="Nom complet">
   </div>
@@ -40,16 +49,25 @@ ob_start();
   <div class="form-group">
     <input type="text" name="country" class="form-control" placeholder="Pays">
   </div>
-<div class="form-group">
-  <button>Valider la commande et passer au paiement (obligatoire)</button>
 </div>
 <fieldset>
+  <button type='submit' class='btn btn-primary btn-block'>Valider la commande et passer au paiement (obligatoire)</button>
 </form>
 </div>
 
 
+<script>
+  let addBillingAdressBtn = $('#billing-adress-add-btn');
+  let addBillingAdressForm = $('.add-billing-adress-form');
+
+  addBillingAdressBtn.click(function(e){
+    e.preventDefault();
+    addBillingAdressForm.show();
+  })
+</script>
 <?php
 $content = ob_get_clean();
 require ('view/template.php');
 
 ?>
+

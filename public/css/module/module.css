@@ -1,12 +1,7 @@
-.website-title { 
-	font-family: 'Permanent Marker';
-	font-size: 2em;
-}
+.website-title { font-family: 'Permanent Marker'; font-size: 2em; }
 
-.navbar { 
-	height : 5rem;
- 	border-radius: 0px 0px 3px 3px;
- }	
+
+.navbar { height : 5rem; border-radius: 0px 0px 3px 3px; }	
 	.navbar-brand {
 		position : absolute;
 		left : 50%;
@@ -15,60 +10,71 @@
 	.nav-icon { font-size : 2em; }
 
 
-
-.product-list-product-img {
-	display: block;
-	width: 200px; 
-	margin : 0 auto;
+.product-list {
+	background-color: #f9f9f9;
 }
-.product-list-product-price { text-align : center; }
-.product-list-product-title { text-align: center;}
+	.product-list-product-jumbotron {
+		background-color: white !important;
+		margin-left : 10px;
+		transition: transform .07s;
+	}
+
+	.product-list-product-jumbotron:hover {
+		cursor: pointer;
+		transform: scale(1.2);
+	}
+	.product-list-product-img {
+		display: block;
+		width: 200px; 
+		margin : 0 auto;
+	}
+	.product-list-product-price { text-align : center; }
+	.product-list-product-title { text-align: center;}
 
 
-.product-unique-img-wrap{
-	width: 150px;
-}
+.product-unique-img-block { width: 150px; }
+
+
 .img-zoom-container {
 	position: relative;
 	height : 600px;
 	width: 400px;
 }
-#myimage {
-	position : absolute;
-	height : 600px;
-	width: 400px;
-}
-.img-zoom-lens {
-	position: absolute;
-  	border: 1px solid #d4d4d4;
+	.img-zoom-result {
+		display : none;
+		position : absolute;
+  		border: 1px solid #d4d4d4;
+  		/*set the size of the result div:*/
+ 		width: 250px;
+		height: 250px;
+		left : 50%;
+		transform: translateX(-50%);
+		bottom : 0px;
+	}
+	#zoom-image {
+		position : absolute;
+		height : 600px;
+		width: 400px;
+	}
+	#img-zoom-lens {
+		position: absolute;
+  		border: 1px solid #d4d4d4;
   	/*set the size of the lens:*/
-  	width: 40px;
-	height: 40px;
-}
-.img-zoom-result {
-	display : none;
-	position : absolute;
-  	border: 1px solid #d4d4d4;
-  	/*set the size of the result div:*/
- 	width: 250px;
-	height: 250px;
-	left : 50%;
-	transform: translateX(-50%);
-	bottom : 0px;
-}
-.productImgZoom{
-	width : 400px;
-	display: block;
-	margin : 0 auto;
-
-}
+  		width: 40px;
+		height: 40px;
+	}
 
 
-.imgCartProduct
-{
-	display: block;
-	width : 80px;
+.cart-product-img { display: block; width : 80px; }
+
+
+.footer-jumbotron {
+	width: 100%;
+	background-color : #3a3a3a;
+	height : 100% !important;
 }
+.footer-social-media .fa { color : white; font-size : 2em; }
+
 @media screen and (max-width: 600px) {
 	.navbar {
 	  height : auto;

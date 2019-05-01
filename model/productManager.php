@@ -12,12 +12,11 @@ class ProductManager
 	public function addProduct(Product $product)
 	{
 		$req = $this->_db->prepare('INSERT INTO product(title, brand, content, price, addingDate, updatingDate) VALUES(:title,:brand, :content, :price, NOW(), NOW() )');
-
-    $req->bindValue(':title', $product->title());
-    $req->bindValue(':brand', $product->brand());
-	$req->bindValue(':content', $product->content());
-	$req->bindValue(':price', $product->price());
-    $req->execute();
+    	$req->bindValue(':title', $product->title());
+    	$req->bindValue(':brand', $product->brand());
+		$req->bindValue(':content', $product->content());
+		$req->bindValue(':price', $product->price());
+    	$req->execute();
 	}
 
 
@@ -35,9 +34,4 @@ class ProductManager
 
 			return $request;
 	}
-
-
-
-
-
 }

@@ -4,7 +4,7 @@ function imageZoom(imgID, resultID) {
   result = document.getElementById(resultID);
   /* Create lens: */
   lens = document.createElement("DIV");
-  lens.setAttribute("class", "img-zoom-lens");
+  lens.setAttribute("id", "img-zoom-lens");
   /* Insert lens: */
   img.parentElement.insertBefore(lens, img);
   /* Calculate the ratio between result DIV and lens: */

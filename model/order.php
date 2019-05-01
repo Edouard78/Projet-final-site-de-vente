@@ -5,7 +5,8 @@ class Order
     protected $_id,
               $_userId,
               $_userShippingAdressId,
-			        $_total;
+             	$_products = [],
+			        $_totalPrice;
 
 
   public function __construct($data)
@@ -13,9 +14,9 @@ class Order
 		$this->hydrate($data);
 	}
 
-  public function hydrate(array $data)
+  public function hydrate(object $data)
 	{
-		foreach ($data as $key => $value)
+		foreach ($data as $value)
 		{
 			$method = 'set'.ucfirst($key);
 
@@ -46,12 +47,12 @@ class Order
     return $this->_userShippingAdressId;
   }
 
-	public function quantity()
+	public function products()
 	{
-		return $this->_quantity;
+		return $this->_products;
 	}
 
-	public function price()
+	public function totalPrice()
 	{
 		return $this->_price;
 	}
@@ -80,18 +81,16 @@ class Order
 		$this->_userShippingAdressId = $userShippingAdressId;
 	}
 
-	public function setQuantity($quantity)
+	public function setProducts(array $products)
 	{
-        $quantity = (int)$quantity;
-        
-			$this->_quantity = $quantity;
+        $this->_products = $products;
 		
 	}
 
-	public function setPrice($price)
+	public function setTotalPrice($totalPrice)
 	{
 
-			$this->_price = $price;
+			$this->_totalPrice = $totalPrice;
 
 	}
 

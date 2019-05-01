@@ -5,14 +5,14 @@ ob_start();
 
 <script src="https://js.stripe.com/v3/"></script>
 
-<script src="./public/js/charge.js"></script>
+<script src="public/js/charge.js"></script>
 
 
 
 <div class="container">
 
 
-<form action="controller/charge?action=validOrder" method="post" id="payment-form">
+<form action="controller/charge?action=submitPayment" method="post" id="payment-form">
   <div class="form-row">
 
     </select>

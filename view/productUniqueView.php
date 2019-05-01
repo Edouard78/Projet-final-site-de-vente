@@ -14,11 +14,11 @@ $data = $product->fetch();
 
 <div class="jumbotron jumbotronproductUnique">
 <div class="row">
-<div class="productImgUnique col">
+<div class="product-unique-img-block col">
 
 <div class="img-zoom-container">
-  <img id="myimage" src="<?php echo $productImgSrc; ?>" width="300" height="240" alt="Girl">
-  <div id="myresult" class="img-zoom-result"></div>
+  <img id="zoom-image" class='product-unique-img' src="<?php echo $productImgSrc; ?>" width="300" height="240" alt="Girl">
+  <div id="zoom-result" class="img-zoom-result"></div>
 </div>
 
 </div>
@@ -49,13 +49,13 @@ $data = $product->fetch();
 
 <script>
 
-  document.getElementById('myimage').addEventListener('mouseover', function(){
-    document.getElementById('myresult').style.display = 'block';
-    imageZoom("myimage", "myresult"); 
+  document.getElementById('zoom-image').addEventListener('mouseover', function(){
+    document.getElementById('zoom-result').style.display = 'block';
+    imageZoom("zoom-image", "zoom-result"); 
   });
 
-  document.getElementById('myimage').addEventListener('mouseleave', function(){
-    document.getElementById('myresult').style.display = 'none';
+  document.getElementById('zoom-image').addEventListener('mouseleave', function(){
+    document.getElementById('zoom-result').style.display = 'none';
   });
 </script>
 

@@ -1,7 +1,11 @@
 <?php ob_start();
-?>
 
-		<div class="table-responsive">
+if (isset($_SESSION['cart'])) {
+  foreach ($_SESSION['cart']->products() as $id => $product) {
+
+    $productImgSrc = './uploads/products/' . $product->id(); ?>
+
+<div class="table-responsive">
 <table class="table table-bordered table-striped table-condensed">
 <h3>Mon Panier</h3>
 	<thead>
@@ -15,17 +19,9 @@
 		</tr>
 	</thead>
 		<tbody>
-
-            <?php
-
-if (isset($_SESSION['cart'])) {
-  foreach ($_SESSION['cart']->products() as $id => $product) {
-
-    $productImgSrc = './uploads/products/' . $product->id(); ?>
-            
       	<tr>
 				<td><?=$product->id() ?></td>
-				<td><img class="imgCartProduct" src="<?php echo $productImgSrc; ?>" /></td>
+				<td><img class="cart-product-img" src="<?php echo $productImgSrc; ?>" /></td>
 				<td><form action="index.php?action=updateProductCart&amp;productCartId=<?php echo $id ?> " method="post">
 				<div class="col-3">
 				<input type="number" class="form-control  " name ="quantity" iplaceholder="Sélectionnez la quantité" value="<?=$product->quantity() ?>" min ="1" >
@@ -48,13 +44,17 @@ if (isset($_SESSION['cart'])) {
 
 <div class="afterCartBLock float-right">
 <h3  id="cartTotalPrice">Prix Total : <strong><?php echo $_SESSION['cart']->totalPrice() ?> <em class="fa fa-euro"></em></strong></h3>
-	<?php
-}
-
-?>
-<a id ="submitCart float-right" type="button" href="index.php?action=proceedCart" class="btn btn-primary">Passer au paiement</a>
+	
+<a id ="submitCart float-right" type="button" href="index.php?action=submitCart" class="btn btn-primary">Passer au paiement</a>
 </div>
 
+<?php
+} else {
+	?>
+	<h3>Aucun articles présents dans le panier</h3>
+<?php
+}
+?>
 	<?php $content = ob_get_clean();
 
 require ('template.php');

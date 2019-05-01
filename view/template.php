@@ -23,22 +23,22 @@
   integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
   crossorigin="anonymous"></script>
     </head>
-    <body class='body' style='padding-top: 50px !important;'>
+    <body class='body' style='padding-top: 200px !important;'>
         <nav>
         	<?php require_once ('nav.php'); ?>
         </nav>
 
-        <main>
+        <main class='l-main'>
         	<div class="container">
-            	S<?php echo $content ?>
+            	<?php echo $content ?>
        		</div>
     	</main>
 
-        <footer id="footer">
-            <div class="jumbotron jumbotron-footer">
+        <footer class='l-footer'>
+            <div class="jumbotron footer-jumbotron">
             <div class="container-fluid">
-                <div class="footerBlock row">
-                    <div class="social-media col"> 
+                <div class="row">
+                    <div class="footer-social-media col"> 
                         <em class="fa fa-facebook">
                         </em>
                         <em class="fa fa-twitter">

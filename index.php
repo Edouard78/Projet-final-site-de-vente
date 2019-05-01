@@ -15,7 +15,7 @@ try {
                 home();
             } 
 
-            elseif ($_GET['action'] == 'proceedCart')
+            elseif ($_GET['action'] == 'submitCart')
             {
 
                 if (isset($_SESSION['userId']) & isset($_SESSION['login']) )
@@ -32,23 +32,19 @@ try {
     
             }
 
-            elseif ($_GET['action'] == 'validateOrder')
+            elseif ($_GET['action'] == 'submitOrderInfos')
             {
 
                 if (isset($_POST['userShippingAdress']))
                 {
                     $userShippingAdressId = $_POST['userShippingAdress'];
+                    if (isset($_POST['billing-adress-identical'])) {
 
-                    $userBillingAdress =  array("fullName"=>$_POST['fullName'], "adress" => $_POST['adress'], "postalCode" =>$_POST['postalCode'], "city" => $_POST['city'], "country" => $_POST['country'] );
+                    $userBillingAdress = 'sameAs';
 
-                    if(isset($_SESSION['cart']))
-                    {
-                        $cart = $_SESSION['cart'];
                     }
-
-                    validateOrder($userShippingAdressId, $userBillingAdress, $cart);
-
                     
+                    submitOrderInfos($userShippingAdressId, $userBillingAdress);
             
                 }
 

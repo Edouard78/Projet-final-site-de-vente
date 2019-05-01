@@ -10,7 +10,7 @@ while ($data = $product->fetch())
     $productImgSrc = './uploads/products/'.$productId ; ?>
 
 <a href="index.php?action=productUnique&amp;id=<?php
-	echo $data['id'] ?>"><div class="jumbotron jumbotronProduct">
+	echo $data['id'] ?>"><div class="jumbotron product-list-product-jumbotron">
 <?php echo '<img src="'.$productImgSrc.'" class="product-list-product-img" />' ?>
 <br >
 <h5 class="product-list-product-title"><?php echo $data['title'] ?></h5>
