@@ -28,14 +28,14 @@ $data = $product->fetch();
 <p><?php echo $data['content'] ?></p>
 <p><?php echo $data['price'] ?></p>
 
-<form action="index.php?action=addProductToCart&amp;id=<?php echo $data['id']?>&amp;price=<?php echo $data['price'] ?>" method="post">
+<form>
 <div class="form-group row">
     <div class="col-3">
                   <label for="sm">Quantité :</label>
                   <input type="number" class="form-control input-sm" name ="quantity" id="sm" placeholder="Sélectionnez la quantité" value="1" min="1">
                 </div>
 </div>
-                <button type="submit" class="btn btn-dark">Ajouter au panier</button>
+                <button type="submit" id='submit' class="btn btn-dark">Ajouter au panier</button>
 </form>
 
 </div>
@@ -57,6 +57,30 @@ $data = $product->fetch();
   document.getElementById('zoom-image').addEventListener('mouseleave', function(){
     document.getElementById('zoom-result').style.display = 'none';
   });
+
+  $(document).ready(function(){
+
+    $("#form").submit(function(e) {
+        e.preventDefault();
+        $.post(
+            'controller/ajax.php', // Un script PHP que l'on va créer juste après
+            {
+                id : json_encode(<?php echo $_GET['id']; ?>),  // Nous récupérons la valeur de nos inputs que l'on fait passer à connexion.php
+                price : json_encode(<?php echo $data['price']; ?>),
+                quantity : $("#quantity").val()
+            },
+
+            function(data){ // Cette fonction ne fait rien encore, nous la mettrons à jour plus tard
+            
+                console.log(data);
+
+            },
+            'text' // Nous souhaitons recevoir "Success" ou "Failed", donc on indique text !
+         );
+
+    });
+
+});
 </script>
 
 <?php
