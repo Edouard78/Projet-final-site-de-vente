@@ -5,6 +5,7 @@ class Order
     protected $_id,
               $_userId,
               $_userShippingAdressId,
+              $_billingAdressSameAs,
              	$_products = [],
 			        $_totalPrice;
 
@@ -14,9 +15,9 @@ class Order
 		$this->hydrate($data);
 	}
 
-  public function hydrate(object $data)
+ public function hydrate(array $data)
 	{
-		foreach ($data as $value)
+		foreach ($data as $key => $value)
 		{
 			$method = 'set'.ucfirst($key);
 
@@ -24,8 +25,7 @@ class Order
 		  {
 			  $this->$method($value);
 		  }
-		}
-			
+		}	
 	}
 
 
@@ -46,6 +46,12 @@ class Order
   {
     return $this->_userShippingAdressId;
   }
+  public function billingAdress() {
+  	return $this->_billingAdress;
+  }
+  public function billingAdressSameAs() {
+  	return $this->_billingAdressSameAs;
+  }
 
 	public function products()
 	{
@@ -54,7 +60,7 @@ class Order
 
 	public function totalPrice()
 	{
-		return $this->_price;
+		return $this->_totalPrice;
 	}
 
 
@@ -79,6 +85,14 @@ class Order
 		$userShippingAdressId = (int)$userShippingAdressId;
 
 		$this->_userShippingAdressId = $userShippingAdressId;
+	}
+	public function setBillingAdress($billingAdress) {
+		$this->_billingAdress = $billingAdress;
+	}
+
+	public function setBillingAdressSameAs($billingAdressSameAs) {
+		$billingAdressSameAs = intval($billingAdressSameAs);
+		$this->_billingAdressSameAs = $billingAdressSameAs;
 	}
 
 	public function setProducts(array $products)

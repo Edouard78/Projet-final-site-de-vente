@@ -23,7 +23,7 @@
   integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
   crossorigin="anonymous"></script>
     </head>
-    <body class='body' style='padding-top: 200px !important;'>
+    <body class='body' style='padding-top: 15vh !important;'>
         <nav>
         	<?php require_once ('nav.php'); ?>
         </nav>
@@ -34,7 +34,7 @@
        		</div>
     	</main>
 
-        <footer class='l-footer'>
+        <footer class='l-footer footer'>
             <div class="jumbotron footer-jumbotron">
             <div class="container-fluid">
                 <div class="row">

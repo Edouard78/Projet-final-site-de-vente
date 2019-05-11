@@ -17,7 +17,7 @@ $data = $product->fetch();
 <div class="product-unique-img-block col">
 
 <div class="img-zoom-container">
-  <img id="zoom-image" class='product-unique-img' src="<?php echo $productImgSrc; ?>" width="300" height="240" alt="Girl">
+  <img id="zoom-image"  src="<?php echo $productImgSrc; ?>" width="300" height="240">
   <div id="zoom-result" class="img-zoom-result"></div>
 </div>
 
@@ -28,14 +28,14 @@ $data = $product->fetch();
 <p><?php echo $data['content'] ?></p>
 <p><?php echo $data['price'] ?></p>
 
-<form>
+<form id='form'>
 <div class="form-group row">
     <div class="col-3">
                   <label for="sm">Quantité :</label>
-                  <input type="number" class="form-control input-sm" name ="quantity" id="sm" placeholder="Sélectionnez la quantité" value="1" min="1">
+                  <input type="number" class="form-control input-sm" name ="quantity" id="quantity" placeholder="Sélectionnez la quantité" value="1" min="1">
                 </div>
 </div>
-                <button type="submit" id='submit' class="btn btn-dark">Ajouter au panier</button>
+                <button type="submit" class="btn btn-dark">Ajouter au panier</button>
 </form>
 
 </div>
@@ -44,6 +44,26 @@ $data = $product->fetch();
 
 
 
+</div>
+
+<div class="modal fade" id="modal-sucess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Infos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>L'article a bien été ajouté au panier</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Continuer mes achats</button>
+        <a href='index.php?action=cartPage' class="btn btn-primary">Accèder à mon panier</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -58,29 +78,31 @@ $data = $product->fetch();
     document.getElementById('zoom-result').style.display = 'none';
   });
 
-  $(document).ready(function(){
-
+let modalSuccess = $('#modal-sucess');
     $("#form").submit(function(e) {
         e.preventDefault();
         $.post(
-            'controller/ajax.php', // Un script PHP que l'on va créer juste après
+            'index.php?action=addProductToCart', 
             {
-                id : json_encode(<?php echo $_GET['id']; ?>),  // Nous récupérons la valeur de nos inputs que l'on fait passer à connexion.php
-                price : json_encode(<?php echo $data['price']; ?>),
+                id : <?php echo $_GET['id'] ?>,  
+                price : <?php echo $data['price'] ?>,
                 quantity : $("#quantity").val()
             },
 
-            function(data){ // Cette fonction ne fait rien encore, nous la mettrons à jour plus tard
-            
-                console.log(data);
+            function(data){
+              if (data == 'success') {
+                modalSuccess.modal('show');
+              }
+              else {
+                console.log('Erreur');
+              }
 
             },
-            'text' // Nous souhaitons recevoir "Success" ou "Failed", donc on indique text !
+            'text' 
          );
 
     });
 
-});
 </script>
 
 <?php

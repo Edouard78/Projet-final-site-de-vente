@@ -18,7 +18,6 @@
 		margin-left : 10px;
 		transition: transform .07s;
 	}
-
 	.product-list-product-jumbotron:hover {
 		cursor: pointer;
 		transform: scale(1.2);
@@ -67,10 +66,14 @@
 
 .cart-product-img { display: block; width : 80px; }
 
-
+.footer {
+	background-color : #dddddd;
+}
 .footer-jumbotron {
 	width: 100%;
-	background-color : #3a3a3a;
+	background-color : transparent;
+	padding : 0 !important;
+	margin : 0 !important;
 	height : 100% !important;
 }
 .footer-social-media .fa { color : white; font-size : 2em; }

@@ -7,6 +7,7 @@ require ('controller/controller.php');
 
 
 
+
 try {
     if (isset($_GET['action']))
         {
@@ -31,6 +32,19 @@ try {
 
     
             }
+            elseif ($_GET['action'] == 'addProductToCart')
+            {
+                if (isset($_POST['id']) AND isset($_POST['price']) AND isset($_POST['quantity']) ) {
+    
+
+    $data = array("id"=>(int)$_POST['id'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
+            addProductToCart($data);
+
+            echo 'success';
+} else {
+    echo 'error';
+}
+            }
 
             elseif ($_GET['action'] == 'submitOrderInfos')
             {
@@ -40,11 +54,16 @@ try {
                     $userShippingAdressId = $_POST['userShippingAdress'];
                     if (isset($_POST['billing-adress-identical'])) {
 
-                    $userBillingAdress = 'sameAs';
+                    $billingAdressSameAs = true;
+                    submitOrderInfos($userShippingAdressId, $billingAdressSameAs);
 
                     }
-                    
-                    submitOrderInfos($userShippingAdressId, $userBillingAdress);
+                    else {
+                        $billingAdressSameAs = false;
+                        $billingAdress = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
+                        submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress);
+                    }
+
             
                 }
 
@@ -102,13 +121,7 @@ try {
             }
 
 
-            elseif ($_GET['action'] == 'addProductToCart' && isset($_POST['quantity']) && isset($_GET['id']) && isset($_GET['price']))
-            {
-
-                $data = array("id"=>$_GET['id'], "quantity" => $_POST['quantity'], "price" =>$_GET['price'] );
-            addProductToCart($data);
-    
-            }
+            
 
             elseif ($_GET['action'] == 'connexion' && isset($_POST['login']))
             {
@@ -186,13 +199,13 @@ try {
         }
 
     
-    else
-        {
-            home();
-        }
+  else{
+    home();
+  }
 
-    }
+    } 
 
 catch(Exception $e) {
   echo 'Erreur : ' . $e->getMessage();
 }
+

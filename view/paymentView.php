@@ -12,7 +12,7 @@ ob_start();
 <div class="container">
 
 
-<form action="controller/charge?action=submitPayment" method="post" id="payment-form">
+<form action="charge.php?action=submitPayment" method="post" id="payment-form">
   <div class="form-row">
 
     </select>
@@ -27,7 +27,7 @@ ob_start();
     <div id="card-errors" role="alert"></div>
   </div>
 
-  <button>Submit Payment</button>
+  <button>Valider Paiement</button>
 </form>
 </div>
 

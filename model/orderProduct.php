@@ -1,9 +1,8 @@
 <?php
 
-class orderProduct
+class OrderProduct
 {
     protected $_id,
-              $_orderId,
               $_quantity,
 			        $_price;
 
@@ -36,11 +35,6 @@ class orderProduct
   }
   
   
-	public function orderId()
-	{
-		return $this->_orderId;
-	}
-
 	public function quantity()
 	{
 		return $this->_quantity;
@@ -61,12 +55,12 @@ class orderProduct
 		$this->_id = $id;
   }
   
-  public function setOrderId($orderId)
+  public function setorderProductsId($orderProductsId)
 	{
 
-    $orderId = (int)$orderId;
+    $orderProductsId = (int)$orderProductsId;
 
-			$this->_orderId = $orderId;
+			$this->_orderProductsId = $orderProductsId;
 
 	}
 

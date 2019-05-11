@@ -53,6 +53,3 @@ function imageZoom(imgID, resultID) {
     return {x : x, y : y};
   }
 }
-
-
-

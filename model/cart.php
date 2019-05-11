@@ -41,6 +41,7 @@ class Cart
   {
     return $this->_totalPrice;
   }
+
   // SETTERS
   public function setId($id)
 

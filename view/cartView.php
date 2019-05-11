@@ -1,9 +1,9 @@
 <?php ob_start();
 
 if (isset($_SESSION['cart'])) {
-  foreach ($_SESSION['cart']->products() as $id => $product) {
+  
 
-    $productImgSrc = './uploads/products/' . $product->id(); ?>
+?>
 
 <div class="table-responsive">
 <table class="table table-bordered table-striped table-condensed">
@@ -20,6 +20,8 @@ if (isset($_SESSION['cart'])) {
 	</thead>
 		<tbody>
       	<tr>
+      	<?php foreach ($_SESSION['cart']->products() as $id => $product) { 
+      		$productImgSrc = './uploads/products/' . $product->id(); ?> 
 				<td><?=$product->id() ?></td>
 				<td><img class="cart-product-img" src="<?php echo $productImgSrc; ?>" /></td>
 				<td><form action="index.php?action=updateProductCart&amp;productCartId=<?php echo $id ?> " method="post">

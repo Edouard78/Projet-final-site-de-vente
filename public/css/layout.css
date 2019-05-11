@@ -1,6 +1,11 @@
 
 .l-footer {
-	height: 20vh !important;
+
+	height: 35vh !important;
 	margin : 0;
 	padding : 0;
+}
+
+.l-main {
+	min-height: 50vh !important;
 }

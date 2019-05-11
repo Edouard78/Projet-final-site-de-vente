@@ -1,35 +1,66 @@
 <?php
-require_once('/../model/product.php');
-require_once('/../model/productManager.php');
-require_once('/../model/orderProduct.php');
-require_once('/../model/order.php');
-require_once('/../model/cart.php');
-require_once('/../model/cartProduct.php');
-require_once('/../model/user.php');
-require_once('/../model/userManager.php');
-require_once('/../model/userShippingAdress.php');
-require_once('/../model/userShippingAdressManager.php');
+require_once('model/product.php');
+require_once('model/productManager.php');
+require_once('model/orderProduct.php');
+require_once('model/order.php');
+require_once('model/orderManager.php');
+require_once('model/orderProductManager.php');
+require_once('model/cart.php');
+require_once('model/cartProduct.php');
+require_once('model/user.php');
+require_once('model/userManager.php');
+require_once('model/userShippingAdress.php');
+require_once('model/userShippingAdressManager.php');
 
+
+function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
+    include('model/db.php');
+    var_dump($token);
+    $orderManager = new OrderManager($db);
+    $orderManager->create($order, $token);
+
+
+    $orderIdReq = $orderManager->getUserOrderId($token);
+    $orderId = $orderIdReq->fetch();
+
+
+    var_dump($orderId);
+    $orderId = (int) $orderId['id'];
+
+    var_dump($orderId);
+
+    $orderProductManager = new OrderProductManager($db);
+    foreach ($orderProducts as $orderProduct) {
+        $orderProductManager->create($orderProduct, $orderId);
+        var_dump($orderProductManager);
+            }
+    if ($billingAdress != NULL) {
+        $billingAdressManager = new BillingAdressManager($db);
+        $billingAdressManager->create($billingAdress, $orderId);
+    }
+
+    require('view/prePaymentView.php');
+}
 function prePaymentPage($userId) {
-    include('/../model/db.php');
+    include('model/db.php');
 
     $userShippingAdressManager = new UserShippingAdressManager($db);
     $userShippingAdress        = $userShippingAdressManager->getList($userId);
 
-    require('/../view/prePaymentView.php');
+    require('view/prePaymentView.php');
 }
-function submitOrderInfos($userShippingAdressId, $userBillingAdress) {
-    include('/../model/db.php');
+function submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress = NULL) {
 
-    $_SESSION['userShippingAngBillingInfos'] = array(
+    $_SESSION['userShippingAndBillingInfos'] = array(
         'userShippingAdressId' => $userShippingAdressId,
-        'userBillingAdress' => $userBillingAdress
+        'billingAdressSameAs' => $billingAdressSameAs,
+        'billingAdress' => $billingAdress
     );
-    
-    require('/../view/paymentView.php');
+
+    require('view/paymentView.php');
 }
 function cartPage() {
-    require('/../view/cartView.php');
+    require('view/cartView.php');
 }
 function addProductToCart($data) {
     if (isset($_SESSION['cart'])) {
@@ -63,7 +94,7 @@ function cartTotal() {
     var_dump($cartTotalManager);
 }
 function authentication($login, $password) {
-    include('/../model/db.php');
+    include('model/db.php');
     $userManager       = new UserManager($db);
     $user              = $userManager->authenticationGet($login);
     $result            = $user->fetch();
@@ -80,10 +111,10 @@ function authentication($login, $password) {
     }
 }
 function authenticationPage() {
-    require('/../view/authenticationView.php');
+    require('view/authenticationView.php');
 }
 function subscribe($data1, $data2) {
-    include('/../model/db.php');
+    include('model/db.php');
     $errors          = array();
     $newUser         = new User($data1);
     $errorsFromModel = $newUser->errors();
@@ -151,26 +182,26 @@ function subscribe($data1, $data2) {
     }
 }
 function subscribePage() {
-    require('/../view/subscribeView.php');
+    require('view/subscribeView.php');
 }
 function home() {
-    include('/../model/db.php');
+    include('model/db.php');
     $productManager = new ProductManager($db);
     $product        = $productManager->getList();
-    require('/../view/homeView.php');
+    require('view/homeView.php');
 }
 function productUnique($id) {
     include('model/db.php');
     $productManager = new ProductManager($db);
     $product        = $productManager->getUnique($id);
-    require('/../view/productUniqueView.php');
+    require('view/productUniqueView.php');
 }
 function addproductPage() {
-    include('/../model/db.php');
-    require('/../view/admin/addProductView.php');
+    include('model/db.php');
+    require('view/admin/addProductView.php');
 }
 function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
-    include('/../model/db.php');
+    include('model/db.php');
     $product         = new Product($data);
     $errorsFromModel = $product->errors();
     if (count($errorsFromModel) > 0) {
