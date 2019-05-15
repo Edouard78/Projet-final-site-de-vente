@@ -90,7 +90,7 @@ public function errors()
 	}
 	
 
-    public function setorderId($orderId)
+    public function setOrderId($orderId)
     {
         $orderId = (int)$orderId;
         $this->_orderId = $orderId;
@@ -146,7 +146,7 @@ public function errors()
 		}
     }
 
-       public function setcountry($country)
+       public function setCountry($country)
 	{
 		if (!is_string($country) || empty($country))
 		{

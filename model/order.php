@@ -7,7 +7,8 @@ class Order
               $_userShippingAdressId,
               $_billingAdressSameAs,
              	$_products = [],
-			        $_totalPrice;
+			        $_totalPrice,
+			        $_date;
 
 
   public function __construct($data)
@@ -62,6 +63,10 @@ class Order
 	{
 		return $this->_totalPrice;
 	}
+	public function date()
+	{
+		return $this->_date;
+	}
 
 
   //SETTERS
@@ -105,6 +110,13 @@ class Order
 	{
 
 			$this->_totalPrice = $totalPrice;
+
+	}
+
+	public function setDate($date)
+	{
+
+			$this->_date = $date;
 
 	}
 

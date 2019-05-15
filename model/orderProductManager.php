@@ -34,4 +34,12 @@ class OrderProductManager
 
 			return $request;
 	}
+
+	public function getListFromOrder($orderId){
+
+		$request = $this->_db ->prepare('SELECT id, productId, orderId, quantity, price, date FROM shoporderproduct WHERE orderId = :orderId ');
+		$request->bindValue(':orderId', $orderId);
+	    $request->execute();
+		return $request;
+	}
 }

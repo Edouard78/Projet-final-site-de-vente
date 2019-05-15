@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 03 mai 2019 à 15:11
--- Version du serveur :  5.7.21
--- Version de PHP :  5.6.35
+-- Généré le :  mar. 14 mai 2019 à 22:52
+-- Version du serveur :  5.7.24
+-- Version de PHP :  7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,30 +25,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `oderproduct`
+-- Structure de la table `bill`
 --
 
-DROP TABLE IF EXISTS `oderproduct`;
-CREATE TABLE IF NOT EXISTS `oderproduct` (
-  `id` int(11) NOT NULL,
-  `orderId` int(11) NOT NULL,
-  `quantity` int(100) NOT NULL,
-  `price` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `order`
---
-
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE IF NOT EXISTS `order` (
+DROP TABLE IF EXISTS `bill`;
+CREATE TABLE IF NOT EXISTS `bill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `userShippingAdressId` int(11) NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `total` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -106,6 +90,55 @@ INSERT INTO `shippingadress` (`id`, `title`, `userId`, `name`, `adress`, `postal
 (1, '', 6, 'Didier Laurent', '1, allÃ©e des Belles Feuilles', '75016', 'Paris'),
 (2, 'Mon adresse par dÃ©fault', 11, 'etienn j', '1, allÃ©e du Nocher', '7896', 'trappes'),
 (3, 'Mon adresse par dÃ©fault', 12, 'Thomas Durand', '1, allÃ©e du puit', '93456', 'Mesnil');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `shoporder`
+--
+
+DROP TABLE IF EXISTS `shoporder`;
+CREATE TABLE IF NOT EXISTS `shoporder` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `userShippingAdressId` int(11) NOT NULL,
+  `billingAdressSameAs` tinyint(1) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `totalPrice` int(50) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `shoporder`
+--
+
+INSERT INTO `shoporder` (`id`, `userId`, `userShippingAdressId`, `billingAdressSameAs`, `token`, `totalPrice`, `date`) VALUES
+(14, 12, 3, 1, 'tok_1EZiA7KiarMbTO171MDMeiR5', 15, '2019-05-13');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `shoporderproduct`
+--
+
+DROP TABLE IF EXISTS `shoporderproduct`;
+CREATE TABLE IF NOT EXISTS `shoporderproduct` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` int(11) NOT NULL,
+  `orderId` int(11) NOT NULL,
+  `quantity` int(100) NOT NULL,
+  `price` int(200) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `shoporderproduct`
+--
+
+INSERT INTO `shoporderproduct` (`id`, `productId`, `orderId`, `quantity`, `price`, `date`) VALUES
+(2, 36, 14, 1, 15, '2019-05-13');
 
 -- --------------------------------------------------------
 

@@ -30,6 +30,23 @@ class OrderManager
 		return $request;
 	}
 
+	public function getListFromUser($userId){
+
+		$request = $this->_db ->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS dateFr FROM shoporder WHERE userId = :userId ');
+		$request->bindValue(':userId', $userId);
+	    $request->execute();
+		return $request;
+	}
+
+	public function getUnique($id)
+	{
+		$request = $this->_db->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder WHERE id = :id ');
+		$request->bindValue(':id', $id);
+	    $request->execute();
+		return $request;
+	}
+
+
 
 	
 }

@@ -16,6 +16,14 @@ try {
                 home();
             } 
 
+            elseif ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
+                downloadBill($_GET['orderId']); 
+            }
+
+            elseif ($_GET['action'] == 'userPage') {
+                userPage($_SESSION['userId']); 
+            }
+
             elseif ($_GET['action'] == 'submitCart')
             {
 

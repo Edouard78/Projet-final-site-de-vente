@@ -31,6 +31,14 @@ class UserShippingAdressManager
 		return $request;
 	}
 
+	public function getUnique($userId){
+
+		$request = $this->_db ->prepare('SELECT id, name, adress, postalCode, city FROM shippingadress WHERE userId = :userId ');
+		$request->bindValue(':userId', $userId);
+	    $request->execute();
+		return $request;
+	}
+
 
 	
 }

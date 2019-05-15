@@ -9,10 +9,59 @@ require_once('model/cart.php');
 require_once('model/cartProduct.php');
 require_once('model/user.php');
 require_once('model/userManager.php');
+
+require_once('model/billingAdress.php');
+
+require_once('model/bill.php');
 require_once('model/userShippingAdress.php');
 require_once('model/userShippingAdressManager.php');
 
+function downloadBill($orderId) {
+    include('model/db.php');
 
+    $orderManager = new OrderManager($db);
+    $orderResponse = $orderManager->getUnique($orderId);
+    $dataOrder = $orderResponse->fetch();
+    
+    $order = new Order($dataOrder);
+
+    $orderProductManager = new OrderProductManager($db);
+    $orderProductResponse = $orderProductManager->getListFromOrder($orderId);
+    $dataOrderProduct = $orderProductResponse->fetchAll();
+
+    $orderProducts = [];
+    foreach ($dataOrderProduct as $data) {
+        $orderProduct = new OrderProduct($data);
+        array_push($orderProducts, $orderProduct);
+    }
+    $order->setProducts($orderProducts);
+
+    $userShippingAdressManager = new userShippingAdressManager($db);
+    $userShippingAdressResponse = $userShippingAdressManager->getUnique($order->userId());
+    $dataShippingAdress = $userShippingAdressResponse->fetch();
+
+    $userShippingAdress = new UserShippingAdress($dataShippingAdress);
+    if($order->billingAdressSameAs() == TRUE) {
+        $billingAdress = new BillingAdress($dataShippingAdress);
+    }
+
+    $data = array('order' => $order, 'userShippingAdress' => $userShippingAdress, 'billingAdress' => $billingAdress, 'paymentMethod' => 'Stripe');
+
+    $bill = new Bill($data);
+    $bill->setContent();
+    $bill->generatePdf();
+
+}
+function userPage($userId) {
+    include('model/db.php');
+    var_dump($userId);
+    $orderManager = new OrderManager($db);
+    $dataOrder = $orderManager->getListFromUser($userId);
+
+
+    require('view/user/userView.php');
+
+}
 function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     include('model/db.php');
     var_dump($token);
@@ -38,6 +87,7 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
         $billingAdressManager = new BillingAdressManager($db);
         $billingAdressManager->create($billingAdress, $orderId);
     }
+
 
     require('view/prePaymentView.php');
 }
