@@ -11,10 +11,36 @@ require ('controller/controller.php');
 try {
     if (isset($_GET['action']))
         {
-            if ($_GET['action'] == 'home')
-            {
-                home();
+            if ($_GET['action'] == 'home' && !isset($_GET['page']))
+            {   
+                $productListNb = countProductList();
+                home($productListNb, 1);
             } 
+
+            elseif ($_GET['action'] == "home" && isset($_GET['page']))
+        {
+        $productListNb = countproductList();
+
+        // NEXT HOME PAGE
+
+        if ($_GET['page'] <= 0)
+            {
+            header('Location: index.php?action=home');
+            }
+
+        // PREVIOUS HOME PAGE
+
+        elseif ($_GET['page'] > $productListNb + 1)
+            {
+            $end = intval($_GET['page']) - 1;
+            header('Location: index.php?action=home&page=' . $end);
+            }
+          else
+            {
+            home($productListNb, $_GET['page']);
+            }
+        }
+
 
             elseif ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
                 downloadBill($_GET['orderId']); 
@@ -22,6 +48,14 @@ try {
 
             elseif ($_GET['action'] == 'userPage') {
                 userPage($_SESSION['userId']); 
+            }
+
+            elseif ($_GET['action'] == 'userOrderPage') {
+                listOrdersForUser($_SESSION['userId']); 
+            }
+
+            elseif ($_GET['action'] == 'userShippingAdressPage') {
+                userShippingAdressPage($_SESSION['userId']); 
             }
 
             elseif ($_GET['action'] == 'submitCart')
@@ -45,7 +79,7 @@ try {
                 if (isset($_POST['id']) AND isset($_POST['price']) AND isset($_POST['quantity']) ) {
     
 
-    $data = array("id"=>(int)$_POST['id'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
+    $data = array("id"=>(int)$_POST['id'], "title" => $_POST['title'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
             addProductToCart($data);
 
             echo 'success';
@@ -79,6 +113,16 @@ try {
                     echo 'Vous nete pas connecté';
                 }
 
+    
+            }
+
+
+
+            elseif ($_GET['action'] == 'orderResult')
+            {
+
+         
+                orderResult();
     
             }
 
@@ -167,7 +211,26 @@ try {
 		subscribePage();
 		}
 
+        elseif ($_GET['action'] == 'orderAdminPage') {
+            listOrdersForAdmin();
+        }
 
+         elseif ($_GET['action'] == 'statisticsAdmin') {
+            statisticsAdmin();
+        }
+
+        elseif ($_GET['action'] == 'category') {
+            category();
+        }
+        elseif ($_GET['action'] == 'addCategory' && isset($_POST['title']))
+        {
+
+        $data = array(
+            'title' => $_POST['title'],
+        );
+        addProduct($data);
+        
+        }
         
             elseif ($_GET['action'] == 'addProduct' && isset($_POST['title']))
 		{
@@ -178,6 +241,7 @@ try {
 
 		$data = array(
 			'title' => $_POST['title'],
+            'category' => $_POST['category'],
             'brand' => $_POST['brand'],
             'price' => $_POST['price'],
 			'content' => $_POST['description']
@@ -208,7 +272,8 @@ try {
 
     
   else{
-    home();
+    $productListNb = countProductList();
+                home($productListNb, 1);
   }
 
     } 

@@ -13,6 +13,19 @@
 							<input type="text" class="form-control" name ="title" id="title" placeholder="Titre">
 						</div>
 						<div class="form-group">
+    <label for="category">Dans quel Categorie :</label>
+    <select class="form-control"  name="category" id="category">
+    <?php while ($data = $categories->fetch())
+	{ 
+    ?>
+    <option value="<?php echo $data['id']; ?>" selected><?php echo $data['title']; ?></option>
+  </div>
+  <?php
+  }
+  ?>
+    </select>
+</div>
+						<div class="form-group">
 							<label for="brand">Marque</label>
 							<input type="text" class="form-control" name ="brand" id="brand" placeholder="Marque">
 						</div>

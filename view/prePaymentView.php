@@ -37,7 +37,7 @@ ob_start();
   </div>
   </div>
 <fieldset>
-  <button type='submit' class='btn btn-primary btn-block'>Valider la commande et passer au paiement (obligatoire)</button>
+  <button type='submit' class='btn btn-primary btn-block'>Valider mes Infos et passer au paiement avec (Stripe)</button>
 </form>
 </div>
 

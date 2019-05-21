@@ -22,7 +22,7 @@
          }
       elseif($_SESSION['admin'] == FALSE)
       { ?>
-          <li class="nav-product"><a class="nav-link" href="index.php?action=userPage"><i class="fa fa-users nav-icon"></i>Se connecter</a></li>
+          <li class="nav-product"><a class="nav-link" href="index.php?action=userPage"><i class="fa fa-users nav-icon"></i>Mon compte</a></li>
           <?php
     }
   }

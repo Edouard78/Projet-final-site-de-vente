@@ -13,15 +13,58 @@ while ($data = $product->fetch())
 	echo $data['id'] ?>"><div class="jumbotron product-list-product-jumbotron">
 <?php echo '<img src="'.$productImgSrc.'" class="product-list-product-img" />' ?>
 <br >
-<h5 class="product-list-product-title"><?php echo $data['title'] ?></h5>
-<h5 class="product-list-product-price"><?php echo $data['price'] ?></h5>
-</div></a>
+<h5 class="product-list-product-title" style='font-style: none;'><?php echo $data['title'] ?></h5>
+<h5 class="product-list-product-price" style='font-style: none;'><?php echo $data['price'] ?> <em class="fa fa-euro"></em></h5>
+</div>
+</a>
 <?php
 		}
 
 
 ?>
 </div>
+
+<?php
+	if (isset($_GET['page']))
+		{
+		$nextPageButtonValue = intval($_GET['page']) + 1;
+		$prevPageButtonValue = intval($_GET['page']) - 1;
+		}
+	  else
+		{
+		$nextPageButtonValue = 2;
+		$prevPageButtonValue = 0;
+		}
+
+?><nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" href="index.php?action=home&amp;page=<?php
+	echo $prevPageButtonValue; ?>" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+  
+<?php
+	for ($i = 1; $i <= $productListNb + 1; $i++)
+		{
+?>
+    <li class="page-item"><a class="page-link" href="index.php?action=home&amp;page=<?php
+		echo $i; ?>"><?php
+		echo $i; ?></a></li>
+
+<?php
+		} ?>
+    <li class="page-item">
+      <a class="page-link" href="index.php?action=home&amp;page=<?php
+	echo $nextPageButtonValue; ?>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 </div>
 <?php
 $content = ob_get_clean();

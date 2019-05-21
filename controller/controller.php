@@ -10,6 +10,9 @@ require_once('model/cartProduct.php');
 require_once('model/user.php');
 require_once('model/userManager.php');
 
+require_once('model/category.php');
+require_once('model/categoryManager.php');
+
 require_once('model/billingAdress.php');
 
 require_once('model/bill.php');
@@ -52,15 +55,40 @@ function downloadBill($orderId) {
     $bill->generatePdf();
 
 }
-function userPage($userId) {
+function listOrdersForUser($userId) {
     include('model/db.php');
-    var_dump($userId);
     $orderManager = new OrderManager($db);
     $dataOrder = $orderManager->getListFromUser($userId);
 
+    $orderProductManager = new OrderProductManager($db);
+    $nbProducts =  $orderProductManager->getListFromUser($userId);
 
-    require('view/user/userView.php');
+    require('view/user/userOrdersView.php');
 
+}
+
+function userPage($userId) {
+    include('model/db.php');
+    $userManager = new userManager($db);
+    $userInfos = $userManager->getInfos($userId);
+
+
+    require('view/user/userInfos.php');
+
+}
+
+function userShippingAdressPage($userId) {
+    include('model/db.php');
+    $userShippingAdressManager = new userShippingAdressManager($db);
+    $userShippingAdress = $userShippingAdressManager->getList($userId);
+
+
+    require('view/user/userShippingAdressView.php');
+
+}
+
+function orderResult() {
+    require('view/orderResult.php');
 }
 function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     include('model/db.php');
@@ -72,11 +100,7 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     $orderIdReq = $orderManager->getUserOrderId($token);
     $orderId = $orderIdReq->fetch();
 
-
-    var_dump($orderId);
     $orderId = (int) $orderId['id'];
-
-    var_dump($orderId);
 
     $orderProductManager = new OrderProductManager($db);
     foreach ($orderProducts as $orderProduct) {
@@ -88,6 +112,9 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
         $billingAdressManager->create($billingAdress, $orderId);
     }
 
+    header('Location: index.php?action=orderResult&success=1');
+    unset($_SESSION['cart']);
+    unset($_SESSION['userShippingAndBillingInfos']);
 
     require('view/prePaymentView.php');
 }
@@ -132,6 +159,7 @@ function addProductToCart($data) {
         }
     } else {
         $cartProduct = new CartProduct($data);
+
         $cart        = new Cart($cartProduct);
         $cart->store($cart);
     }
@@ -234,10 +262,24 @@ function subscribe($data1, $data2) {
 function subscribePage() {
     require('view/subscribeView.php');
 }
-function home() {
-    include('model/db.php');
+
+function countProductList()
+    {
+    include ('model/db.php');
+
     $productManager = new ProductManager($db);
-    $product        = $productManager->getList();
+    $result = $productManager->countProduct();
+    $productNbStr = $result->fetch();
+    $productNb = intval($productNbStr[0]);
+    $productListNb = $productNb / 5;
+    return $productListNb;
+    }
+function home($productListNb, $pageNumber) {
+    include('model/db.php');
+    $end = $pageNumber * 5;
+    $start = ($pageNumber * 5) - 5;
+    $productManager = new ProductManager($db);
+    $product= $productManager->getList($start, $end);
     require('view/homeView.php');
 }
 function productUnique($id) {
@@ -245,6 +287,33 @@ function productUnique($id) {
     $productManager = new ProductManager($db);
     $product        = $productManager->getUnique($id);
     require('view/productUniqueView.php');
+}
+
+function addCategory() {
+    include('model/db.php');
+    $category= new Category($data);
+    $errorsFromModel = $category->errors();
+    if (count($errorsFromModel) > 0) {
+        if (in_array(Category::INVALID_TITLE, $errorsFromModel) ) {
+            echo 'erreurrr';
+        }
+    }
+    else {
+        $categoryManager = new CategoryManager($db);
+        $categoryManager->create($category);
+        require('view/admin/categoryView.php');
+    }
+
+}
+
+function category() {
+    include('model/db.php');
+    $categoryManager = new CategoryManager($db);
+    $categories = $categoryManager->getList();
+    var_dump($categories);
+
+    require('view/admin/categoryView.php');
+
 }
 function addproductPage() {
     include('model/db.php');
@@ -268,4 +337,49 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         move_uploaded_file($productImg['tmp_name'], $productImgDestination);
         var_dump($product);
     }
+
+
 }
+
+    function listOrdersForAdmin() {
+        include('model/db.php');
+
+        $orderManager = new OrderManager($db);
+        $orders = $orderManager->getListForAdmin();
+
+        require('view/admin/orderView.php');
+    }
+
+    function statisticsAdmin() {
+        include('model/db.php');
+        $orderManager = new OrderManager($db);
+        $countOrders = $orderManager->countTodayOrders();
+        $countOrders = $countOrders->fetch();
+
+        $userManager = new UserManager($db);
+
+        $countUsers = $userManager->countTodayUsers();
+        $countUsers = $countUsers->fetch();
+        var_dump($countUsers);
+
+        if ( $countOrders[0] == 0 ) {
+            $dayIncome = 0;
+        }
+
+        else {
+            $orderManager = new OrderManager($db);
+            $totayTotal = $orderManager->getTodayTotal();
+            $total = 0;
+            while( $data = $totayTotal->fetch()) {
+                $total += (int) $total;
+            }
+
+            $dayIncome = $total;
+
+        }
+    
+
+
+        require('view/admin/statisticsView.php');
+
+    }

@@ -3,8 +3,11 @@
 class OrderProduct
 {
     protected $_id,
+    $_userId,
+    $_title,
               $_quantity,
-			        $_price;
+			        $_price,
+			        $_errors= [];
 
 
   public function __construct($data)
@@ -33,6 +36,17 @@ class OrderProduct
 	{
 		return $this->_id;
   }
+
+    public function userId()
+  {
+    return $this->_userId;
+  }
+
+
+  public function title()
+	{
+		return $this->_title;
+	}
   
   
 	public function quantity()
@@ -54,8 +68,27 @@ class OrderProduct
 
 		$this->_id = $id;
   }
+
+  public function setUserId($userId)
+	{
+		$userId = (int)$userId;
+
+		$this->_userId = $userId;
+  }
+
+  public function setTitle($title)
+	{
+		if (!is_string($title) || empty($title))
+		{
+			$this->_errors[]=self::INVALID_TITLE;
+		}
+		else
+		{
+			$this->_title = $title;
+		}
+	}
   
-  public function setorderProductsId($orderProductsId)
+  public function setOrderProductsId($orderProductsId)
 	{
 
     $orderProductsId = (int)$orderProductsId;

@@ -1,7 +1,7 @@
 <?php
 class CartProduct
 {
-    public $_id, $_quantity, $_price;
+    public $_id, $_title, $_quantity, $_price;
 
     public function __construct($data)
     {
@@ -28,6 +28,12 @@ class CartProduct
         return $this->_id;
     }
 
+     public function title()
+    {
+        return $this->_title;
+    }
+
+
     public function quantity()
     {
         return $this->_quantity;
@@ -44,6 +50,18 @@ class CartProduct
         $id = (int)$id;
 
         $this->_id = $id;
+    }
+
+    public function setTitle($title)
+    {
+        if (!is_string($title) || empty($title))
+        {
+            $this->_errors[]=self::INVALID_TITLE;
+        }
+        else
+        {
+            $this->_title = $title;
+        }
     }
 
     public function setQuantity($quantity)

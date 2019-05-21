@@ -3,6 +3,8 @@
 class Product
 {
 	protected $_id,
+				$_categoryId,
+				$_brandId,
 			  $_title,
 			  $_brand,
 			  $_content,
@@ -41,6 +43,15 @@ class Product
 	public function id()
 	{
 		return $this->_id;
+	}
+
+	public function categoryId()
+	{
+		return $this->_categoryId;
+	}
+	public function brandId()
+	{
+		return $this->_brandId;
 	}
 
 	public function title()
@@ -87,6 +98,20 @@ class Product
 		$id = (int)$id;
 
 		$this->_id = $id;
+	}
+
+	public function setCategoryId($categoryId)
+	{
+		$categoryId = (int)$categoryId;
+
+		$this->_categoryId = $categoryId;
+	}
+
+	public function setBrandId($brandId)
+	{
+		$brandId = (int)$brandId;
+
+		$this->_brandId = $brandId;
 	}
 
 	public function setTitle($title)

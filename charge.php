@@ -40,34 +40,25 @@ if ($_GET['action'] == 'submitPayment' && isset($_SESSION['cart']) && isset($_SE
 					  	'billingAdressSameAs' => $_SESSION['userShippingAndBillingInfos']['billingAdressSameAs'],
 	   					'totalPrice' => $_SESSION['cart']->totalPrice()
 				);
-	var_dump($orderData);
 
 	$order = new Order($orderData);
 	$orderProducts = [];
 	foreach ($_SESSION['cart']->products() as $product) {
-		$data = array('id' => $product->id(), 'quantity' => $product->quantity(), 'price' => $product->price() );
+		$data = array('id' => $product->id(), 'title' => $product->title(), 'quantity' => $product->quantity(), 'price' => $product->price(), 'userId' => $_SESSION['userId'] );
 		$orderProduct = new OrderProduct($data);
 		array_push($orderProducts, $orderProduct);
 	}
 
 	$order->setProducts($orderProducts);
-	var_dump($order->billingAdressSameAs());
 	
 	if ($order->billingAdressSameAs() == false) {
 		$billingAdress = new BillingAdress($_SESSION['userShippingAndBillingInfos']['billingAdress']);
 		saveOrder($order, $orderProducts,$token, $billingAdress);
 	}
 	else {
-		var_dump($order);
-		var_dump($orderProducts);
-		var_dump($token);
 		saveOrder($order, $orderProducts, $token);
 	}
 
-
-
-
-var_dump($order);
 }
 
 

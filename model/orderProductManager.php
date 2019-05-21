@@ -11,9 +11,11 @@ class OrderProductManager
 
 	public function create(OrderProduct $orderProduct, $orderId)
 	{
-		$req = $this->_db->prepare('INSERT INTO shoporderproduct(productId, orderId, quantity, price, date) VALUES(:productId,:orderId, :quantity, :price, NOW() )');
+		$req = $this->_db->prepare('INSERT INTO shoporderproduct(productId, orderId, userId, title, quantity, price, date) VALUES(:productId,:orderId, :userId, :title, :quantity, :price, NOW() )');
     	$req->bindValue(':productId', $orderProduct->id());
     	$req->bindValue(':orderId', $orderId);
+    	$req->bindValue(':userId', $orderProduct->userId());
+    	$req->bindValue(':title', $orderProduct->title());
 		$req->bindValue(':quantity', $orderProduct->quantity());
 		$req->bindValue(':price', $orderProduct->price());
     	$req->execute();
@@ -37,8 +39,16 @@ class OrderProductManager
 
 	public function getListFromOrder($orderId){
 
-		$request = $this->_db ->prepare('SELECT id, productId, orderId, quantity, price, date FROM shoporderproduct WHERE orderId = :orderId ');
+		$request = $this->_db ->prepare('SELECT id, productId, orderId, title, quantity, price, date FROM shoporderproduct WHERE orderId = :orderId ');
 		$request->bindValue(':orderId', $orderId);
+	    $request->execute();
+		return $request;
+	}
+
+	public function getListFromUser($userId){
+
+		$request = $this->_db ->prepare('SELECT id, orderId FROM shoporderproduct WHERE userId = :userId ');
+		$request->bindValue(':userId', $userId);
 	    $request->execute();
 		return $request;
 	}

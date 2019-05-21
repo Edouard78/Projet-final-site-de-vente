@@ -10,7 +10,7 @@ if (isset($_SESSION['cart'])) {
 <h3>Mon Panier</h3>
 	<thead>
 		<tr>
-			<th>Id</th>
+			<th>Produit</th>
 			<th>Image</th>
 			<th>Quantité</th>
 			<th>Prix</th>
@@ -22,7 +22,7 @@ if (isset($_SESSION['cart'])) {
       	<tr>
       	<?php foreach ($_SESSION['cart']->products() as $id => $product) { 
       		$productImgSrc = './uploads/products/' . $product->id(); ?> 
-				<td><?=$product->id() ?></td>
+				<td><?=$product->title() ?></td>
 				<td><img class="cart-product-img" src="<?php echo $productImgSrc; ?>" /></td>
 				<td><form action="index.php?action=updateProductCart&amp;productCartId=<?php echo $id ?> " method="post">
 				<div class="col-3">
@@ -47,7 +47,7 @@ if (isset($_SESSION['cart'])) {
 <div class="afterCartBLock float-right">
 <h3  id="cartTotalPrice">Prix Total : <strong><?php echo $_SESSION['cart']->totalPrice() ?> <em class="fa fa-euro"></em></strong></h3>
 	
-<a id ="submitCart float-right" type="button" href="index.php?action=submitCart" class="btn btn-primary">Passer au paiement</a>
+<a id ="submitCart float-right" type="button" href="index.php?action=submitCart" class="btn btn-primary">Valider mon Panier</a>
 </div>
 
 <?php

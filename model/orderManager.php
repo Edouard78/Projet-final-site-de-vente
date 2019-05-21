@@ -38,6 +38,13 @@ class OrderManager
 		return $request;
 	}
 
+	public function getListForAdmin(){
+
+		$request = $this->_db ->prepare('SELECT id, userId,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder ');
+	    $request->execute();
+		return $request;
+	}
+
 	public function getUnique($id)
 	{
 		$request = $this->_db->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder WHERE id = :id ');
@@ -46,6 +53,20 @@ class OrderManager
 		return $request;
 	}
 
+	public function countTodayOrders()
+    {
+		$req = $this->_db->prepare('SELECT COUNT(*) FROM shoporder WHERE DAY(date) = DAY(CURDATE())  ');
+        $req->execute();
+
+        return $req;
+    }
+
+    public function getTodayTotal(){
+
+		$request = $this->_db ->prepare('SELECT totalPrice FROM shoporder WHERE DAY(date) = DAY(CURDATE()) ');
+	    $request->execute();
+		return $request;
+	}
 
 
 	

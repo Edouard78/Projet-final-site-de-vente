@@ -39,7 +39,7 @@
 
     <nav class="nav flex-column nav-tabs align-content-center col-md-3">
     <h3>Panel</h3>
- 
+ 				<li class="nav-product "> <a class="nav-link " href="index.php?action=adminOrder">Catalogue</a> </li>
                 <li class="nav-product "> <a class="nav-link " href="index.php?action=adminCatalog">Catalogue</a> </li>
                 <li class="nav-product"> <a class="nav-link" href="index.php?action=adminCustomer">Clients</a> </li>
                 <li class="nav-product"> <a class="nav-link" href="index.php?action=adminCustomerService">Service client</a> </li>

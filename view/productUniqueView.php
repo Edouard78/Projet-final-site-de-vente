@@ -25,8 +25,7 @@ $data = $product->fetch();
 <div class="productInfoUnique col">
 <h5><?php echo $data['title'] ?></h5>
 <h5><?php echo $data['brand'] ?></h5>
-<p><?php echo $data['content'] ?></p>
-<p><?php echo $data['price'] ?></p>
+<p>Prix : <?php echo $data['price'] ?> <em class="fa fa-euro"></em></p>
 
 <form id='form'>
 <div class="form-group row">
@@ -38,6 +37,7 @@ $data = $product->fetch();
                 <button type="submit" class="btn btn-dark">Ajouter au panier</button>
 </form>
 
+<p style='border-top : 1px black solid; margin-top: 30px;'><?php echo $data['content'] ?></p>
 </div>
 </div>
 
@@ -50,7 +50,7 @@ $data = $product->fetch();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Infos</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Infos Panier</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -66,7 +66,6 @@ $data = $product->fetch();
   </div>
 </div>
 
-
 <script>
 
   document.getElementById('zoom-image').addEventListener('mouseover', function(){
@@ -81,19 +80,21 @@ $data = $product->fetch();
 let modalSuccess = $('#modal-sucess');
     $("#form").submit(function(e) {
         e.preventDefault();
+
         $.post(
             'index.php?action=addProductToCart', 
             {
-                id : <?php echo $_GET['id'] ?>,  
+                id : <?php echo $_GET['id'] ?>, 
+                title :  <?php echo json_encode($data['title']) ?>,
                 price : <?php echo $data['price'] ?>,
                 quantity : $("#quantity").val()
             },
 
             function(data){
-              if (data == 'success') {
+              if (data === 'success') {
                 modalSuccess.modal('show');
               }
-              else {
+              else if ( (data === 'error')) {
                 console.log('Erreur');
               }
 

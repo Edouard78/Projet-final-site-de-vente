@@ -34,7 +34,7 @@ class UserManager
 
 	public function createUser(User $user)
 	{
-         $req = $this->_db->prepare('INSERT INTO user(login, password, email, admin) VALUES(:login, :password, :email, :admin)');
+         $req = $this->_db->prepare('INSERT INTO user(login, password, email, admin, subscribeDate) VALUES(:login, :password, :email, :admin, NOW())');
 
     $req->bindValue(':login', $user->login());
     $req->bindValue(':password', $user->password());
@@ -46,7 +46,7 @@ class UserManager
 
 	public function getInfos($id)
 	{
-		$req = $this->_db ->prepare('SELECT id, login, email FROM user WHERE id = :id');
+		$req = $this->_db ->prepare('SELECT id, login, email ,subscribeDate FROM user WHERE id = :id');
 		$req->bindValue(':id', $id);
 		$req->execute();
 
@@ -80,4 +80,12 @@ class UserManager
 	  $req->execute();
 
 	}
+
+	public function countTodayUsers()
+    {
+		$req = $this->_db->prepare('SELECT COUNT(*) FROM user WHERE DAY(subscribeDate) = DAY(CURDATE())  ');
+        $req->execute();
+
+        return $req;
+    }
 }
