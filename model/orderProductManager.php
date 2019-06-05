@@ -52,4 +52,12 @@ class OrderProductManager
 	    $request->execute();
 		return $request;
 	}
+
+	public function countOrderProduct($orderId){
+
+		$request = $this->_db ->prepare('SELECT COUNT(*) FROM shoporderProduct WHERE orderId = :orderId ');
+		$request->bindValue(':orderId', $orderId);
+	    $request->execute();
+		return $request;
+	}
 }

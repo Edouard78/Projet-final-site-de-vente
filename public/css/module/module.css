@@ -4,10 +4,31 @@
 .navbar { height : 5rem; border-radius: 0px 0px 3px 3px; }	
 	.navbar-brand {
 		position : absolute;
-		left : 50%;
-		transform: translateX(-50%);
+		right : 50%;
+		transform: translateX(50%);
 	}
+	@media screen and (max-width: 658px) {
+	.navbar-brand {
+		display: block;
+	  font-size: 1em;
+	  width: 60%;
+	  right: 3%;
+	  transform: none;
+
+	}
+
+  }
+
+  	@media screen and (min-width: 600px) and (max-width: 992px) {
+	.navbar-brand {
+	  display: none;
+
+	}
+	
+  }
 	.nav-icon { font-size : 2em; }
+
+
 
 
 .product-list {
@@ -15,7 +36,7 @@
 }
 	.product-list-product-jumbotron {
 		background-color: white !important;
-		margin-left : 10px;
+		width: 100% !important;
 		transition: transform .07s;
 	}
 	.product-list-product-jumbotron:hover {
@@ -24,7 +45,7 @@
 	}
 	.product-list-product-img {
 		display: block;
-		width: 200px; 
+		width: 10em; 
 		margin : 0 auto;
 	}
 	.product-list-product-price { text-align : center; }
@@ -64,16 +85,16 @@
 	}
 
 
-.cart-product-img { display: block; width : 80px; }
+.cart-product-img { display: block; width : 80px; height:100px; }
 
 .footer {
-	background-color : #dddddd;
+	
+	background-color : #dddddd !important;
+	padding: 0;
 }
 .footer-jumbotron {
 	width: 100%;
-	background-color : transparent;
-	padding : 0 !important;
-	margin : 0 !important;
+	background-color : #dddddd !important;
 	height : 100% !important;
 }
 .footer-social-media .fa { color : white; font-size : 2em; }

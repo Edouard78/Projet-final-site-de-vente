@@ -1,12 +1,7 @@
 
 <?php ob_start(); ?>
-<h3>Mes adresses de Livraison</h3>
-<a href="index.php?action=addShippingAdressPage" class="btn btn-primary">
-		Ajouter un article
-		</a>
-		<br>
-		<div class="table-responsive">
-		
+<h3>Commandes</h3>
+<br>	
 <table class="table table-bordered table-striped table-condensed">
 	<thead>
 		<tr>

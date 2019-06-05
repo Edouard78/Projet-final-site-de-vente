@@ -8,11 +8,12 @@ ob_start();
 <script src="public/js/charge.js"></script>
 
 
+<div class="container">
+
 <h3>Paiement</h3>
-<div class="container" style='display:flex;align-items: center;'>
+<br>
 
-
-<form action="charge.php?action=submitPayment" method="post" id="payment-form" style='width:65%'>
+<form action="charge.php?action=submitPayment" method="post" id="payment-form">
   <div class="form-row">
 
     </select>
@@ -29,9 +30,12 @@ ob_start();
 
   <button>Valider Paiement</button>
 </form>
-
-<em class="fa fa-cc-stripe " style='font-size:8em;margin:0 auto;'></em>
+<br><br>
+<div class='paymentInfos pull-right' style='display:flex;'>
+<p style='font-size: 1em;margin-top: 1em; padding-right: 0.5em;'>Powered by :</p>  <div class="fa fa-cc-stripe " style='font-size:3em;'></div>
 </div>
+</div>
+
 
 
 <?php

@@ -68,5 +68,9 @@ class Cart
   public function store(Cart $cart) {
         $_SESSION['cart'] = $cart;
   }
+
+  public function productQuantity() {
+    return sizeof($this->_products);
+  }
 }
 

@@ -152,7 +152,7 @@ class Product
 
 	public function setPrice($price)
 	{
-			$this->_price = $price;
+			$this->_price = (int)$price;
 	}
 
 	public function setAddingDate($addingDate)

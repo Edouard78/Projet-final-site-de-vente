@@ -46,10 +46,10 @@
    	<div class = "row">
 
     <nav class="nav flex-column nav-tabs align-content-center col-md-3">
-    <h3>Panel</h3>
- 				<li class="nav-user "> <a class="nav-link " href="index.php?action=userPage">Mes informations</a> </li>
-                <li class="nav-user "> <a class="nav-link " href="index.php?action=userOrderPage">Mes commandes</a> </li>
-                <li class="nav-user"> <a class="nav-link" href="index.php?action=userShippingAdressPage">Mes coordonnées</a> </li>
+    <h3>Votre compte</h3>
+ 				<li class="nav-user "> <a class="nav-link " href="index.php?action=userPage">Informations</a> </li>
+                <li class="nav-user "> <a class="nav-link " href="index.php?action=userOrderPage">Historique de commande</a> </li>
+                <li class="nav-user"> <a class="nav-link" href="index.php?action=userShippingAdressPage">Adresses</a> </li>
 	</nav>
 		<div class="content col-md-9">
 		<?php echo $content ?>
@@ -57,24 +57,33 @@
 	</div>
 </div>
 </main>
-	<footer id="footer">
-		<div class="jumbotron">
-			<div class="container-fluid">
-				<div class="footerBlock row">
-                    
-
-					<div class="socialMedia col"> <em class="fa fa-facebook"></em>
-						<em class="fa fa-twitter"></em>
-						<em class="fa fa-skype"></em>
-						<em class="fa fa-instagram"></em>
-					</div>
-					<div class="aPropos col">
-						
-					</div>
-				</div>
-			</div>
-			</div>
-	</footer>
+	<footer class='l-footer footer'>
+            <div class="jumbotron footer-jumbotron">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="footer-social-media col"> 
+                        <h3>Suivez nous<h3>
+                        <em class="fa fa-facebook">
+                        </em>
+                        <em class="fa fa-twitter">
+                        </em>
+                        <em class="fa fa-skype">
+                        </em>
+                        <em class="fa fa-instagram">
+                        </em>
+                    </div>
+                    <div class="aPropos col">
+                    <h3>A propos de STYLSHOP</h3>
+                    <ul>
+                        <li>À propos</li>
+                            <li>Conditions d'utilisation</li>
+                            <li>Paiement</li>
+                            <li>Protection des données</li>
+                    </ul>	
+                    </div>
+                </div>
+            </div>
+        </footer>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

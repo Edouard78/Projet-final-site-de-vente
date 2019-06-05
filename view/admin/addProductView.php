@@ -1,12 +1,12 @@
 <?php ob_start();
 
 ?>
-
+<h3>Ajouter un Produit</h3>
+<br>
 <form action="index.php?action=addProduct" method="post" enctype="multipart/form-data">
-<legend>Ajouter un article</legend>
 <div class="form-group">
-    <label for="productImg">Télécharger une image:</label>
-<input type="file" name="productImg" />
+    <label for="productImg">Télécharger une image :</label>
+<input type="file" name="productImg" id='productImg' />
 </div>
 						<div class="form-group">
 							<label for="title">Titre</label>
@@ -18,29 +18,29 @@
     <?php while ($data = $categories->fetch())
 	{ 
     ?>
-    <option value="<?php echo $data['id']; ?>" selected><?php echo $data['title']; ?></option>
-  </div>
+    <option value="<?php echo $data['id']; ?>" ><?php echo $data['title']; ?></option>
+
   <?php
-  }
+  } $categories->closeCursor();
   ?>
     </select>
 </div>
 						<div class="form-group">
-							<label for="brand">Marque</label>
+							<label for="brand">Marque :</label>
 							<input type="text" class="form-control" name ="brand" id="brand" placeholder="Marque">
 						</div>
 						<div class="form-group">
-							<label for="price">Marque</label>
+							<label for="price">Marque :</label>
 							<input type="number" class="form-control" name ="price" id="price" placeholder="prix">
 						</div>
 						<div class="form-group">
-							<label for="description">Description</label>
-							<textarea class="tinymce" name="description" id="description" placeholder="description" rows="8"></textarea> 
+							<label for="description">Description :</label>
+							<textarea class="form-control" name="description" id="description" placeholder="description" rows="8"></textarea> 
 						</div>
-						<button type="submit" class="btn btn-default">Ajouter</button>
+						<button type="submit" class="btn btn-primary">Ajouter</button>
 					</form>
 
 <?php $content = ob_get_clean();
 
-require 'adminTemplate.php';
+require 'view/admin/adminTemplate.php';
 ?>

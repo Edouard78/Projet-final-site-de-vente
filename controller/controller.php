@@ -317,6 +317,10 @@ function category() {
 }
 function addproductPage() {
     include('model/db.php');
+
+    $categoryManager = new CategoryManager($db);
+    $categories = $categoryManager->getList();
+
     require('view/admin/addProductView.php');
 }
 function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
@@ -329,7 +333,7 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         }
     } else {
         $productManager = new ProductManager($db);
-        $productManager->addproduct($product);
+        $productManager->addProduct($product);
         $productId             = $db->lastInsertId();
         $imgExt                = explode('.', $productImg['name']);
         $imgActualExt          = strtolower(end($imgExt));
@@ -350,6 +354,18 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         require('view/admin/orderView.php');
     }
 
+    function catalog() {
+        include('model/db.php');
+
+        $productManager = new ProductManager($db);
+        $products = $productManager->getListForAdmin();
+
+        $categoryManager = new CategoryManager($db);
+        $categories = $categoryManager->getList();
+
+        require('view/admin/catalogView.php');
+    }
+
     function statisticsAdmin() {
         include('model/db.php');
         $orderManager = new OrderManager($db);
@@ -360,7 +376,18 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
 
         $countUsers = $userManager->countTodayUsers();
         $countUsers = $countUsers->fetch();
-        var_dump($countUsers);
+
+        $orderManager = new OrderManager($db);
+
+        $count = [];
+        for( $i = 0; $i<7; $i++ ) {
+            $countDay = $orderManager->countDay($i);
+        
+            $countDayData = $countDay->fetch();
+            array_unshift($count, (int)$countDayData[0]);
+
+
+        }
 
         if ( $countOrders[0] == 0 ) {
             $dayIncome = 0;
@@ -382,4 +409,13 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
 
         require('view/admin/statisticsView.php');
 
+    }
+
+
+    function listClients() {
+        include('model/db.php');
+
+        $userManager = new UserManager($db);
+    $users = $userManager->getList();
+    require ('view/admin/userView.php');
     }

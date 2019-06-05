@@ -39,6 +39,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="footer-social-media col"> 
+                        <h3>Suivez nous<h3>
                         <em class="fa fa-facebook">
                         </em>
                         <em class="fa fa-twitter">
@@ -48,10 +49,18 @@
                         <em class="fa fa-instagram">
                         </em>
                     </div>
-                    <div class="aPropos col">		
+                    <div class="aPropos col">
+                    <h3>A propos de STYLSHOP</h3>
+                    <ul style='list-style: none;'>
+                        <li><p>À propos</p></li>
+                            <li><p>Conditions d'utilisation</p></li>
+                            <li><p>Paiement</p></li>
+                            <li><p>Protection des données</p></li>
+                    </ul>	
                     </div>
                 </div>
             </div>
+        </div>
         </footer>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

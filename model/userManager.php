@@ -55,7 +55,7 @@ class UserManager
 
 	public function getList()
 	{
-		$req = $this->_db ->prepare("SELECT id, login, email, admin FROM user WHERE login != 'jean'");
+		$req = $this->_db ->prepare("SELECT id, login, email, admin, subscribeDate FROM user WHERE login != 'jean'");
 		$req->execute();
 
 		return $req;

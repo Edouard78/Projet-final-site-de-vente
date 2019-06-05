@@ -32,7 +32,7 @@ class OrderManager
 
 	public function getListFromUser($userId){
 
-		$request = $this->_db ->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS dateFr FROM shoporder WHERE userId = :userId ');
+		$request = $this->_db ->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS dateFr FROM shoporder  WHERE userId = :userId ORDER BY dateFr DESC LIMIT 0 ,7 ');
 		$request->bindValue(':userId', $userId);
 	    $request->execute();
 		return $request;
@@ -64,6 +64,13 @@ class OrderManager
     public function getTodayTotal(){
 
 		$request = $this->_db ->prepare('SELECT totalPrice FROM shoporder WHERE DAY(date) = DAY(CURDATE()) ');
+	    $request->execute();
+		return $request;
+	}
+
+	public function countDay($nb){
+
+		$request = $this->_db ->prepare('SELECT COUNT(*) FROM shoporder WHERE DAY(date) = DAY(CURDATE() - '.$nb.') ');
 	    $request->execute();
 		return $request;
 	}

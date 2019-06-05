@@ -2,10 +2,11 @@
 .l-footer {
 
 	height: 35vh !important;
-	margin : 0;
-	padding : 0;
+	margin : 0 !important;
+	padding : 0 !important;
 }
 
 .l-main {
 	min-height: 50vh !important;
+	padding-bottom : 25vh !important;
 }

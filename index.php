@@ -188,6 +188,13 @@ try {
                 authenticationPage();
             } 
 
+            elseif ($_GET['action'] == 'signOut') {
+                unset($_SESSION['userId'],
+        $_SESSION['login'],
+        $_SESSION['admin']);
+                header('Location: index.php');
+            }
+
             elseif ($_GET['action'] == 'subscribe' && isset($_POST['login']))
 		{
 		$data1 = array(
@@ -231,6 +238,16 @@ try {
         addProduct($data);
         
         }
+
+        elseif ($_GET['action'] == 'adminPage') {
+            listOrdersForAdmin();
+        }
+
+        elseif ($_GET['action'] == 'catalog') {
+            catalog();
+        }
+
+
         
             elseif ($_GET['action'] == 'addProduct' && isset($_POST['title']))
 		{
@@ -266,6 +283,10 @@ try {
 	{
 		throw new Exception('Aucun identifiant de billet envoyé');
 	}
+}
+
+elseif ($_GET['action'] == 'adminClients') {
+    listClients();
 }
 
         }

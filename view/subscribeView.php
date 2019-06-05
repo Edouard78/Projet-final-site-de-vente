@@ -1,6 +1,7 @@
 <?php
 ob_start();
 ?>
+<h3>Creer un compte</h3>
 <?php
 
 if (isset($_GET['errors']))
@@ -96,20 +97,38 @@ if (isset($_GET['success']))
 }
 
 ?>
-<form class="col-lg-6" method="post" action="index.php?action=subscribe">
-  <legend>Inscription</legend>
-    Votre nom d'utilisateur <input type="text" class="form-control" name="login">
-    Choisissez un mot de passe <input type="password" class="form-control" name="password"">
-    Retaper votre mot de passe <input type="password" class="form-control" name="password2"">
-    Votre email <input type="text" class="form-control" name="email">
+<form  method="post" action="index.php?action=subscribe">
+  <legend>Informations du compte</legend>
+<div class='form-group'>
+    <label for="login">Nom d'utilisateur</label> <input type="text" class="form-control" name="login" id="login">
+</div>
 
-	<legend>Vos informations</legend>	
+<div class='form-group'>
+    <label for="email">Email</label> <input type="text" class="form-control" name="email" id="email">
+</div>
 
-	Nom et prénom <input type="text" class="form-control" name="name">
-    Adresse (rue, numéro, bâtiment) <input type="text" class="form-control" name="adress">
-    Code postal <input type="number" class="form-control" name="postalCode">
-    Ville <input type="text" class="form-control" name="city">
-    <button type="submit">Soumettre</button>
+<div class='form-group'>
+    <label for="password">Mot de passe</label> <input type="password" class="form-control" name="password" id='password'>
+</div>
+
+<div class='form-group'>
+    <label for="password2">Retaper votre mot de passe</label> <input type="password" class="form-control" name="password2" id="password2">
+</div>
+	<legend>Informations Personnelles</legend>	
+	
+<div class='form-group'>
+	<label for="name">Nom et prénom</label> <input type="text" class="form-control" name="name"id="name">
+</div>
+	<div class='form-group'>
+    <label for="adress">Adresse (rue, numéro, bâtiment)</label> <input type="text" class="form-control" name="adress" id="adress">
+</div>
+    <div class='form-group'>
+    <label for="postalCode">Code postal</label> <input type="number" class="form-control" name="postalCode" id="postalCode">
+</div>
+    <div class='form-group'>
+    <label for="city">Ville</label> <input type="text" class="form-control" name="city" id="city">
+</div>
+    <button class='btn btn-primary'type="submit">Soumettre</button>
 </form>
 
 <?php

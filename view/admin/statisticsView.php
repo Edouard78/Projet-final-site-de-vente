@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
-<h3>Stats</h3>
-
+<h3>Aujourd'hui</h3>
+<br>
 
 <?php
 $date = date('d/m/Y', time()); ?>
@@ -11,7 +11,7 @@ $date = date('d/m/Y', time()); ?>
 		<tr>
 			<th>Date</th>
 			<th>Inscriptions</th>
-			<th>Commandes</th>
+			<th>Nb Commandes</th>
 			<th>Revenu du jour</th>
 		</tr>
 	</thead>
@@ -30,6 +30,43 @@ $date = date('d/m/Y', time()); ?>
 
 	</table>
 </div>
+<h3>Cette semaine</h3>
+<br>
+<canvas id='chart'></canvas>
+<script src='public/js/dateFormat.js'></script>
+<script>
+
+	let chart = document.getElementById('chart');
+	chart.getContext('2d');
+	var count = [<?php echo '"'.implode('","', $count).'"' ?>];
+
+	function last7Days () {
+    var result = [];
+    for (var i=0; i<7; i++) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        result.unshift( dateFormat(d, "dddd d mmmm") );
+    }
+
+    return result;
+}
+
+	let orderChart = new Chart(chart, {
+		type : 'line',
+		data: {
+			labels: last7Days(),
+			datasets: [{
+				label:'Commandes',
+				data: count,
+
+			backgroundColor : 'DeepSkyBlue'
+			}]
+		}
+	})
+
+
+
+</script>
 
 
 	<?php $content = ob_get_clean(); ?>

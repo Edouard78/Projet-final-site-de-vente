@@ -1,4 +1,7 @@
-<?php ob_start();
+<?php ob_start(); ?>
+<h3>Panier</h3>
+<br>
+<?php
 
 if (isset($_SESSION['cart'])) {
   
@@ -6,8 +9,7 @@ if (isset($_SESSION['cart'])) {
 ?>
 
 <div class="table-responsive">
-<table class="table table-bordered table-striped table-condensed">
-<h3>Mon Panier</h3>
+<table class="table table-bordered table-condensed">
 	<thead>
 		<tr>
 			<th>Produit</th>
@@ -47,13 +49,15 @@ if (isset($_SESSION['cart'])) {
 <div class="afterCartBLock float-right">
 <h3  id="cartTotalPrice">Prix Total : <strong><?php echo $_SESSION['cart']->totalPrice() ?> <em class="fa fa-euro"></em></strong></h3>
 	
-<a id ="submitCart float-right" type="button" href="index.php?action=submitCart" class="btn btn-primary">Valider mon Panier</a>
+<a id ="submitCart float-right" type="button" href="index.php?action=submitCart" class="btn btn-primary btn-lg">Valider mon Panier</a>
 </div>
 
 <?php
 } else {
 	?>
-	<h3>Aucun articles présents dans le panier</h3>
+	<div class="alert alert-primary" role="alert">
+  <strong>Aucun articles présents dans le panier</strong>
+</div>
 <?php
 }
 ?>

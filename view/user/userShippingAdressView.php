@@ -1,6 +1,6 @@
 
 <?php ob_start(); ?>
-<h3>Mes adresses de Livraisons</h3>
+<h3>Vos adresses de livraison</h3>
 <a href="index.php?action=addPostPage" class="btn btn-light">
 		Ajouter une adresse de Livraison
 		</a>
