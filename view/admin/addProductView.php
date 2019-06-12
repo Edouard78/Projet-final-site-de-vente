@@ -1,8 +1,23 @@
 <?php ob_start();
-
 ?>
 <h3>Ajouter un Produit</h3>
 <br>
+<?php 
+
+
+if (isset($_GET['error']))
+{
+	if ($_GET['error'] == 1)
+	{
+?>
+<div class="alert alert-danger">
+    <strong>Un ou plusieurs champs sont incorrect</strong>
+</div>
+<br>
+<?php
+	}
+}
+?>
 <form action="index.php?action=addProduct" method="post" enctype="multipart/form-data">
 <div class="form-group">
     <label for="productImg">Télécharger une image :</label>
@@ -21,6 +36,7 @@
     <option value="<?php echo $data['id']; ?>" ><?php echo $data['title']; ?></option>
 
   <?php
+
   } $categories->closeCursor();
   ?>
     </select>

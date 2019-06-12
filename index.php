@@ -11,6 +11,7 @@ require ('controller/controller.php');
 try {
     if (isset($_GET['action']))
         {
+
             if ($_GET['action'] == 'home' && !isset($_GET['page']))
             {   
                 $productListNb = countProductList();
@@ -41,7 +42,42 @@ try {
             }
         }
 
+        if ($_GET['action'] == 'categoryClient' && isset($_GET['categoryId'])&&  !isset($_GET['page']))
+            {   
+                $productListNb = countCategoryProductList($_GET['categoryId']);
+                
+                categoryClient($productListNb, 1,$_GET['categoryId']);
 
+            } 
+
+            elseif ($_GET['action'] == 'categoryClient' && isset($_GET['categoryId']))
+        {
+        $productListNb = countCategoryProductList($_GET['categoryId']);
+
+
+        // NEXT HOME PAGE
+
+        if ($_GET['page'] <= 0)
+            {
+            header('Location: index.php?action=categoryClient&categoryId='.$_GET['categoryId']);
+            }
+
+        // PREVIOUS HOME PAGE
+
+        elseif ($_GET['page'] > $productListNb + 1)
+            {
+            $end = intval($_GET['page']) - 1;
+            header('Location: index.php?action=categoryClient&categoryId='.$_GET['categoryId'].'&page=' . $end);
+            }
+          else
+            {
+            categoryClient($productListNb, $_GET['page'], $_GET['categoryId']);
+            }
+        }
+
+            elseif ($_GET['action'] == 'downloadBillAdmin' && isset($_GET['orderId'])) {
+                downloadBill($_GET['orderId']); 
+            }
             elseif ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
                 downloadBill($_GET['orderId']); 
             }
@@ -172,7 +208,30 @@ try {
     
             }
 
+            else if ($_GET['action'] == 'saveInfos' && isset($_POST['login']) && isset($_POST['email'])) {
+                saveInfos($_SESSION['userId'], $_POST['login'], $_POST['email']);
+            }
 
+             else if ($_GET['action'] == 'deleteShippingAdress' && isset($_GET['id'])) {
+                deleteShippingAdress($_GET['id']);
+            }
+
+            else if ($_GET['action'] == 'addShippingAdressPage') {
+                addShippingAdressPage();
+            }
+
+            else if ($_GET['action'] == 'addShippingAdress' && isset($_POST['name'])) {
+                $data = array(
+            'userId' => $_SESSION['userId'],
+            'title' => $_POST['title'],
+            'name' => $_POST['name'],
+            'adress' => $_POST['adress'],
+            'postalCode' => $_POST['postalCode'],
+            'city' => $_POST['city']
+        );
+                addShippingAdress($data);
+
+            }
             
 
             elseif ($_GET['action'] == 'connexion' && isset($_POST['login']))
@@ -249,8 +308,10 @@ try {
 
 
         
-            elseif ($_GET['action'] == 'addProduct' && isset($_POST['title']))
+            elseif ($_GET['action'] == 'addProduct')
 		{
+            if (isset($_POST['title']) && getimagesize($_FILES["productImg"]["tmp_name"]))
+            {
             $productImg = $_FILES['productImg'];
             
             $productImgTmpName = $_FILES['productImg']['tmp_name'];
@@ -258,13 +319,17 @@ try {
 
 		$data = array(
 			'title' => $_POST['title'],
-            'category' => $_POST['category'],
+            'categoryId' => $_POST['category'],
             'brand' => $_POST['brand'],
             'price' => $_POST['price'],
 			'content' => $_POST['description']
 		);
 		addProduct($data, $productImg, $productImgTmpName, $productImgName);
-		
+		}
+        else {
+
+            header('Location: index.php?action=addProductPage&error=1');
+        }
         }
         
         elseif ($_GET['action'] == 'addProductPage')

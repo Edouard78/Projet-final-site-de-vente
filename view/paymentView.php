@@ -32,7 +32,7 @@ ob_start();
 </form>
 <br><br>
 <div class='paymentInfos pull-right' style='display:flex;'>
-<p style='font-size: 1em;margin-top: 1em; padding-right: 0.5em;'>Powered by :</p>  <div class="fa fa-cc-stripe " style='font-size:3em;'></div>
+<p style='font-size: 1em;margin-top: 1em; padding-right: 0.5em;'>Avec </p>  <div class="fa fa-cc-stripe " style='font-size:3em;'></div>
 </div>
 </div>
 

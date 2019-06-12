@@ -1,10 +1,10 @@
 
 <?php ob_start(); ?>
 <h3>Vos adresses de livraison</h3>
-<a href="index.php?action=addPostPage" class="btn btn-light">
+<br>
+<a href="index.php?action=addShippingAdressPage" class="btn btn-primary">
 		Ajouter une adresse de Livraison
 		</a>
-<br>
 <br>
 		<div class="table-responsive">		
 <table class="table table-bordered table-striped table-condensed">
@@ -12,7 +12,6 @@
 		<tr>
 			<th>Nom</th>
 			<th>Voir</th>
-			<th>Modifier</th>
 			<th>Supprimer</th>
 
 		</tr>
@@ -25,14 +24,11 @@
 
 		<tr>
 				<td><?= $data['title'] ?></td>
-				<td><a href="index.php?action=deletePost&amp;id=<?= $data['id'] ?>" class="btn btn-light">
+				<td><a href="#" class="btn btn-light">
 						Voir 
 					</a></td>
-				<td> <a href="index.php?action=deletePost&amp;id=<?= $data['id'] ?>" class="btn btn-secondary">
-						 Modifier
-					</a>
-				<td> 
-					<a href="index.php?action=deletePost&amp;id=<?= $data['id'] ?>" class="btn btn-dark">
+
+					<td><a href="index.php?action=deleteShippingAdress&amp;id=<?= $data['id'] ?>" class="btn btn-dark">
 						 Supprimer
 					</a></td>
 				</tr>

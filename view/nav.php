@@ -5,11 +5,21 @@
   </button>
 
   <div class="collapse navbar-collapse justify-content-between align-items-center" id="collapsibleNavbar">
+ <?php 
+    
+require_once('model/category.php');
+require_once('model/categoryManager.php');
+  include('model/db.php');
 
+  $categoryManager = new CategoryManager($db);
+  $categories = $categoryManager->getList();
+
+ ?>
   <ul class="navbar-nav">
     <li class="nav-item"> <a class="nav-link" href="index.php?action=home">ACCUEIL</a> </li>
-    <li class="nav-item"> <a class="nav-link" href="#">VÊTEMENTS</a> </li>
-    <li class="nav-item"> <a class="nav-link" href="#">ACCESOIRES</a> </li>
+    <?php while($data = $categories->fetch()) { ?>
+    <li class="nav-item"> <a class="nav-link" href="index.php?action=categoryClient&categoryId=<?php echo $data['id'] ?>"><?php echo$data['title'] ?></a> </li>
+  <?php } ?>
   </ul>
   <ul class="navbar-nav">
   <li class="nav-item"><a class="cart-link nav-link" href="index.php?action=cartPage"><i class="fa fa-shopping-cart nav-icon cart-icon"></i>Panier</a></li>

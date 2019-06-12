@@ -61,12 +61,12 @@ class UserManager
 		return $req;
 	}
 
-	public function update(User $user)
+	public function saveInfos(User $user)
 	{
-		$req = $this->_db->prepare('UPDATE user SET admin = :admin WHERE id = :id');
+		$req = $this->_db->prepare('UPDATE user SET login = :login, email = :email WHERE id = :id');
 
-    $req->bindValue(':admin', $user->admin());
-
+    $req->bindValue(':login', $user->login());
+    $req->bindValue(':email', $user->email());
     $req->bindValue(':id', $user->id());
 
     $req->execute();

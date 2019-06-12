@@ -18,7 +18,13 @@ require_once('model/billingAdress.php');
 require_once('model/bill.php');
 require_once('model/userShippingAdress.php');
 require_once('model/userShippingAdressManager.php');
+function orderUnique($id) {
+    include('model/db.php');
 
+    $orderManager = new OrderManager($db);
+    $orderResponse = $orderManager->getUnique($orderId);
+    $dataOrder = $orderResponse->fetch();
+}
 function downloadBill($orderId) {
     include('model/db.php');
 
@@ -75,6 +81,53 @@ function userPage($userId) {
 
     require('view/user/userInfos.php');
 
+}
+
+function deleteShippingAdress($id) {
+    include('model/db.php');
+    $userShippingAdressManager = new UserShippingAdressManager($db);
+    $userShippingAdressManager->delete($id);
+
+    header('Location: index.php?action=addShippingAdressPage');
+}
+
+function addShippingAdressPage() {
+    require('view/user/addShippingAdressView.php');
+}
+
+function addShippingAdress($data) {
+
+    include('model/db.php');
+
+    $userShippingAdress = new UserShippingAdress($data);
+
+    $errorsFromModel = $userShippingAdress->errors();
+    if (count($errorsFromModel) > 0) {
+
+
+    header('Location: index.php?action=addShippingAdressPage&error=1');
+
+}
+else {
+    $userShippingAdressManager = new UserShippingAdressManager($db);
+    $userShippingAdressManager->create($userShippingAdress);
+
+    header('Location: index.php?action=userShippingAdressPage');
+}
+        
+    
+}
+
+function saveInfos($userId, $login, $email) {
+    include('model/db.php');
+
+    $data = array('id' => $userId, 'login' => $login, 'email' => $email);
+    $user = new User($data);
+    $userManager = new userManager($db);
+    $userManager->saveInfos($user);
+
+
+    header('Location: index.php?action=userPage');
 }
 
 function userShippingAdressPage($userId) {
@@ -225,7 +278,7 @@ function subscribe($data1, $data2) {
     }
     $newUserShippingAdress = new UserShippingAdress($data2);
     $newUserShippingAdress->setTitle('Mon adresse par défault');
-    var_dump($newUserShippingAdress);
+
     $errorsFromModel = $newUserShippingAdress->errors();
     if (count($errorsFromModel) > 0) {
         if (in_array(UserShippingAdress::INVALID_TITLE, $errorsFromModel)) {
@@ -262,7 +315,17 @@ function subscribe($data1, $data2) {
 function subscribePage() {
     require('view/subscribeView.php');
 }
+function countCategoryProductList($categoryId)
+    {
+    include ('model/db.php');
 
+    $productManager = new ProductManager($db);
+    $result = $productManager->countCategoryProduct($categoryId);
+    $productNbStr = $result->fetch();
+    $productNb = intval($productNbStr[0]);
+    $productListNb = $productNb / 5;
+    return $productListNb;
+    }
 function countProductList()
     {
     include ('model/db.php');
@@ -274,6 +337,15 @@ function countProductList()
     $productListNb = $productNb / 5;
     return $productListNb;
     }
+    function categoryClient($productListNb, $pageNumber, $categoryId) {
+    include('model/db.php');
+    $end = $pageNumber * 5;
+    $start = ($pageNumber * 5) - 5;
+    $productManager = new ProductManager($db);
+    $product= $productManager->getCategoryList($start, $end, $categoryId);
+
+    require('view/CategoryClientView.php');
+}
 function home($productListNb, $pageNumber) {
     include('model/db.php');
     $end = $pageNumber * 5;
@@ -327,9 +399,10 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
     include('model/db.php');
     $product         = new Product($data);
     $errorsFromModel = $product->errors();
+    var_dump($product);
     if (count($errorsFromModel) > 0) {
         if (in_array(Product::INVALID_TITLE, $errorsFromModel) OR in_array(Product::INVALID_BRAND, $errorsFromModel) OR in_array(Product::INVALID_CONTENT, $errorsFromModel)) {
-            echo 'erreurrr';
+            header('Location: index.php?action=addProductPage&error=1');
         }
     } else {
         $productManager = new ProductManager($db);
@@ -339,7 +412,7 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         $imgActualExt          = strtolower(end($imgExt));
         $productImgDestination = './uploads/products/' . $productId . '.' . $imgActualExt;
         move_uploaded_file($productImg['tmp_name'], $productImgDestination);
-        var_dump($product);
+
     }
 
 

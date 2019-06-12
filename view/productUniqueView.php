@@ -14,7 +14,7 @@ $data = $product->fetch();
 
 <div class="jumbotron jumbotronproductUnique">
 <div class="row">
-<div class="product-unique-img-block col">
+<div class="product-unique-img-block col-md-6 col-sm-12">
 
 <div class="img-zoom-container">
   <img id="zoom-image"  src="<?php echo $productImgSrc; ?>" width="300" height="240">
@@ -22,26 +22,27 @@ $data = $product->fetch();
 </div>
 
 </div>
-<div class="productInfoUnique col">
+<div class="productInfoUnique col-md-6 col-sm-12 ">
 <h5><?php echo $data['title'] ?></h5>
 <h5><?php echo $data['brand'] ?></h5>
 <p>Prix : <?php echo $data['price'] ?> <em class="fa fa-euro"></em></p>
 
 <form id='form'>
-<div class="form-group row">
-    <div class="col-3">
+  <div class="form-group row">
+  <div class='col-sm-3'>
+
+
                   <label for="sm">Quantité :</label>
                   <input type="number" class="form-control input-sm" name ="quantity" id="quantity" placeholder="Sélectionnez la quantité" value="1" min="1">
                 </div>
 </div>
                 <button type="submit" class="btn btn-dark">Ajouter au panier</button>
+        
 </form>
 
 <p style='border-top : 1px black solid; margin-top: 30px;'><?php echo $data['content'] ?></p>
 </div>
 </div>
-
-
 
 
 </div>

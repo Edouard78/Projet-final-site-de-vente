@@ -39,6 +39,14 @@ class UserShippingAdressManager
 		return $request;
 	}
 
+	public function delete($id)
+	{
+		$id = (int) $id;
+    $req = $this->_db->prepare('DELETE FROM shippingAdress WHERE id = :id');
+    $req->bindValue(':id', $id );
+    $req->execute();
+	}
+
 
 	
 }
