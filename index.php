@@ -78,38 +78,7 @@ try {
             elseif ($_GET['action'] == 'downloadBillAdmin' && isset($_GET['orderId'])) {
                 downloadBill($_GET['orderId']); 
             }
-            elseif ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
-                downloadBill($_GET['orderId']); 
-            }
-
-            elseif ($_GET['action'] == 'userPage') {
-                userPage($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'userOrderPage') {
-                listOrdersForUser($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'userShippingAdressPage') {
-                userShippingAdressPage($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'submitCart')
-            {
-
-                if (isset($_SESSION['userId']) & isset($_SESSION['login']) )
-                {
-                    $userId = $_SESSION['userId'];
-
-                    prePaymentPage($userId);
-                }
-
-                else{
-                    echo 'Vous nete pas connecté';
-                }
-
-    
-            }
+            
             elseif ($_GET['action'] == 'addProductToCart')
             {
                 if (isset($_POST['id']) AND isset($_POST['price']) AND isset($_POST['quantity']) ) {
@@ -124,43 +93,7 @@ try {
 }
             }
 
-            elseif ($_GET['action'] == 'submitOrderInfos')
-            {
-
-                if (isset($_POST['userShippingAdress']))
-                {
-                    $userShippingAdressId = $_POST['userShippingAdress'];
-                    if (isset($_POST['billing-adress-identical'])) {
-
-                    $billingAdressSameAs = true;
-                    submitOrderInfos($userShippingAdressId, $billingAdressSameAs);
-
-                    }
-                    else {
-                        $billingAdressSameAs = false;
-                        $billingAdress = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
-                        submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress);
-                    }
-
             
-                }
-
-                else{
-                    echo 'Vous nete pas connecté';
-                }
-
-    
-            }
-
-
-
-            elseif ($_GET['action'] == 'orderResult')
-            {
-
-         
-                orderResult();
-    
-            }
 
             elseif ($_GET['action'] == 'cartPage')
             {
@@ -208,32 +141,7 @@ try {
     
             }
 
-            else if ($_GET['action'] == 'saveInfos' && isset($_POST['login']) && isset($_POST['email'])) {
-                saveInfos($_SESSION['userId'], $_POST['login'], $_POST['email']);
-            }
-
-             else if ($_GET['action'] == 'deleteShippingAdress' && isset($_GET['id'])) {
-                deleteShippingAdress($_GET['id']);
-            }
-
-            else if ($_GET['action'] == 'addShippingAdressPage') {
-                addShippingAdressPage();
-            }
-
-            else if ($_GET['action'] == 'addShippingAdress' && isset($_POST['name'])) {
-                $data = array(
-            'userId' => $_SESSION['userId'],
-            'title' => $_POST['title'],
-            'name' => $_POST['name'],
-            'adress' => $_POST['adress'],
-            'postalCode' => $_POST['postalCode'],
-            'city' => $_POST['city']
-        );
-                addShippingAdress($data);
-
-            }
             
-
             elseif ($_GET['action'] == 'connexion' && isset($_POST['login']))
             {
             $login = $_POST['login'];
@@ -277,6 +185,134 @@ try {
 		subscribePage();
 		}
 
+        
+        elseif ($_GET['action'] == "productUnique")
+	{
+	if (isset($_GET['id']) && $_GET['id'] > 0)
+		{
+		productUnique($_GET['id']);
+		}
+	else
+	{
+		throw new Exception('Aucun identifiant de billet envoyé');
+	}
+}
+
+
+elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
+        if ($_SESSION['admin'] == FALSE){
+        // USER
+        if ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
+                downloadBill($_GET['orderId']); 
+            }
+
+            elseif ($_GET['action'] == 'userPage') {
+                userPage($_SESSION['userId']); 
+            }
+
+            elseif ($_GET['action'] == 'userOrderPage') {
+                listOrdersForUser($_SESSION['userId']); 
+            }
+
+            elseif ($_GET['action'] == 'userShippingAdressPage') {
+                userShippingAdressPage($_SESSION['userId']); 
+            }
+
+            elseif ($_GET['action'] == 'submitCart')
+            {
+
+                if (isset($_SESSION['userId']) & isset($_SESSION['login']) )
+                {
+                    $userId = $_SESSION['userId'];
+
+                    prePaymentPage($userId);
+                }
+
+                else{
+                    echo 'Vous nete pas connecté';
+                }
+
+    
+            }
+
+            elseif ($_GET['action'] == 'submitOrderInfos')
+            {
+
+                if (isset($_POST['userShippingAdress']))
+                {
+                    $userShippingAdressId = $_POST['userShippingAdress'];
+                    if (isset($_POST['billing-adress-identical'])) {
+
+                    $billingAdressSameAs = true;
+                    submitOrderInfos($userShippingAdressId, $billingAdressSameAs);
+
+                    }
+                    else {
+                        $billingAdressSameAs = false;
+                        $billingAdress = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
+                        submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress);
+                    }
+
+            
+                }
+
+                else{
+                    echo 'Vous nete pas connecté';
+                }
+
+    
+            }
+
+
+
+            elseif ($_GET['action'] == 'orderResult')
+            {
+
+         
+                orderResult();
+    
+            }
+
+            else if ($_GET['action'] == 'saveInfos' && isset($_POST['login']) && isset($_POST['email'])) {
+                saveInfos($_SESSION['userId'], $_POST['login'], $_POST['email']);
+            }
+
+             else if ($_GET['action'] == 'deleteShippingAdress' && isset($_GET['id'])) {
+                deleteShippingAdress($_GET['id']);
+            }
+
+            else if ($_GET['action'] == 'addShippingAdressPage') {
+                addShippingAdressPage();
+            }
+
+            else if ($_GET['action'] == 'addShippingAdress' && isset($_POST['name'])) {
+                $data = array(
+            'userId' => $_SESSION['userId'],
+            'title' => $_POST['title'],
+            'name' => $_POST['name'],
+            'adress' => $_POST['adress'],
+            'postalCode' => $_POST['postalCode'],
+            'city' => $_POST['city']
+        );
+                addShippingAdress($data);
+
+            }
+            else {
+                echo 'vous navez pas les droits pour cette page';
+            }
+        }
+
+        elseif ($_SESSION['admin'] == TRUE){
+
+        //ADMIN
+        if ($_GET['action'] == 'adminPage') {
+            listOrdersForAdmin();
+        }
+
+elseif ($_GET['action'] == 'adminClients') {
+    listClients();
+}
+
         elseif ($_GET['action'] == 'orderAdminPage') {
             listOrdersForAdmin();
         }
@@ -298,9 +334,6 @@ try {
         
         }
 
-        elseif ($_GET['action'] == 'adminPage') {
-            listOrdersForAdmin();
-        }
 
         elseif ($_GET['action'] == 'catalog') {
             catalog();
@@ -309,7 +342,7 @@ try {
 
         
             elseif ($_GET['action'] == 'addProduct')
-		{
+        {
             if (isset($_POST['title']) && getimagesize($_FILES["productImg"]["tmp_name"]))
             {
             $productImg = $_FILES['productImg'];
@@ -317,15 +350,15 @@ try {
             $productImgTmpName = $_FILES['productImg']['tmp_name'];
             $productImgName = $_FILES['productImg']['name'];
 
-		$data = array(
-			'title' => $_POST['title'],
+        $data = array(
+            'title' => $_POST['title'],
             'categoryId' => $_POST['category'],
             'brand' => $_POST['brand'],
             'price' => $_POST['price'],
-			'content' => $_POST['description']
-		);
-		addProduct($data, $productImg, $productImgTmpName, $productImgName);
-		}
+            'content' => $_POST['description']
+        );
+        addProduct($data, $productImg, $productImgTmpName, $productImgName);
+        }
         else {
 
             header('Location: index.php?action=addProductPage&error=1');
@@ -333,26 +366,23 @@ try {
         }
         
         elseif ($_GET['action'] == 'addProductPage')
-		{
-		addProductPage();
-		
-        }
+        {
+        addProductPage();
         
-        elseif ($_GET['action'] == "productUnique")
-	{
-	if (isset($_GET['id']) && $_GET['id'] > 0)
-		{
-		productUnique($_GET['id']);
-		}
-	else
-	{
-		throw new Exception('Aucun identifiant de billet envoyé');
-	}
-}
+        }
+        else {
+            echo 'vous navez pas les droit pour cette page';
+        }
+    }
+        else{
+            echo 'vous navez pas les droits pour cette page';
+        }
 
-elseif ($_GET['action'] == 'adminClients') {
-    listClients();
-}
+        }
+        else {
+            echo 'vous devez être connecté pour accéder à cette page';
+        }
+
 
         }
 
