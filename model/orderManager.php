@@ -32,7 +32,7 @@ class OrderManager
 
 	public function getListFromUser($userId){
 
-		$request = $this->_db ->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS dateFr FROM shoporder  WHERE userId = :userId ORDER BY dateFr DESC LIMIT 0 ,7 ');
+		$request = $this->_db ->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS dateFr FROM shoporder  WHERE userId = :userId ORDER BY dateFr DESC LIMIT 0 ,10 ');
 		$request->bindValue(':userId', $userId);
 	    $request->execute();
 		return $request;

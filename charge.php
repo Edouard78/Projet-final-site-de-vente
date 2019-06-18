@@ -33,12 +33,11 @@ $customer = \Stripe\Customer::create(array(
 ));
 
 if ($_GET['action'] == 'submitPayment' && isset($_SESSION['cart']) && isset($_SESSION['userShippingAndBillingInfos']) ) {
-	echo 'Bonjour';
-	var_dump($_SESSION['userShippingAndBillingInfos']);
+
 	$orderData = array('userId' => $_SESSION['userId'],
 					  	'userShippingAdressId' => $_SESSION['userShippingAndBillingInfos']['userShippingAdressId'],
 					  	'billingAdressSameAs' => $_SESSION['userShippingAndBillingInfos']['billingAdressSameAs'],
-	   					'totalPrice' => $_SESSION['cart']->totalPrice()
+	   					'totalPrice' => $_SESSION['cart']->totalPrice(), 
 				);
 
 	$order = new Order($orderData);

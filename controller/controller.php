@@ -15,6 +15,8 @@ require_once('model/categoryManager.php');
 
 require_once('model/billingAdress.php');
 
+require_once('model/billingAdressManager.php');
+
 require_once('model/bill.php');
 require_once('model/userShippingAdress.php');
 require_once('model/userShippingAdressManager.php');
@@ -53,7 +55,13 @@ function downloadBill($orderId) {
     if($order->billingAdressSameAs() == TRUE) {
         $billingAdress = new BillingAdress($dataShippingAdress);
     }
-
+    else {
+        $billingAdressManager = new BillingAdressManager($db);
+        $response = $billingAdressManager->getUnique($orderId);
+        $responseFetch = $response->fetch();
+        $data = array('name' => $responseFetch[0], 'adress' => $responseFetch[1], 'postalCode' => $responseFetch[2], 'city' => $responseFetch[3], 'country' => $responseFetch[4] );
+        $billingAdress = new BillingAdress($data);
+    }
     $data = array('order' => $order, 'userShippingAdress' => $userShippingAdress, 'billingAdress' => $billingAdress, 'paymentMethod' => 'Stripe');
 
     $bill = new Bill($data);
@@ -145,7 +153,7 @@ function orderResult() {
 }
 function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     include('model/db.php');
-    var_dump($token);
+    
     $orderManager = new OrderManager($db);
     $orderManager->create($order, $token);
 
@@ -158,11 +166,12 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     $orderProductManager = new OrderProductManager($db);
     foreach ($orderProducts as $orderProduct) {
         $orderProductManager->create($orderProduct, $orderId);
-        var_dump($orderProductManager);
+     
             }
     if ($billingAdress != NULL) {
         $billingAdressManager = new BillingAdressManager($db);
         $billingAdressManager->create($billingAdress, $orderId);
+
     }
 
     header('Location: index.php?action=orderResult&success=1');
@@ -344,7 +353,7 @@ function countProductList()
     $productManager = new ProductManager($db);
     $product= $productManager->getCategoryList($start, $end, $categoryId);
 
-    require('view/CategoryClientView.php');
+    require('view/categoryClientView.php');
 }
 function home($productListNb, $pageNumber) {
     include('model/db.php');

@@ -154,7 +154,7 @@ public function errors()
 		}
 		else
 		{
-			$this->_country = $city;
+			$this->_country = $country;
 		}
     }
 
