@@ -25,7 +25,7 @@ if (isset($_SESSION['cart'])) {
       	<?php foreach ($_SESSION['cart']->products() as $id => $product) { 
       		$productImgSrc = './uploads/products/' . $product->id(); ?> 
 				<td><?=$product->title() ?></td>
-				<td><img class="cart-product-img" src="<?php echo $productImgSrc; ?>" /></td>
+				<td><img class="cart-product-img" src="<?php echo $productImgSrc; ?>"  alt="image produit panier"/></td>
 				<td><form action="index.php?action=updateProductCart&amp;productCartId=<?php echo $id ?> " method="post">
 				<div class="col-3">
 				<input type="number" class="form-control  " name ="quantity" iplaceholder="Sélectionnez la quantité" value="<?=$product->quantity() ?>" min ="1" >

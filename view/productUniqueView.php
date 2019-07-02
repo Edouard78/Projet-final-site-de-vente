@@ -17,7 +17,7 @@ $data = $product->fetch();
 <div class="product-unique-img-block col-md-6 col-sm-12">
 
 <div class="img-zoom-container">
-  <img id="zoom-image"  src="<?php echo $productImgSrc; ?>" width="300" height="240">
+  <img id="zoom-image"  src="<?php echo $productImgSrc; ?>" width="300" height="240" alt="image zoom">
   <div id="zoom-result" class="img-zoom-result"></div>
 </div>
 

@@ -13,10 +13,10 @@ while ($data = $product->fetch())
 <div class='product col-lg-3 col-md-4' >
 <a  href="index.php?action=productUnique&amp;id=<?php
 	echo $data['id'] ?>"><div class="jumbotron product-list-product-jumbotron">
-<?php echo '<img src="'.$productImgSrc.'" class="product-list-product-img" />' ?>
+<?php echo '<img src="'.$productImgSrc.'" class="product-list-product-img" alt="image produit" />' ?>
 <br >
-<h5 class="product-list-product-title" style='font-style: none;'><?php echo $data['title'] ?></h5>
-<h5 class="product-list-product-price" style='font-style: none;'><?php echo $data['price'] ?> <em class="fa fa-euro"></em></h5>
+<h5 class="product-list-product-title" ><?php echo $data['title'] ?></h5>
+<h5 class="product-list-product-price" ><?php echo $data['price'] ?> <em class="fa fa-euro"></em></h5>
 </a>
 </div>
 </div>
