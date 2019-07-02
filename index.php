@@ -144,8 +144,8 @@ try {
             
             elseif ($_GET['action'] == 'connexion' && isset($_POST['login']))
             {
-            $login = $_POST['login'];
-            $password = $_POST['password'];
+            $login = addslashes($_POST['login']);
+            $password = addslashes($_POST['password']);
             authentication($login, $password);
     
             }
