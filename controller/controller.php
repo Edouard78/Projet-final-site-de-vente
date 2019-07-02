@@ -9,17 +9,230 @@ require_once('model/cart.php');
 require_once('model/cartProduct.php');
 require_once('model/user.php');
 require_once('model/userManager.php');
-
 require_once('model/category.php');
 require_once('model/categoryManager.php');
-
 require_once('model/billingAdress.php');
-
-require_once('model/billingAdressManager.php');
-
 require_once('model/bill.php');
 require_once('model/userShippingAdress.php');
 require_once('model/userShippingAdressManager.php');
+
+
+/*  COMMUN   */
+
+/*---------------------------------------
+PANIER
+----------------------------------------*/
+
+
+function cartPage() {
+    require('view/cartView.php');
+}
+
+function addProductToCart($data) {
+    if (isset($_SESSION['cart'])) {
+        $products     = $_SESSION['cart']->products();
+        $newProductId = (int) $data['id'];
+        foreach ($products as $key => $product) {
+            $isAlreadyInCart = $product->id() == (int) $data['id'] ? TRUE : FALSE;
+            if ($isAlreadyInCart == TRUE) {
+                $idInArray = $key;
+            }
+        }
+        if (isset($idInArray)) {
+            $newQuantity = $products[$idInArray]->quantity() + (int) $data['quantity'];
+            $_SESSION['cart']->updateProduct($idInArray, $newQuantity);
+        } else {
+            $cartProduct = new CartProduct($data);
+            $_SESSION['cart']->addProduct($cartProduct);
+            $_SESSION['cart']->updateTotalPrice();
+        }
+    } else {
+        $cartProduct = new CartProduct($data);
+
+        $cart        = new Cart($cartProduct);
+        $cart->store($cart);
+    }
+}
+
+function cartTotal() {
+    $cartTotal        = new CartTotal($_SESSION['productsCart']);
+    $cartTotalManager = new CartTotalManager();
+    $cartTotalManager->saveTotal($cartTotal);
+    var_dump($cartTotal);
+    var_dump($cartTotalManager);
+}
+
+/*  USER LOGIN AND SUBSCRIBE   */
+
+
+/*---------------------------------------
+    CONNEXCTION
+----------------------------------------*/
+
+function authentication($login, $password) {
+    include('model/db.php');
+    $userManager       = new UserManager($db);
+    $user              = $userManager->authenticationGet($login);
+    $result            = $user->fetch();
+    $isPasswordCorrect = password_verify($password, $result['password']);
+    if ($login != $result['login'] || !$isPasswordCorrect) {
+        header('Location: index.php?action=authenticationPage&errors=1');
+        exit();
+    } else {
+        session_start();
+        $_SESSION['userId'] = $result['id'];
+        $_SESSION['login']  = $result['login'];
+        $_SESSION['admin']  = $result['admin'];
+        header('Location: index.php');
+    }
+}
+
+function authenticationPage() {
+    require('view/authenticationView.php');
+}
+
+
+/*---------------------------------------
+    INSCRIPTION
+----------------------------------------*/
+
+function subscribe($data1, $data2) {
+    include('model/db.php');
+    $errors          = array();
+    $newUser         = new User($data1);
+    $errorsFromModel = $newUser->errors();
+    if (count($errorsFromModel) > 0) {
+        if (in_array(User::INVALID_LOGIN, $errorsFromModel)) {
+            array_push($errors, 4);
+        }
+        if (in_array(User::INVALID_PASSWORD, $errorsFromModel)) {
+            array_push($errors, 5);
+        }
+        if (in_array(User::INVALID_EMAIL, $errorsFromModel)) {
+            array_push($errors, 6);
+        }
+    }
+    $userManager    = new UserManager($db);
+    $login          = $data1['login'];
+    $countLogin     = $userManager->countLogin($login);
+    $dataCountLogin = $countLogin->fetch();
+    $email          = $data1['email'];
+    $countEmail     = $userManager->countEmail($email);
+    $dataCountEmail = $countEmail->fetch();
+    if ($dataCountLogin['nb'] != 0) {
+        array_push($errors, 1);
+    }
+    if ($_POST['password'] != $_POST['password2']) {
+        array_push($errors, 2);
+    }
+    if ($dataCountEmail['nb'] != 0) {
+        array_push($errors, 3);
+    }
+    $newUserShippingAdress = new UserShippingAdress($data2);
+    $newUserShippingAdress->setTitle('Mon adresse par défault');
+
+    $errorsFromModel = $newUserShippingAdress->errors();
+    if (count($errorsFromModel) > 0) {
+        if (in_array(UserShippingAdress::INVALID_TITLE, $errorsFromModel)) {
+            array_push($errors, 7);
+        }
+        if (in_array(UserShippingAdress::INVALID_NAME, $errorsFromModel)) {
+            array_push($errors, 8);
+        }
+        if (in_array(UserShippingAdress::INVALID_ADRESS, $errorsFromModel)) {
+            array_push($errors, 9);
+        }
+        if (in_array(UserShippingAdress::INVALID_POSTAL_CODE, $errorsFromModel)) {
+            array_push($errors, 10);
+        }
+        if (in_array(UserShippingAdress::INVALID_CITY, $errorsFromModel)) {
+            array_push($errors, 11);
+        }
+    }
+    if (count($errors) > 0) {
+        $serialize = serialize($errors);
+        $encode    = urlencode($serialize);
+        header('Location: index.php?action=subscribePage&errors=' . $encode);
+    } else {
+        $newUser->setAdmin(0);
+        $userManager = new UserManager($db);
+        $userManager->createUser($newUser);
+        $userId = $db->lastInsertId();
+        $newUserShippingAdress->setUserId($userId);
+        $userShippingAdressManager = new UserShippingAdressManager($db);
+        $userShippingAdressManager->create($newUserShippingAdress);
+        header('Location: index.php?action=subscribePage&success=1');
+    }
+}
+
+function subscribePage() {
+    require('view/subscribeView.php');
+}
+
+
+/*---------------------------------------
+HOME AND CATEGORY PAGE
+----------------------------------------*/
+
+
+function countCategoryProductList($categoryId)
+    {
+    include ('model/db.php');
+
+    $productManager = new ProductManager($db);
+    $result = $productManager->countCategoryProduct($categoryId);
+    $productNbStr = $result->fetch();
+    $productNb = intval($productNbStr[0]);
+    $productListNb = $productNb / 5;
+    return $productListNb;
+    }
+
+function countProductList()
+    {
+    include ('model/db.php');
+
+    $productManager = new ProductManager($db);
+    $result = $productManager->countProduct();
+    $productNbStr = $result->fetch();
+    $productNb = intval($productNbStr[0]);
+    $productListNb = $productNb / 5;
+    return $productListNb;
+    }
+    function categoryClient($productListNb, $pageNumber, $categoryId) {
+    include('model/db.php');
+    $end = $pageNumber * 5;
+    $start = ($pageNumber * 5) - 5;
+    $productManager = new ProductManager($db);
+    $product= $productManager->getCategoryList($start, $end, $categoryId);
+
+    require('view/categoryClientView.php');
+}
+
+function home($productListNb, $pageNumber) {
+    include('model/db.php');
+    $end = $pageNumber * 5;
+    $start = ($pageNumber * 5) - 5;
+    $productManager = new ProductManager($db);
+    $product= $productManager->getList($start, $end);
+    require('view/homeView.php');
+}
+
+
+/*---------------------------------------
+PRODUIT UNIQUE PAGE
+----------------------------------------*/
+
+function productUnique($id) {
+    include('model/db.php');
+    $productManager = new ProductManager($db);
+    $product        = $productManager->getUnique($id);
+    require('view/productUniqueView.php');
+}
+
+
+/*  UTILISATEUR   */
+
+
 function orderUnique($id) {
     include('model/db.php');
 
@@ -55,13 +268,7 @@ function downloadBill($orderId) {
     if($order->billingAdressSameAs() == TRUE) {
         $billingAdress = new BillingAdress($dataShippingAdress);
     }
-    else {
-        $billingAdressManager = new BillingAdressManager($db);
-        $response = $billingAdressManager->getUnique($orderId);
-        $responseFetch = $response->fetch();
-        $data = array('name' => $responseFetch[0], 'adress' => $responseFetch[1], 'postalCode' => $responseFetch[2], 'city' => $responseFetch[3], 'country' => $responseFetch[4] );
-        $billingAdress = new BillingAdress($data);
-    }
+
     $data = array('order' => $order, 'userShippingAdress' => $userShippingAdress, 'billingAdress' => $billingAdress, 'paymentMethod' => 'Stripe');
 
     $bill = new Bill($data);
@@ -153,7 +360,6 @@ function orderResult() {
 }
 function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     include('model/db.php');
-    
     $orderManager = new OrderManager($db);
     $orderManager->create($order, $token);
 
@@ -166,13 +372,12 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     $orderProductManager = new OrderProductManager($db);
     foreach ($orderProducts as $orderProduct) {
         $orderProductManager->create($orderProduct, $orderId);
-     
+        var_dump($orderProductManager);
             }
     if ($billingAdress != NULL) {
         $billingAdressManager = new BillingAdressManager($db);
         $billingAdressManager->create($billingAdress, $orderId);
-
-    }
+    }0
 
     header('Location: index.php?action=orderResult&success=1');
     unset($_SESSION['cart']);
@@ -180,6 +385,7 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
 
     require('view/prePaymentView.php');
 }
+
 function prePaymentPage($userId) {
     include('model/db.php');
 
@@ -188,6 +394,7 @@ function prePaymentPage($userId) {
 
     require('view/prePaymentView.php');
 }
+
 function submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress = NULL) {
 
     $_SESSION['userShippingAndBillingInfos'] = array(
@@ -198,177 +405,8 @@ function submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingA
 
     require('view/paymentView.php');
 }
-function cartPage() {
-    require('view/cartView.php');
-}
-function addProductToCart($data) {
-    if (isset($_SESSION['cart'])) {
-        $products     = $_SESSION['cart']->products();
-        $newProductId = (int) $data['id'];
-        foreach ($products as $key => $product) {
-            $isAlreadyInCart = $product->id() == (int) $data['id'] ? TRUE : FALSE;
-            if ($isAlreadyInCart == TRUE) {
-                $idInArray = $key;
-            }
-        }
-        if (isset($idInArray)) {
-            $newQuantity = $products[$idInArray]->quantity() + (int) $data['quantity'];
-            $_SESSION['cart']->updateProduct($idInArray, $newQuantity);
-        } else {
-            $cartProduct = new CartProduct($data);
-            $_SESSION['cart']->addProduct($cartProduct);
-            $_SESSION['cart']->updateTotalPrice();
-        }
-    } else {
-        $cartProduct = new CartProduct($data);
 
-        $cart        = new Cart($cartProduct);
-        $cart->store($cart);
-    }
-}
-function cartTotal() {
-    $cartTotal        = new CartTotal($_SESSION['productsCart']);
-    $cartTotalManager = new CartTotalManager();
-    $cartTotalManager->saveTotal($cartTotal);
-    var_dump($cartTotal);
-    var_dump($cartTotalManager);
-}
-function authentication($login, $password) {
-    include('model/db.php');
-    $userManager       = new UserManager($db);
-    $user              = $userManager->authenticationGet($login);
-    $result            = $user->fetch();
-    $isPasswordCorrect = password_verify($password, $result['password']);
-    if ($login != $result['login'] || !$isPasswordCorrect) {
-        header('Location: index.php?action=authenticationPage&errors=1');
-        exit();
-    } else {
-        session_start();
-        $_SESSION['userId'] = $result['id'];
-        $_SESSION['login']  = $result['login'];
-        $_SESSION['admin']  = $result['admin'];
-        header('Location: index.php');
-    }
-}
-function authenticationPage() {
-    require('view/authenticationView.php');
-}
-function subscribe($data1, $data2) {
-    include('model/db.php');
-    $errors          = array();
-    $newUser         = new User($data1);
-    $errorsFromModel = $newUser->errors();
-    if (count($errorsFromModel) > 0) {
-        if (in_array(User::INVALID_LOGIN, $errorsFromModel)) {
-            array_push($errors, 4);
-        }
-        if (in_array(User::INVALID_PASSWORD, $errorsFromModel)) {
-            array_push($errors, 5);
-        }
-        if (in_array(User::INVALID_EMAIL, $errorsFromModel)) {
-            array_push($errors, 6);
-        }
-    }
-    $userManager    = new UserManager($db);
-    $login          = $data1['login'];
-    $countLogin     = $userManager->countLogin($login);
-    $dataCountLogin = $countLogin->fetch();
-    $email          = $data1['email'];
-    $countEmail     = $userManager->countEmail($email);
-    $dataCountEmail = $countEmail->fetch();
-    if ($dataCountLogin['nb'] != 0) {
-        array_push($errors, 1);
-    }
-    if ($_POST['password'] != $_POST['password2']) {
-        array_push($errors, 2);
-    }
-    if ($dataCountEmail['nb'] != 0) {
-        array_push($errors, 3);
-    }
-    $newUserShippingAdress = new UserShippingAdress($data2);
-    $newUserShippingAdress->setTitle('Mon adresse par défault');
-
-    $errorsFromModel = $newUserShippingAdress->errors();
-    if (count($errorsFromModel) > 0) {
-        if (in_array(UserShippingAdress::INVALID_TITLE, $errorsFromModel)) {
-            array_push($errors, 7);
-        }
-        if (in_array(UserShippingAdress::INVALID_NAME, $errorsFromModel)) {
-            array_push($errors, 8);
-        }
-        if (in_array(UserShippingAdress::INVALID_ADRESS, $errorsFromModel)) {
-            array_push($errors, 9);
-        }
-        if (in_array(UserShippingAdress::INVALID_POSTAL_CODE, $errorsFromModel)) {
-            array_push($errors, 10);
-        }
-        if (in_array(UserShippingAdress::INVALID_CITY, $errorsFromModel)) {
-            array_push($errors, 11);
-        }
-    }
-    if (count($errors) > 0) {
-        $serialize = serialize($errors);
-        $encode    = urlencode($serialize);
-        header('Location: index.php?action=subscribePage&errors=' . $encode);
-    } else {
-        $newUser->setAdmin(0);
-        $userManager = new UserManager($db);
-        $userManager->createUser($newUser);
-        $userId = $db->lastInsertId();
-        $newUserShippingAdress->setUserId($userId);
-        $userShippingAdressManager = new UserShippingAdressManager($db);
-        $userShippingAdressManager->create($newUserShippingAdress);
-        header('Location: index.php?action=subscribePage&success=1');
-    }
-}
-function subscribePage() {
-    require('view/subscribeView.php');
-}
-function countCategoryProductList($categoryId)
-    {
-    include ('model/db.php');
-
-    $productManager = new ProductManager($db);
-    $result = $productManager->countCategoryProduct($categoryId);
-    $productNbStr = $result->fetch();
-    $productNb = intval($productNbStr[0]);
-    $productListNb = $productNb / 5;
-    return $productListNb;
-    }
-function countProductList()
-    {
-    include ('model/db.php');
-
-    $productManager = new ProductManager($db);
-    $result = $productManager->countProduct();
-    $productNbStr = $result->fetch();
-    $productNb = intval($productNbStr[0]);
-    $productListNb = $productNb / 5;
-    return $productListNb;
-    }
-    function categoryClient($productListNb, $pageNumber, $categoryId) {
-    include('model/db.php');
-    $end = $pageNumber * 5;
-    $start = ($pageNumber * 5) - 5;
-    $productManager = new ProductManager($db);
-    $product= $productManager->getCategoryList($start, $end, $categoryId);
-
-    require('view/categoryClientView.php');
-}
-function home($productListNb, $pageNumber) {
-    include('model/db.php');
-    $end = $pageNumber * 5;
-    $start = ($pageNumber * 5) - 5;
-    $productManager = new ProductManager($db);
-    $product= $productManager->getList($start, $end);
-    require('view/homeView.php');
-}
-function productUnique($id) {
-    include('model/db.php');
-    $productManager = new ProductManager($db);
-    $product        = $productManager->getUnique($id);
-    require('view/productUniqueView.php');
-}
+/*  ADMIN   */
 
 function addCategory() {
     include('model/db.php');
@@ -384,7 +422,6 @@ function addCategory() {
         $categoryManager->create($category);
         require('view/admin/categoryView.php');
     }
-
 }
 
 function category() {
@@ -423,8 +460,6 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         move_uploaded_file($productImg['tmp_name'], $productImgDestination);
 
     }
-
-
 }
 
     function listOrdersForAdmin() {
@@ -467,8 +502,6 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         
             $countDayData = $countDay->fetch();
             array_unshift($count, (int)$countDayData[0]);
-
-
         }
 
         if ( $countOrders[0] == 0 ) {
@@ -484,13 +517,8 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
             }
 
             $dayIncome = $total;
-
         }
-    
-
-
         require('view/admin/statisticsView.php');
-
     }
 
 

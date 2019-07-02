@@ -6,11 +6,18 @@ session_start();
 require ('controller/controller.php');
 
 
-
-
 try {
     if (isset($_GET['action']))
         {
+
+/* GUEST/USER SECTION */
+
+    /*---------------------------------------
+        HOME PAGE
+    ----------------------------------------*/
+
+    // HOME PAGE
+
 
             if ($_GET['action'] == 'home' && !isset($_GET['page']))
             {   
@@ -42,6 +49,10 @@ try {
             }
         }
 
+    /*---------------------------------------
+        CATEGORY PAGE
+    ----------------------------------------*/
+
         if ($_GET['action'] == 'categoryClient' && isset($_GET['categoryId'])&&  !isset($_GET['page']))
             {   
                 $productListNb = countCategoryProductList($_GET['categoryId']);
@@ -55,14 +66,14 @@ try {
         $productListNb = countCategoryProductList($_GET['categoryId']);
 
 
-        // NEXT HOME PAGE
+        // NEXT CATEGORY PAGE
 
         if ($_GET['page'] <= 0)
             {
             header('Location: index.php?action=categoryClient&categoryId='.$_GET['categoryId']);
             }
 
-        // PREVIOUS HOME PAGE
+        // PREVIOUS CATEGORY PAGE
 
         elseif ($_GET['page'] > $productListNb + 1)
             {
@@ -74,74 +85,94 @@ try {
             categoryClient($productListNb, $_GET['page'], $_GET['categoryId']);
             }
         }
-
-            elseif ($_GET['action'] == 'downloadBillAdmin' && isset($_GET['orderId'])) {
-                downloadBill($_GET['orderId']); 
-            }
             
-            elseif ($_GET['action'] == 'addProductToCart')
-            {
-                if (isset($_POST['id']) AND isset($_POST['price']) AND isset($_POST['quantity']) ) {
-    
 
-    $data = array("id"=>(int)$_POST['id'], "title" => $_POST['title'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
-            addProductToCart($data);
+    /*---------------------------------------
+        PODUIT UNIQUE PAGE
+    ----------------------------------------*/
 
-            echo 'success';
-} else {
-    echo 'error';
+        elseif ($_GET['action'] == "productUnique")
+    {
+    if (isset($_GET['id']) && $_GET['id'] > 0)
+        {
+        productUnique($_GET['id']);
+        }
+    else
+    {
+        throw new Exception('Aucun identifiant de billet envoyé');
+    }
 }
-            }
 
+    /*---------------------------------------
+        PANIER D'ACHAT
+    ----------------------------------------*/
+
+    // CART PAGE
             
 
             elseif ($_GET['action'] == 'cartPage')
             {
-
-         
                 cartPage();
-    
             }
+    // ADD TO CART
 
-            elseif ($_GET['action'] == 'updateProductCart' && isset($_GET['productCartId']) && isset($_POST['quantity']) )
+    elseif ($_GET['action'] == 'addProductToCart')
+        {
+        if (isset($_POST['id']) AND isset($_POST['price']) AND isset($_POST['quantity']) ) {
+    
+
+        $data = array("id"=>(int)$_POST['id'], "title" => $_POST['title'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
+        addProductToCart($data);
+
+        echo 'success';
+        } else {
+            echo 'error';
+        }
+    }
+
+    // UPDATE CART
+
+    elseif ($_GET['action'] == 'updateProductCart' && isset($_GET['productCartId']) && isset($_POST['quantity']) )
             {
 
 
-                if (isset($_SESSION['cart']))
-                {
-                    
-                    
-                    $_SESSION['cart']->products()[$_GET['productCartId']]->updateQuantity($_POST['quantity']);
-
-                    $_SESSION['cart']->updateTotalPrice();
-
-
-                    cartPage();
-            
-                }
-    
-            }
-
-            elseif ($_GET['action'] == 'deleteProductCart' && isset($_GET['id']) && isset($_GET['id']) )
+        if (isset($_SESSION['cart']))
             {
+                    
+            $_SESSION['cart']->products()[$_GET['productCartId']]->updateQuantity($_POST['quantity']);
 
-                
-                if (isset($_SESSION['cart']))
-                {
+            $_SESSION['cart']->updateTotalPrice();
+
+
+                cartPage();
+            }
+    
+        }
+
+        elseif ($_GET['action'] == 'deleteProductCart' && isset($_GET['id']) && isset($_GET['id']) )
+        {
+  
+            if (isset($_SESSION['cart']))
+            {
                  $_SESSION['cart']->deleteProduct($_GET['id']);
                  
                  $_SESSION['cart']->updateTotalPrice();
 
-                 if (count($_SESSION['cart']->products()) == 0){
-                     unset($_SESSION['cart']);
+                if (count($_SESSION['cart']->products()) == 0){
+                    unset($_SESSION['cart']);
                  }
 
-                 cartPage();
-                }    
+                cartPage();
+            }    
     
-            }
+        }
 
-            
+/*  USER LOGIN AND SUBSCRIBE   */
+
+    /*---------------------------------------
+    USER LOGIN
+    ----------------------------------------*/
+
             elseif ($_GET['action'] == 'connexion' && isset($_POST['login']))
             {
             $login = addslashes($_POST['login']);
@@ -161,6 +192,11 @@ try {
         $_SESSION['admin']);
                 header('Location: index.php');
             }
+
+
+    /*---------------------------------------
+    USER SUBSCRIBE
+    ----------------------------------------*/
 
             elseif ($_GET['action'] == 'subscribe' && isset($_POST['login']))
 		{
@@ -185,23 +221,20 @@ try {
 		subscribePage();
 		}
 
-        
-        elseif ($_GET['action'] == "productUnique")
-	{
-	if (isset($_GET['id']) && $_GET['id'] > 0)
-		{
-		productUnique($_GET['id']);
-		}
-	else
-	{
-		throw new Exception('Aucun identifiant de billet envoyé');
-	}
-}
 
+
+ /*------------------------------------------------
+    ACCES ADMIN ET UTILISATEURS / SESSIONS
+    -------------------------------------------------*/       
 
 elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
+
+/*---------------------------------------
+    USER SECTION
+    ----------------------------------------*/  
+
         if ($_SESSION['admin'] == FALSE){
-        // USER
+
         if ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
                 downloadBill($_GET['orderId']); 
             }
@@ -252,25 +285,16 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                         $billingAdress = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
                         submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress);
                     }
-
-            
                 }
 
                 else{
                     echo 'Vous nete pas connecté';
                 }
-
-    
             }
-
-
 
             elseif ($_GET['action'] == 'orderResult')
             {
-
-         
                 orderResult();
-    
             }
 
             else if ($_GET['action'] == 'saveInfos' && isset($_POST['login']) && isset($_POST['email'])) {
@@ -303,18 +327,25 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         }
 
         elseif ($_SESSION['admin'] == TRUE){
+/*---------------------------------------
+    ADMIN SECTION
+    ----------------------------------------*/  
 
-        //ADMIN
         if ($_GET['action'] == 'adminPage') {
             listOrdersForAdmin();
         }
 
-elseif ($_GET['action'] == 'adminClients') {
-    listClients();
-}
 
         elseif ($_GET['action'] == 'orderAdminPage') {
             listOrdersForAdmin();
+        }
+        
+        elseif ($_GET['action'] == 'adminClients') {
+        listClients();
+        }       
+
+        elseif ($_GET['action'] == 'downloadBillAdmin' && isset($_GET['orderId'])) {
+            downloadBill($_GET['orderId']); 
         }
 
          elseif ($_GET['action'] == 'statisticsAdmin') {
@@ -334,14 +365,11 @@ elseif ($_GET['action'] == 'adminClients') {
         
         }
 
-
         elseif ($_GET['action'] == 'catalog') {
             catalog();
         }
 
-
-        
-            elseif ($_GET['action'] == 'addProduct')
+        elseif ($_GET['action'] == 'addProduct')
         {
             if (isset($_POST['title']) && getimagesize($_FILES["productImg"]["tmp_name"]))
             {
@@ -386,12 +414,10 @@ elseif ($_GET['action'] == 'adminClients') {
 
         }
 
-    
   else{
     $productListNb = countProductList();
                 home($productListNb, 1);
   }
-
     } 
 
 catch(Exception $e) {
