@@ -39,7 +39,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="footer-social-media col"> 
-                        <h3>Suivez nous<h3>
+                        <h3>Suivez nous</h3>
                         <em class="fa fa-facebook">
                         </em>
                         <em class="fa fa-twitter">

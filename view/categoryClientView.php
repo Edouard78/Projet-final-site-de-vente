@@ -17,8 +17,8 @@ while ($data = $product->fetch())
 <br/>
 <h5 class="product-list-product-title" ><?php echo $data['title'] ?></h5>
 <h5 class="product-list-product-price" ><?php echo $data['price'] ?> <em class="fa fa-euro"></em></h5>
-</a>
 </div>
+</a>
 </div>
 <?php
 		}
