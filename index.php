@@ -124,19 +124,19 @@ try {
         $data = array("id"=>(int)$_POST['id'], "title" => $_POST['title'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
         addProductToCart($data);
 
-        echo 'success';
+
         } else {
-            echo 'error';
+            throw new Exception('Des données pour l\'ajout du produit n\'ont pas été envoyées');
         }
     }
 
     // UPDATE CART
 
-    elseif ($_GET['action'] == 'updateProductCart' && isset($_GET['productCartId']) && isset($_POST['quantity']) )
+    elseif ($_GET['action'] == 'updateProductCart')
             {
 
 
-        if (isset($_SESSION['cart']))
+        if (isset($_SESSION['cart'])  && isset($_GET['productCartId']) && isset($_POST['quantity']) )
             {
                     
             $_SESSION['cart']->products()[$_GET['productCartId']]->updateQuantity($_POST['quantity']);
@@ -146,13 +146,17 @@ try {
 
                 cartPage();
             }
+
+            else {
+
+        throw new Exception('Panier inxistant ou aucun identifiant d\'articles envoyés');
+            }    
     
         }
 
-        elseif ($_GET['action'] == 'deleteProductCart' && isset($_GET['id']) && isset($_GET['id']) )
+        elseif ($_GET['action'] == 'deleteProductCart')
         {
-  
-            if (isset($_SESSION['cart']))
+            if (isset($_SESSION['cart']) && isset($_GET['id']) && isset($_GET['id']) )
             {
                  $_SESSION['cart']->deleteProduct($_GET['id']);
                  
@@ -163,6 +167,10 @@ try {
                  }
 
                 cartPage();
+            }
+            else {
+
+        throw new Exception('Panier inxistant ou aucun identifiant d\'articles envoyés');
             }    
     
         }
@@ -235,8 +243,14 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
 
         if ($_SESSION['admin'] == FALSE){
 
-        if ($_GET['action'] == 'downloadBill' && isset($_GET['orderId'])) {
+        if ($_GET['action'] == 'downloadBill') {
+            if (isset($_GET['orderId']) && $_GET['orderId']) > 0) {
                 downloadBill($_GET['orderId']); 
+            }
+            else {
+
+                throw new Exception('Aucun identifiant de facture envoyé');
+            }
             }
 
             elseif ($_GET['action'] == 'userPage') {
@@ -339,13 +353,18 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         elseif ($_GET['action'] == 'orderAdminPage') {
             listOrdersForAdmin();
         }
-        
+
         elseif ($_GET['action'] == 'adminClients') {
         listClients();
         }       
 
-        elseif ($_GET['action'] == 'downloadBillAdmin' && isset($_GET['orderId'])) {
+        elseif ($_GET['action'] == 'downloadBillAdmin') {
+            if (isset($_GET['orderId']) && $_GET['orderId']) > 0) {
             downloadBill($_GET['orderId']); 
+            }
+            else {
+                throw new Exception('Aucun identifiant de facture envoyé');
+            }
         }
 
          elseif ($_GET['action'] == 'statisticsAdmin') {
