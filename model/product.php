@@ -6,6 +6,7 @@ class Product
 				$_categoryId,
 			  $_title,
 			  $_brand,
+			  $_quantity,
 			  $_content,
 			  $_price,
 			  $_addingDate,
@@ -64,7 +65,10 @@ class Product
 		return $this->_content;
 	}
 
-	
+	public function quantity()
+	{
+		return $this->_quantity;
+	}
 	public function price()
 	{
 		return $this->_price;
@@ -137,6 +141,13 @@ class Product
 		{
 			$this->_content = $content;
 		}
+	}
+
+	public function setQuantity($quantity)
+	{
+		$quantity = (int)$quantity;
+
+		$this->_quantity = $quantity;
 	}
 
 	public function setPrice($price)

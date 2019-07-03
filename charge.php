@@ -9,6 +9,13 @@ require ('index.php');
 
 $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 
+if (empty($POST['first-name']) || empty($POST['last-name']) || empty($POST['email']) || empty($POST['token']) )
+		{
+			
+            header('Location: index.php?action=paymentPage&error=1');
+		}
+		else
+		{
 $firstName= $POST['first-name'];
 $lastName= $POST['last-name'];
 $email= $POST['email'];
@@ -31,7 +38,10 @@ $customer = \Stripe\Customer::create(array(
     "customer" => $customer->id
 
 ));
-
+}
+	if ($charge["paid"] == true )
+	{
+	
 if ($_GET['action'] == 'submitPayment' && isset($_SESSION['cart']) && isset($_SESSION['userShippingAndBillingInfos']) ) {
 
 	$orderData = array('userId' => $_SESSION['userId'],
@@ -56,8 +66,14 @@ if ($_GET['action'] == 'submitPayment' && isset($_SESSION['cart']) && isset($_SE
 	}
 	else {
 		saveOrder($order, $orderProducts, $token);
+		updateQuantity($orderProducts);
 	}
 
+
+}
+}
+else {
+	throw new Exception('Erreur, le paiement a échoué');
 }
 
 

@@ -327,6 +327,10 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                 saveInfos($_SESSION['userId'], $_POST['login'], $_POST['email']);
             }
 
+            else if ($_GET['action'] == 'paymentPage') {
+                paymentPage();
+            }
+
              else if ($_GET['action'] == 'deleteShippingAdress' && isset($_GET['id'])) {
                 deleteShippingAdress($_GET['id']);
             }
@@ -413,6 +417,7 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
             'title' => $_POST['title'],
             'categoryId' => $_POST['category'],
             'brand' => $_POST['brand'],
+            'quantity' => $_POST['quantity'],
             'price' => $_POST['price'],
             'content' => $_POST['description']
         );

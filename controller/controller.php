@@ -404,6 +404,16 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     require('view/prePaymentView.php');
 }
 
+function updateQuantity($orderProducts){
+    include('model/db.php');
+
+    $productManager = new ProductManager($db);
+    var_dump($orderProducts);
+    for ($i = 0; $i < count($orderProducts) ; $i++) {
+        $productManager->updateQuantity($orderProducts[$i]); 
+    } 
+}
+
 function prePaymentPage($userId) {
     include('model/db.php');
 
@@ -420,6 +430,11 @@ function submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingA
         'billingAdressSameAs' => $billingAdressSameAs,
         'billingAdress' => $billingAdress
     );
+
+    require('view/paymentView.php');
+}
+
+function paymentPage() {
 
     require('view/paymentView.php');
 }
@@ -446,7 +461,7 @@ function category() {
     include('model/db.php');
     $categoryManager = new CategoryManager($db);
     $categories = $categoryManager->getList();
-    var_dump($categories);
+
 
     require('view/admin/categoryView.php');
 
@@ -463,7 +478,7 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
     include('model/db.php');
     $product         = new Product($data);
     $errorsFromModel = $product->errors();
-    var_dump($product);
+
     if (count($errorsFromModel) > 0) {
         if (in_array(Product::INVALID_TITLE, $errorsFromModel) OR in_array(Product::INVALID_BRAND, $errorsFromModel) OR in_array(Product::INVALID_CONTENT, $errorsFromModel)) {
             header('Location: index.php?action=addProductPage&error=1');
@@ -476,6 +491,8 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
         $imgActualExt          = strtolower(end($imgExt));
         $productImgDestination = './uploads/products/' . $productId . '.' . $imgActualExt;
         move_uploaded_file($productImg['tmp_name'], $productImgDestination);
+
+        header('Location: index.php?action=catalog');
 
     }
 }

@@ -40,7 +40,7 @@ class OrderManager
 
 	public function getListForAdmin(){
 
-		$request = $this->_db ->prepare('SELECT id, userId,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder ');
+		$request = $this->_db ->prepare('SELECT id, userId,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder LIMIT 0 ,10');
 	    $request->execute();
 		return $request;
 	}

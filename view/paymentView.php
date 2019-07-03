@@ -12,7 +12,17 @@ ob_start();
 
 <h3>Paiement</h3>
 <br>
-
+<?php
+if (isset($_GET['error']))
+{
+  if ($_GET['error'] == 1)
+  {
+?>
+<div class="alert alert-danger">
+    <strong>Un ou plusieurs champs sont incorrect</strong>
+</div>
+<br>
+<?php } } ?>
 <form action="charge.php?action=submitPayment" method="post" id="payment-form">
   <div class="form-row">
 

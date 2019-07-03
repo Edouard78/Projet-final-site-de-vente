@@ -46,7 +46,11 @@ if (isset($_GET['error']))
 							<input type="text" class="form-control" name ="brand" id="brand" placeholder="Marque">
 						</div>
 						<div class="form-group">
-							<label for="price">Marque :</label>
+							<label for="quantity">Quantité :</label>
+							<input type="number" class="form-control" name ="quantity" id="quantity" placeholder="quantité">
+						</div>
+						<div class="form-group">
+							<label for="price">Prix :</label>
 							<input type="number" class="form-control" name ="price" id="price" placeholder="prix">
 						</div>
 						<div class="form-group">
