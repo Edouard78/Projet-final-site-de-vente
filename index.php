@@ -123,11 +123,13 @@ try {
 
         $data = array("id"=>(int)$_POST['id'], "title" => $_POST['title'], "quantity" => $_POST['quantity'], "price" =>$_POST['price'] );
         addProductToCart($data);
+        echo 'success'; 
 
-
-        } else {
-            throw new Exception('Des données pour l\'ajout du produit n\'ont pas été envoyées');
-        }
+        } 
+        else {
+            throw new Exception('Panier inxistant ou aucun identifiant d\'articles envoyés');
+        }    
+    
     }
 
     // UPDATE CART
@@ -244,7 +246,7 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         if ($_SESSION['admin'] == FALSE){
 
         if ($_GET['action'] == 'downloadBill') {
-            if (isset($_GET['orderId']) && $_GET['orderId']) > 0) {
+            if (isset($_GET['orderId']) && $_GET['orderId'] > 0 ) {
                 downloadBill($_GET['orderId']); 
             }
             else {
@@ -296,8 +298,18 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                     }
                     else {
                         $billingAdressSameAs = false;
-                        $billingAdress = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
-                        submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdress);
+                        $billingAdressData = array('name' => $_POST['fullName'], 'adress' => $_POST['adress'], 'postalCode' => $_POST['postalCode'], 'city' => $_POST['city'], 'country' => $_POST['country']);
+
+                        $billingAdressControl = new BillingAdress($billingAdressData);
+                        $errorsFromModel = $billingAdressControl->errors();
+                        if (count($errorsFromModel) > 0) {
+
+                            echo 'Vous avez fait une erreur veuillez recommencer';
+                        }
+                        else {
+
+                        submitOrderInfos($userShippingAdressId, $billingAdressSameAs, $billingAdressData);
+                    }
                     }
                 }
 
@@ -359,7 +371,7 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         }       
 
         elseif ($_GET['action'] == 'downloadBillAdmin') {
-            if (isset($_GET['orderId']) && $_GET['orderId']) > 0) {
+            if (isset($_GET['orderId']) && $_GET['orderId'] > 0) {
             downloadBill($_GET['orderId']); 
             }
             else {

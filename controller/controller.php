@@ -12,6 +12,7 @@ require_once('model/userManager.php');
 require_once('model/category.php');
 require_once('model/categoryManager.php');
 require_once('model/billingAdress.php');
+require_once('model/billingAdressManager.php');
 require_once('model/bill.php');
 require_once('model/userShippingAdress.php');
 require_once('model/userShippingAdressManager.php');
@@ -243,10 +244,20 @@ function orderUnique($id) {
 function downloadBill($orderId) {
     include('model/db.php');
 
+if ($_SESSION['admin'] == TRUE) {
+
     $orderManager = new OrderManager($db);
     $orderResponse = $orderManager->getUnique($orderId);
-    $dataOrder = $orderResponse->fetch();
-    
+}
+else if ($_SESSION['admin'] == FALSE) {
+    $orderManager = new OrderManager($db);
+    $orderResponse = $orderManager->getUniqueForUser($orderId, $_SESSION['userId'] );
+} 
+else {
+    throw new Exception('Vous n\'avez pas les droits pour accéder à cette facture');
+}
+
+  $dataOrder = $orderResponse->fetch();
     $order = new Order($dataOrder);
 
     $orderProductManager = new OrderProductManager($db);
@@ -267,6 +278,13 @@ function downloadBill($orderId) {
     $userShippingAdress = new UserShippingAdress($dataShippingAdress);
     if($order->billingAdressSameAs() == TRUE) {
         $billingAdress = new BillingAdress($dataShippingAdress);
+    }
+    else {
+        $billingAdressManager = new BillingAdressManager($db);
+        $response = $billingAdressManager->getUnique($orderId);
+        $responseFetch = $response->fetch();
+        $data = array('name' => $responseFetch[0], 'adress' => $responseFetch[1], 'postalCode' => $responseFetch[2], 'city' => $responseFetch[3], 'country' => $responseFetch[4] );
+        $billingAdress = new BillingAdress($data);
     }
 
     $data = array('order' => $order, 'userShippingAdress' => $userShippingAdress, 'billingAdress' => $billingAdress, 'paymentMethod' => 'Stripe');
@@ -377,7 +395,7 @@ function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     if ($billingAdress != NULL) {
         $billingAdressManager = new BillingAdressManager($db);
         $billingAdressManager->create($billingAdress, $orderId);
-    }0
+    }
 
     header('Location: index.php?action=orderResult&success=1');
     unset($_SESSION['cart']);

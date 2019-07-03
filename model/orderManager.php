@@ -53,6 +53,14 @@ class OrderManager
 		return $request;
 	}
 
+public function getUniqueForUser($id, $userId)
+	{
+		$request = $this->_db->prepare('SELECT id, userId, userShippingAdressId, billingAdressSameAs,token,totalPrice, DATE_FORMAT(date, \'%d/%m/%Y\') AS date FROM shoporder WHERE id = :id AND userId = :userId ');
+		$request->bindValue(':id', $id);
+		$request->bindValue(':userId', $userId);
+	    $request->execute();
+		return $request;
+	}
 	public function countTodayOrders()
     {
 		$req = $this->_db->prepare('SELECT COUNT(*) FROM shoporder WHERE DAY(date) = DAY(CURDATE())  ');
