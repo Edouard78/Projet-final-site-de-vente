@@ -4,9 +4,23 @@
 <?php
 
 if (isset($_SESSION['cart'])) {
-  
 
+
+
+if (isset($_GET['error']))
+{
+	if ($_GET['error'] == 1)
+	{
 ?>
+<div class="alert alert-danger">
+    <strong>Vous avez choisis une trop grosse quantité pour certains articles</strong>
+</div>
+<br>
+<?php
+	}
+}
+?> 
+
 
 <div class="table-responsive">
 <table class="table table-bordered table-condensed">

@@ -270,15 +270,31 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
             elseif ($_GET['action'] == 'submitCart')
             {
 
-                if (isset($_SESSION['userId']) & isset($_SESSION['login']) )
+                if (isset($_SESSION['cart']) )
                 {
+                    $error = 0;
+
+                    foreach ($_SESSION['cart']->products() as $product) {
+                        $response = getQuantity($product->id());
+                        $quantity = $response->fetch();
+                        if((int) $quantity[1] < (int) $product->quantity()) {
+
+                            $error++;
+                        }
+                    }
+
+                    if($error > 0) {
+                    header('Location: index.php?action=cartPage&error=1');
+                }
+                else {
                     $userId = $_SESSION['userId'];
 
                     prePaymentPage($userId);
                 }
+                }
 
                 else{
-                    echo 'Vous nete pas connecté';
+                     throw new Exception('Pas de panier présent, erreur');
                 }
 
     
@@ -304,7 +320,7 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                         $errorsFromModel = $billingAdressControl->errors();
                         if (count($errorsFromModel) > 0) {
 
-                            echo 'Vous avez fait une erreur veuillez recommencer';
+                            echo 'erreur l\'adresse de facturation n\'est pas complète';
                         }
                         else {
 
@@ -314,7 +330,8 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                 }
 
                 else{
-                    echo 'Vous nete pas connecté';
+                    
+                    throw new Exception('Erreur, informations n\'ont pas été reçu');
                 }
             }
 

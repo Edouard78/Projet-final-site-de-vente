@@ -16,6 +16,8 @@
 
 			<th>Description</th>
 
+			<th>Quantité</th>
+
 			<th>Date</th>
 
 			<th>Supprimer</th>
@@ -35,6 +37,8 @@
 				<td><?= htmlspecialchars($data['brand']) ?></td>
 
 				<td><?= htmlspecialchars($data['content']) ?></td>
+
+				<td><?= htmlspecialchars($data['quantity']) ?><?php if($data['quantity'] == 0 ) { ?> <span class="glyphicon glyphicon-warning-sign"></span> <?php } ?></td>
 				<td><?= $data['addingDateFr'] ?> </em></td>
 				<td><a href="index.php?action=deleteProduct&amp;id=<?= $data['id'] ?>" class="btn btn-dark" role="button">
 						Supprimer 

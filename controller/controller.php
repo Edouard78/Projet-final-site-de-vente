@@ -604,3 +604,13 @@ function addCategory($data) {
     $users = $userManager->getList();
     require ('view/admin/userView.php');
     }
+
+
+    function getQuantity($id) {
+        include('model/db.php');
+
+        $productManager = new productManager($db);
+    $response = $productManager->getQuantity($id);
+
+    return $response;
+    }

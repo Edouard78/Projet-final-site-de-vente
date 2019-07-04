@@ -47,7 +47,7 @@ class ProductManager
 
 	public function getListForAdmin(){
 
-		$request = $this->_db ->prepare('SELECT id, title, brand, content,price, DATE_FORMAT(addingDate, \'%d/%m/%Y à %Hh%imin%ss\') AS addingDateFr, DATE_FORMAT(updatingDate, \'%d/%m/%Y à %Hh%imin%ss\') AS updatingDateFr  FROM product ORDER BY addingDateFr ASC ');
+		$request = $this->_db ->prepare('SELECT id, title, brand, content,price, quantity, DATE_FORMAT(addingDate, \'%d/%m/%Y à %Hh%imin%ss\') AS addingDateFr, DATE_FORMAT(updatingDate, \'%d/%m/%Y à %Hh%imin%ss\') AS updatingDateFr  FROM product ORDER BY addingDateFr ASC ');
 	    $request->execute();
 		return $request;
 	}
@@ -59,6 +59,15 @@ class ProductManager
 
 			return $request;
 	}
+
+	public function getQuantity($id)
+	{
+		$request = $this->_db->prepare('SELECT id, quantity FROM product WHERE id = ?');
+			$request->execute(array($id));
+
+			return $request;
+	}
+
 
 	public function countProduct()
 	{
