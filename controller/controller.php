@@ -233,7 +233,27 @@ function productUnique($id) {
 
 /*  UTILISATEUR   */
 
+function userPage($userId) {
+    include('model/db.php');
+    $userManager = new userManager($db);
+    $userInfos = $userManager->getInfos($userId);
 
+
+    require('view/user/userInfos.php');
+
+}
+
+function saveInfos($userId, $login, $email) {
+    include('model/db.php');
+
+    $data = array('id' => $userId, 'login' => $login, 'email' => $email);
+    $user = new User($data);
+    $userManager = new userManager($db);
+    $userManager->saveInfos($user);
+
+
+    header('Location: index.php?action=userPage');
+}
 function orderUnique($id) {
     include('model/db.php');
 
@@ -306,22 +326,16 @@ function listOrdersForUser($userId) {
 
 }
 
-function userPage($userId) {
+
+
+function userShippingAdressPage($userId) {
     include('model/db.php');
-    $userManager = new userManager($db);
-    $userInfos = $userManager->getInfos($userId);
+    $userShippingAdressManager = new userShippingAdressManager($db);
+    $userShippingAdress = $userShippingAdressManager->getList($userId);
 
 
-    require('view/user/userInfos.php');
+    require('view/user/userShippingAdressView.php');
 
-}
-
-function deleteShippingAdress($id) {
-    include('model/db.php');
-    $userShippingAdressManager = new UserShippingAdressManager($db);
-    $userShippingAdressManager->delete($id);
-
-    header('Location: index.php?action=addShippingAdressPage');
 }
 
 function addShippingAdressPage() {
@@ -350,32 +364,29 @@ else {
         
     
 }
-
-function saveInfos($userId, $login, $email) {
+function deleteShippingAdress($id) {
     include('model/db.php');
+    $userShippingAdressManager = new UserShippingAdressManager($db);
+    $userShippingAdressManager->delete($id);
 
-    $data = array('id' => $userId, 'login' => $login, 'email' => $email);
-    $user = new User($data);
-    $userManager = new userManager($db);
-    $userManager->saveInfos($user);
-
-
-    header('Location: index.php?action=userPage');
+    header('Location: index.php?action=addShippingAdressPage');
 }
 
-function userShippingAdressPage($userId) {
-    include('model/db.php');
-    $userShippingAdressManager = new userShippingAdressManager($db);
-    $userShippingAdress = $userShippingAdressManager->getList($userId);
-
-
-    require('view/user/userShippingAdressView.php');
-
-}
 
 function orderResult() {
     require('view/orderResult.php');
 }
+
+
+function getQuantity($id) {
+    include('model/db.php');
+
+    $productManager = new productManager($db);
+    $response = $productManager->getQuantity($id);
+
+    return $response;
+}
+
 function saveOrder($order, $orderProducts,$token, $billingAdress = NULL) {
     include('model/db.php');
     $orderManager = new OrderManager($db);
@@ -441,29 +452,27 @@ function paymentPage() {
 
 /*  ADMIN   */
 
+function listOrdersForAdmin() {
+        include('model/db.php');
 
+        $orderManager = new OrderManager($db);
+        $orders = $orderManager->getListForAdmin();
 
-function category() {
+        require('view/admin/orderView.php');
+}
+
+function catalog() {
     include('model/db.php');
+
+    $productManager = new ProductManager($db);
+    $products = $productManager->getListForAdmin();
+
     $categoryManager = new CategoryManager($db);
     $categories = $categoryManager->getList();
 
-
-    require('view/admin/categoryView.php');
-
+    require('view/admin/catalogView.php');
 }
 
-function deleteCategory($id) {
-    include('model/db.php');
-
-        $categoryManager = new categoryManager($db);
-        $categoryManager->delete($id);
-
-         $productManager = new productManager($db);
-        $productManager->deleteFromCategory($id);
-
-         header('Location: index.php?action=catalog');
-}
 function addproductPage() {
     include('model/db.php');
 
@@ -508,6 +517,40 @@ function deleteProduct($id) {
          header('Location: index.php?action=catalog');
 }
 
+function addCategorypage() {
+     require('view/admin/addCategoryView.php');
+}
+
+function category() {
+    include('model/db.php');
+    $categoryManager = new CategoryManager($db);
+    $categories = $categoryManager->getList();
+
+
+    require('view/admin/categoryView.php');
+
+}
+
+function deleteCategory($id) {
+    include('model/db.php');
+
+        $categoryManager = new categoryManager($db);
+        $categoryManager->delete($id);
+
+         $productManager = new productManager($db);
+        $productManager->deleteFromCategory($id);
+
+         header('Location: index.php?action=catalog');
+}
+function listClients() {
+    include('model/db.php');
+
+    $userManager = new UserManager($db);
+    $users = $userManager->getList();
+    require ('view/admin/userView.php');
+    }
+
+
 function deleteUser($id) {
      include('model/db.php');
 
@@ -517,9 +560,6 @@ function deleteUser($id) {
          header('Location: index.php?action=adminClients');
 }
 
-function addCategorypage() {
-     require('view/admin/addCategoryView.php');
-}
 
 function addCategory($data) {
     include('model/db.php');
@@ -537,26 +577,7 @@ function addCategory($data) {
         header('Location: index.php?action=catalog');
     }
 }
-    function listOrdersForAdmin() {
-        include('model/db.php');
-
-        $orderManager = new OrderManager($db);
-        $orders = $orderManager->getListForAdmin();
-
-        require('view/admin/orderView.php');
-    }
-
-    function catalog() {
-        include('model/db.php');
-
-        $productManager = new ProductManager($db);
-        $products = $productManager->getListForAdmin();
-
-        $categoryManager = new CategoryManager($db);
-        $categories = $categoryManager->getList();
-
-        require('view/admin/catalogView.php');
-    }
+    
 
     function statisticsAdmin() {
         include('model/db.php');
@@ -596,21 +617,3 @@ function addCategory($data) {
         require('view/admin/statisticsView.php');
     }
 
-
-    function listClients() {
-        include('model/db.php');
-
-        $userManager = new UserManager($db);
-    $users = $userManager->getList();
-    require ('view/admin/userView.php');
-    }
-
-
-    function getQuantity($id) {
-        include('model/db.php');
-
-        $productManager = new productManager($db);
-    $response = $productManager->getQuantity($id);
-
-    return $response;
-    }

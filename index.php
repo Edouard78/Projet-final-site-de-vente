@@ -245,29 +245,11 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
 
         if ($_SESSION['admin'] == FALSE){
 
-        if ($_GET['action'] == 'downloadBill') {
-            if (isset($_GET['orderId']) && $_GET['orderId'] > 0 ) {
-                downloadBill($_GET['orderId']); 
-            }
-            else {
-
-                throw new Exception('Aucun identifiant de facture envoyé');
-            }
-            }
-
-            elseif ($_GET['action'] == 'userPage') {
-                userPage($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'userOrderPage') {
-                listOrdersForUser($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'userShippingAdressPage') {
-                userShippingAdressPage($_SESSION['userId']); 
-            }
-
-            elseif ($_GET['action'] == 'submitCart')
+    
+    /*---------------------------------------
+    ORDER FOR USER
+    ----------------------------------------*/
+            if ($_GET['action'] == 'submitCart')
             {
 
                 if (isset($_SESSION['cart']) )
@@ -335,17 +317,48 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
                 }
             }
 
+            else if ($_GET['action'] == 'paymentPage') {
+                paymentPage();
+            }
+
             elseif ($_GET['action'] == 'orderResult')
             {
                 orderResult();
+            }
+
+              
+
+    /*---------------------------------------
+    USER PANELL
+    ----------------------------------------*/
+        // INFOS
+            elseif ($_GET['action'] == 'userPage') {
+                userPage($_SESSION['userId']); 
             }
 
             else if ($_GET['action'] == 'saveInfos' && isset($_POST['login']) && isset($_POST['email'])) {
                 saveInfos($_SESSION['userId'], $_POST['login'], $_POST['email']);
             }
 
-            else if ($_GET['action'] == 'paymentPage') {
-                paymentPage();
+        // ORDERS
+
+            elseif ($_GET['action'] == 'userOrderPage') {
+                listOrdersForUser($_SESSION['userId']); 
+            }
+            elseif ($_GET['action'] == 'downloadBill') {
+            if (isset($_GET['orderId']) && $_GET['orderId'] > 0 ) {
+                downloadBill($_GET['orderId']); 
+            }
+            else {
+
+                throw new Exception('Aucun identifiant de facture envoyé');
+            }
+            }
+
+        // ADRESSES
+
+            elseif ($_GET['action'] == 'userShippingAdressPage') {
+                userShippingAdressPage($_SESSION['userId']); 
             }
 
              else if ($_GET['action'] == 'deleteShippingAdress' && isset($_GET['id'])) {
@@ -377,21 +390,12 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
 /*---------------------------------------
     ADMIN SECTION
     ----------------------------------------*/  
-
+    // ORDER
         if ($_GET['action'] == 'adminPage') {
             listOrdersForAdmin();
         }
 
-
-        elseif ($_GET['action'] == 'orderAdminPage') {
-            listOrdersForAdmin();
-        }
-
-        elseif ($_GET['action'] == 'adminClients') {
-        listClients();
-        }       
-
-        elseif ($_GET['action'] == 'downloadBillAdmin') {
+       elseif ($_GET['action'] == 'downloadBillAdmin') {
             if (isset($_GET['orderId']) && $_GET['orderId'] > 0) {
             downloadBill($_GET['orderId']); 
             }
@@ -400,14 +404,28 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
             }
         }
 
+        elseif ($_GET['action'] == 'orderAdminPage') {
+            listOrdersForAdmin();
+        }
+    // CLIENTS
+
+        elseif ($_GET['action'] == 'adminClients') {
+        listClients();
+        }       
+
+
+         elseif ($_GET['action'] == 'deleteUser' && isset($_GET['id'])) {
+            deleteUser($_GET['id']);
+        }
+
+     
+    // STATISTICS
+
          elseif ($_GET['action'] == 'statisticsAdmin') {
             statisticsAdmin();
         }
 
-        elseif ($_GET['action'] == 'category') {
-            category();
-        }
-  
+    // CATALOG
 
         elseif ($_GET['action'] == 'catalog') {
             catalog();
@@ -448,12 +466,11 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
             deleteProduct($_GET['id']);
         }
 
-         elseif ($_GET['action'] == 'deleteUser' && isset($_GET['id'])) {
-            deleteUser($_GET['id']);
-        }
-
         elseif ($_GET['action'] == 'addCategoryPage') {
             addCategoryPage();
+        }
+         elseif ($_GET['action'] == 'category') {
+            category();
         }
 
         elseif ($_GET['action'] == 'addCategory' && isset($_POST['title']))
