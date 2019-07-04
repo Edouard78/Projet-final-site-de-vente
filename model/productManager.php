@@ -83,4 +83,22 @@ class ProductManager
 
     $request->execute();
 }
+
+public function delete($id)
+	{
+		
+	  $req = $this->_db->prepare('DELETE FROM product WHERE id = :id');
+	  $req->bindValue(':id', $id);
+	  $req->execute();
+
+	}
+
+	public function deleteFromCategory($id)
+	{
+		
+	  $req = $this->_db->prepare('DELETE FROM product WHERE categoryId = :id');
+	  $req->bindValue(':id', $id);
+	  $req->execute();
+
+	}
 }

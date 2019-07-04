@@ -36,7 +36,7 @@
 
 				<td><?= htmlspecialchars($data['content']) ?></td>
 				<td><?= $data['addingDateFr'] ?> </em></td>
-				<td><a href="index.php?action=deleteComment&amp;id=<?= $data['id'] ?>" class="btn btn-dark" role="button">
+				<td><a href="index.php?action=deleteProduct&amp;id=<?= $data['id'] ?>" class="btn btn-dark" role="button">
 						Supprimer 
 					</a></td>
 				</tr>
@@ -51,7 +51,7 @@
 
 <h3>Categories</h3>
 <br>
-	<a href="index.php?action=addPostPage" class="btn btn-primary">
+	<a href="index.php?action=addCategoryPage" class="btn btn-primary">
 		Ajouter une categorie
 		</a>
 		<br>
@@ -61,6 +61,8 @@
 		<tr>
 			<th>Id</th>
 			<th>Titre</th>
+			<th>Description</th>
+			<th>Date</th>
 			<th>Supprimer</th>
 	
 		</tr>
@@ -74,7 +76,9 @@
 			<tr>
 				<td><?= $data['id'] ?></td>
 				<td><?= htmlspecialchars($data['title']) ?></td>
-				<td><a href="index.php?action=deleteComment&amp;id=<?= $data['id'] ?>" class="btn btn-dark" role="button">
+				<td><?= htmlspecialchars($data['description']) ?></td>
+				<td><?= $data['date'] ?> </em></td>
+				<td><a href="index.php?action=deleteCategory&amp;id=<?= $data['id'] ?>" class="btn btn-dark" role="button">
 						Supprimer 
 					</a></td>
 				</tr>

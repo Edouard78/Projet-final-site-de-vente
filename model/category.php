@@ -4,10 +4,12 @@ class Category
 {
 	protected $_id,
 			  $_title,
+			  $_description,
 			  $_date,
 			  $_errors=[];
 
 	const INVALID_TITLE = 1;
+	const INVALID_DESCRIPTION = 1;
 
   public function __construct($data)
 	{
@@ -42,6 +44,13 @@ class Category
 		return $this->_title;
 	}
 
+
+	public function description()
+	{
+		return $this->_description;
+	}
+
+
 	public function date()
 	{
 		return $this->_date;
@@ -73,6 +82,19 @@ class Category
 			$this->_title = $title;
 		}
 	}
+
+	public function setDescription($description)
+	{
+		if (!is_string($description) || empty($description))
+		{
+			$this->_errors[]=self::INVALID_DESCRIPTION;
+		}
+		else
+		{
+			$this->_description = $description;
+		}
+	}
+
 
 	public function setDate($date)
 	{

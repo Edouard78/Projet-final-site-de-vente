@@ -441,21 +441,7 @@ function paymentPage() {
 
 /*  ADMIN   */
 
-function addCategory() {
-    include('model/db.php');
-    $category= new Category($data);
-    $errorsFromModel = $category->errors();
-    if (count($errorsFromModel) > 0) {
-        if (in_array(Category::INVALID_TITLE, $errorsFromModel) ) {
-            echo 'erreurrr';
-        }
-    }
-    else {
-        $categoryManager = new CategoryManager($db);
-        $categoryManager->create($category);
-        require('view/admin/categoryView.php');
-    }
-}
+
 
 function category() {
     include('model/db.php');
@@ -465,6 +451,18 @@ function category() {
 
     require('view/admin/categoryView.php');
 
+}
+
+function deleteCategory($id) {
+    include('model/db.php');
+
+        $categoryManager = new categoryManager($db);
+        $categoryManager->delete($id);
+
+         $productManager = new productManager($db);
+        $productManager->deleteFromCategory($id);
+
+         header('Location: index.php?action=catalog');
 }
 function addproductPage() {
     include('model/db.php');
@@ -496,7 +494,49 @@ function addProduct($data, $productImg, $productImgTmpName, $productImgName) {
 
     }
 }
+function deleteProduct($id) {
+     include('model/db.php');
 
+        $productManager = new productManager($db);
+        $productManager->delete($id);
+        $extentions = array('jpg', 'png');
+        
+        for ($i = 0; $i < count($extentions) ; $i++) {
+            unlink( "./uploads/products/".$id .".".$extentions[$i] );
+        }
+
+         header('Location: index.php?action=catalog');
+}
+
+function deleteUser($id) {
+     include('model/db.php');
+
+        $userManager = new userManager($db);
+        $userManager->delete($id);
+
+         header('Location: index.php?action=adminClients');
+}
+
+function addCategorypage() {
+     require('view/admin/addCategoryView.php');
+}
+
+function addCategory($data) {
+    include('model/db.php');
+        $category = new Category($data);
+        $errorsFromModel = $category->errors();
+
+    if (count($errorsFromModel) > 0) {
+        
+            header('Location: index.php?action=addCategoryPage&error=1');
+    }
+    else {
+        $categoryManager = new CategoryManager($db);
+        $categoryManager->create($category);
+
+        header('Location: index.php?action=catalog');
+    }
+}
     function listOrdersForAdmin() {
         include('model/db.php');
 

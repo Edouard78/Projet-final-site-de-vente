@@ -19,7 +19,7 @@ try {
     // HOME PAGE
 
 
-            if ($_GET['action'] == 'home' && !isset($_GET['page']))
+        if ($_GET['action'] == 'home' && !isset($_GET['page']))
             {   
                 $productListNb = countProductList();
                 home($productListNb, 1);
@@ -53,7 +53,7 @@ try {
         CATEGORY PAGE
     ----------------------------------------*/
 
-        if ($_GET['action'] == 'categoryClient' && isset($_GET['categoryId'])&&  !isset($_GET['page']))
+        if ($_GET['action'] == 'categoryClient' && isset($_GET['description'])&&  !isset($_GET['page']))
             {   
                 $productListNb = countCategoryProductList($_GET['categoryId']);
                 
@@ -390,15 +390,7 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         elseif ($_GET['action'] == 'category') {
             category();
         }
-        elseif ($_GET['action'] == 'addCategory' && isset($_POST['title']))
-        {
-
-        $data = array(
-            'title' => $_POST['title'],
-        );
-        addProduct($data);
-        
-        }
+  
 
         elseif ($_GET['action'] == 'catalog') {
             catalog();
@@ -433,6 +425,32 @@ elseif (isset($_SESSION['login']) && isset($_SESSION['admin'])){
         {
         addProductPage();
         
+        }
+
+        elseif ($_GET['action'] == 'deleteProduct' && isset($_GET['id'])) {
+            deleteProduct($_GET['id']);
+        }
+
+         elseif ($_GET['action'] == 'deleteUser' && isset($_GET['id'])) {
+            deleteUser($_GET['id']);
+        }
+
+        elseif ($_GET['action'] == 'addCategoryPage') {
+            addCategoryPage();
+        }
+
+        elseif ($_GET['action'] == 'addCategory' && isset($_POST['title']))
+        {
+                $data = array(
+            'title' => $_POST['title'],
+            'description' => $_POST['description']
+        );
+                addCategory($data);
+
+        }
+
+        elseif ($_GET['action'] == 'deleteCategory' && isset($_GET['id'])) {
+            deleteCategory($_GET['id']);
         }
         else {
             echo 'vous navez pas les droit pour cette page';

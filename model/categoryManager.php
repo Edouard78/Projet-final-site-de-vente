@@ -9,18 +9,19 @@ class CategoryManager
 		$this->_db = $db;
 	}
 
-    public function create(Category $userShippingAdress)
+    public function create(Category $category)
 	{
-		$req = $this->_db->prepare('INSERT INTO category(title) VALUES(:title )');
+		$req = $this->_db->prepare('INSERT INTO category(title, description, date) VALUES(:title, :description, NOW() )');
 	
 		
-	$req->bindValue(':title', $userShippingAdress->title());
+	$req->bindValue(':title', $category->title());
+	$req->bindValue(':description', $category->description());
     $req->execute();
 	}
 
 	public function getList(){
 
-		$request = $this->_db ->prepare('SELECT id, title FROM category');
+		$request = $this->_db ->prepare('SELECT id, title, description, date FROM category');
 	    $request->execute();
 		return $request;
 	}
